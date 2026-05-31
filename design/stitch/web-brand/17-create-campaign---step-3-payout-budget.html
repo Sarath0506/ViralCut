@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ViralCut Brand Portal - Create Campaign</title>
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8f9ff",
+                    "on-surface-variant": "#4a4455",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#eff0f6",
+                    "on-background": "#191c20",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#191c20",
+                    "on-secondary-container": "#5c647a",
+                    "surface-container-lowest": "#ffffff",
+                    "warning-orange": "#F59E0B",
+                    "surface-bright": "#f8f9ff",
+                    "tertiary-fixed-dim": "#62df7d",
+                    "surface-container-low": "#f2f3f9",
+                    "on-tertiary-container": "#5cd978",
+                    "on-primary-container": "#cdb4ff",
+                    "tertiary-fixed": "#7ffc97",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-fixed-variant": "#005320",
+                    "on-tertiary": "#ffffff",
+                    "surface-container": "#eceef3",
+                    "secondary": "#565e74",
+                    "secondary-container": "#dae2fd",
+                    "error-red": "#EF4444",
+                    "primary-container": "#630ed4",
+                    "on-error": "#ffffff",
+                    "text-main": "#0B1C30",
+                    "primary-fixed-dim": "#d2bbff",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#005c25",
+                    "primary-fixed": "#eaddff",
+                    "outline-variant": "#ccc3d8",
+                    "brand-accent": "#7C3AED",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "inverse-primary": "#d2bbff",
+                    "surface-variant": "#e1e2e8",
+                    "surface-tint": "#732ee4",
+                    "success-deep": "#006C49",
+                    "on-primary": "#ffffff",
+                    "primary": "#4800a0",
+                    "on-error-container": "#93000a",
+                    "background": "#f8f9ff",
+                    "surface-dim": "#d8dae0",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "outline": "#7b7487",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-container-highest": "#e1e2e8",
+                    "tertiary": "#004218",
+                    "inverse-surface": "#2e3135",
+                    "on-primary-fixed": "#25005a",
+                    "surface-container-high": "#e7e8ee",
+                    "on-tertiary-fixed": "#002109"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-padding": "40px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "base": "4px",
+                    "gutter": "24px",
+                    "column-gap": "16px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .step-active { @apply bg-primary text-on-primary; }
+        .step-complete { @apply bg-tertiary-fixed text-on-tertiary-fixed-variant; }
+        .step-pending { @apply bg-surface-container-high text-outline; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="w-[260px] h-screen fixed left-0 top-0 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline flex flex-col py-6 z-20">
+<div class="px-6 mb-10">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">ViralCut</h1>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest mt-1">Brand Portal</p>
+</div>
+<nav class="flex-1">
+<ul class="space-y-1">
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md border-l-4 border-primary bg-primary-fixed text-on-primary-fixed font-bold transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">campaign</span> Campaigns
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">send_and_archive</span> Submissions
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span> Analytics
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">payments</span> Billing
+                    </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container transition-colors duration-200" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+                    </a>
+</li>
+</ul>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity">
+                New Campaign
+            </button>
+</div>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="h-16 fixed top-0 right-0 left-[260px] z-10 bg-surface border-b border-outline-variant flex items-center justify-between px-margin-desktop w-full">
+<div class="flex items-center flex-1 max-w-md bg-surface-container-low px-4 py-2 rounded-full border border-outline-variant focus-within:ring-2 focus-within:ring-primary transition-all">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full text-body-md font-body-md px-2 outline-none" placeholder="Search campaigns..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">apps</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-3">
+<span class="text-body-md font-label-md text-on-surface">Brand Switcher</span>
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsD6dL9WcmzQGVUCJ-U2SeNDiKByDXod-DAEPxJu7BiU_U82fxL8nh3sgV4fchwAIg-do87BVr_-AogMH_p93gRwTLyfXYfMsI1mbxBNrGe4pyAY8xFynLCdcRJnYN-dZskrl8kdL6awAlL7g2bXaotoDFtrZE6OdLyWsFSjZ0pL4YaVKwhafvxz7Q-0drj-PYVGeJO8beJVZ8ZbFpHwh8Vrk3vLRucMax9MUUHD116smEbnt8FxX-_a0HoZiEb31vopk_bTv09pY"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] pt-16 min-h-screen">
+<div class="max-w-[1200px] mx-auto px-margin-desktop py-10">
+<!-- Stepper Component -->
+<div class="mb-12 flex items-center justify-center">
+<div class="flex items-center w-full max-w-4xl relative">
+<!-- Step 1 -->
+<div class="flex flex-col items-center z-10">
+<div class="w-10 h-10 flex items-center justify-center rounded-full step-complete font-bold">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+<span class="absolute -bottom-8 font-label-sm text-label-sm text-on-surface-variant">Details</span>
+</div>
+<div class="flex-1 h-[2px] bg-tertiary-fixed -mt-4"></div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center z-10">
+<div class="w-10 h-10 flex items-center justify-center rounded-full step-complete font-bold">
+<span class="material-symbols-outlined text-[20px]">check</span>
+</div>
+<span class="absolute -bottom-8 font-label-sm text-label-sm text-on-surface-variant">Creators</span>
+</div>
+<div class="flex-1 h-[2px] bg-primary -mt-4"></div>
+<!-- Step 3 (Active) -->
+<div class="flex flex-col items-center z-10">
+<div class="w-10 h-10 flex items-center justify-center rounded-full step-active font-bold text-headline-sm">3</div>
+<span class="absolute -bottom-8 font-label-sm text-label-sm text-primary font-bold">Payout</span>
+</div>
+<div class="flex-1 h-[2px] bg-surface-container-high -mt-4"></div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center z-10">
+<div class="w-10 h-10 flex items-center justify-center rounded-full step-pending font-bold text-headline-sm">4</div>
+<span class="absolute -bottom-8 font-label-sm text-label-sm text-outline">Review</span>
+</div>
+</div>
+</div>
+<!-- Content Area: Bento Layout -->
+<div class="grid grid-cols-12 gap-gutter mt-16">
+<!-- Payout Form Card (Left Column) -->
+<div class="col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-8 shadow-sm">
+<h2 class="font-headline-sm text-headline-sm text-text-main mb-6">Payout &amp; Budget Configuration</h2>
+<div class="space-y-8">
+<!-- Model Selection -->
+<div class="p-6 bg-surface rounded-lg border border-outline-variant flex items-center justify-between">
+<div>
+<h3 class="font-label-md text-label-md text-primary mb-1">Standard Payout Model</h3>
+<p class="text-body-md text-on-surface-variant">Performance based on total valid views</p>
+</div>
+<div class="text-right">
+<span class="font-headline-sm text-headline-sm text-text-main">₹50</span>
+<span class="text-label-sm text-outline ml-1">/ 1,000 Views</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<!-- Max Payout Input -->
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface">Max Payout per Creator</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 font-bold text-on-surface-variant">₹</span>
+<input class="w-full pl-10 pr-4 py-3 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary outline-none font-label-md" type="text" value="50,000"/>
+</div>
+<p class="text-body-sm text-outline italic">Creators stop earning after reaching this limit per campaign.</p>
+</div>
+<!-- Total Budget Input -->
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface">Total Campaign Budget Pool</label>
+<div class="relative flex items-center">
+<span class="absolute left-4 font-bold text-on-surface-variant">₹</span>
+<input class="w-full pl-10 pr-4 py-3 border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary outline-none font-label-md" type="text" value="5,00,000"/>
+</div>
+<p class="text-body-sm text-outline italic">The maximum pool available across all participants.</p>
+</div>
+</div>
+<!-- Platform Fee Disclosure -->
+<div class="bg-surface-container-low p-4 rounded-lg flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">info</span>
+<div class="text-body-md text-on-surface-variant">
+                                A platform facilitation fee of <span class="font-bold text-on-surface">15% (₹75,000)</span> will be added to the total pool on final checkout.
+                            </div>
+</div>
+<hr class="border-outline-variant"/>
+<!-- Payout Schedule -->
+<div class="flex items-center justify-between">
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Payout Schedule</h4>
+<p class="text-body-sm text-outline">Automated batch processing for verified submissions.</p>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 bg-secondary-container text-on-secondary-fixed rounded-full">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span class="font-label-md text-label-md">Weekly Batch</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Preview / Analytics Card (Right Column) -->
+<div class="col-span-4 space-y-gutter">
+<!-- Calculation Preview -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
+<h3 class="font-label-md text-label-md text-on-surface mb-6 uppercase tracking-wider">Calculation Preview</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">1,00,000 Views</span>
+<span class="font-label-md text-label-md">₹5,000</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">5,00,000 Views</span>
+<span class="font-label-md text-label-md">₹25,000</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-body-md text-on-surface-variant">10,00,000 Views</span>
+<span class="font-label-md text-label-md text-primary">₹50,000 (Max)</span>
+</div>
+<div class="pt-4 border-t border-outline-variant">
+<div class="flex justify-between items-center font-bold">
+<span class="text-text-main">Campaign Capacity</span>
+<span class="text-success-deep">~1.1Cr Views</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Budget Safety Net -->
+<div class="bg-inverse-surface text-inverse-on-surface rounded-xl p-6 relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4 text-warning-orange">
+<span class="material-symbols-outlined">autopause</span>
+<h3 class="font-label-md text-label-md">Auto-Pause Protection</h3>
+</div>
+<p class="text-body-sm mb-6 opacity-80">Campaign will automatically pause when the budget pool reaches 100% capacity to prevent over-delivery.</p>
+<div class="space-y-2">
+<div class="flex justify-between text-label-sm">
+<span>Pool Utilization</span>
+<span>0 / 5,00,000</span>
+</div>
+<div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-success-deep w-0 transition-all duration-1000" id="budget-progress"></div>
+</div>
+<p class="text-[10px] uppercase font-bold text-center mt-2 opacity-60">"If pool fills, campaign auto-pauses"</p>
+</div>
+</div>
+<!-- Background Pattern -->
+<div class="absolute top-0 right-0 p-4 opacity-5">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+</div>
+<!-- Visual Callout -->
+<div class="aspect-video bg-surface-container rounded-xl overflow-hidden relative border border-outline-variant group">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="A clean, minimalist 3D rendering of a financial growth chart with purple and green glowing lines against a deep navy background. The scene represents precision and performance in data analytics, with soft ambient light creating a professional and high-tech SaaS environment. Sharp focus on floating geometrical shapes symbolizing campaign budgeting and payout fulfillment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsqp9Chq6AQAyTgSSMHTofDgB7FuwmJHBWI-iReSx-SujpOIMkKilzlqnw4pQKgyqYVpXfUwx8vghncNjLHbSftCGoRkmxSILcKofEDnyEuWst-TdRObp47wmVFMjWLZsBAtGj2gUae-VjxYi_v6ZCWQ23qf7j1jF_WnbcOzIiEuU3JeM3yk-FgOR0pgk9QFBS8kB9ijA1gGHyzaGY8n_T6jbR17nIRYFZZD-rw8wJWYc0yb5IVUekwxHwhRVfVc24DZ3msOGkCCk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4">
+<p class="text-white font-label-md text-label-md">Financial Transparency</p>
+<p class="text-white/80 text-body-sm">All transactions are Escrow-protected.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Footer Action Bar -->
+<div class="mt-12 flex items-center justify-between border-t border-outline-variant pt-8">
+<button class="flex items-center gap-2 px-8 py-3 rounded-lg border border-primary text-primary font-label-md hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+                    Back
+                </button>
+<div class="flex items-center gap-4">
+<span class="text-body-md text-on-surface-variant italic">Progress auto-saved</span>
+<button class="flex items-center gap-2 px-12 py-3 rounded-lg bg-primary text-on-primary font-label-md hover:shadow-lg transition-all">
+                        Next: Review Campaign
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<script>
+        // Micro-interaction: Update progress bar animation
+        window.addEventListener('DOMContentLoaded', () => {
+            const bar = document.getElementById('budget-progress');
+            setTimeout(() => {
+                bar.style.width = '0%'; // Start at zero for visual emphasis
+                setTimeout(() => {
+                    bar.style.width = '12%'; // Simulation of initial reserved funds
+                }, 500);
+            }, 300);
+        });
+
+        // Numeric Formatter for Indian Currency
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(num);
+        }
+
+        // Search Bar Focus Effect
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput?.parentElement.addEventListener('click', () => searchInput.focus());
+    </script>
+</body></html>

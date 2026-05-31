@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ViralCut Brand Portal - Review &amp; Publish</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f8f9ff",
+                        "on-surface-variant": "#4a4455",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#eff0f6",
+                        "on-background": "#191c20",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#191c20",
+                        "on-secondary-container": "#5c647a",
+                        "surface-container-lowest": "#ffffff",
+                        "warning-orange": "#F59E0B",
+                        "surface-bright": "#f8f9ff",
+                        "tertiary-fixed-dim": "#62df7d",
+                        "surface-container-low": "#f2f3f9",
+                        "on-tertiary-container": "#5cd978",
+                        "on-primary-container": "#cdb4ff",
+                        "tertiary-fixed": "#7ffc97",
+                        "on-primary-fixed-variant": "#5a00c6",
+                        "on-tertiary-fixed-variant": "#005320",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#eceef3",
+                        "secondary": "#565e74",
+                        "secondary-container": "#dae2fd",
+                        "error-red": "#EF4444",
+                        "primary-container": "#630ed4",
+                        "on-error": "#ffffff",
+                        "text-main": "#0B1C30",
+                        "primary-fixed-dim": "#d2bbff",
+                        "on-secondary-fixed": "#131b2e",
+                        "on-secondary": "#ffffff",
+                        "tertiary-container": "#005c25",
+                        "primary-fixed": "#eaddff",
+                        "outline-variant": "#ccc3d8",
+                        "brand-accent": "#7C3AED",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "inverse-primary": "#d2bbff",
+                        "surface-variant": "#e1e2e8",
+                        "surface-tint": "#732ee4",
+                        "success-deep": "#006C49",
+                        "on-primary": "#ffffff",
+                        "primary": "#4800a0",
+                        "on-error-container": "#93000a",
+                        "background": "#f8f9ff",
+                        "surface-dim": "#d8dae0",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "outline": "#7b7487",
+                        "secondary-fixed": "#dae2fd",
+                        "surface-container-highest": "#e1e2e8",
+                        "tertiary": "#004218",
+                        "inverse-surface": "#2e3135",
+                        "on-primary-fixed": "#25005a",
+                        "surface-container-high": "#e7e8ee",
+                        "on-tertiary-fixed": "#002109"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-padding": "40px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "32px",
+                        "base": "4px",
+                        "gutter": "24px",
+                        "column-gap": "16px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Inter"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "body-sm": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-hidden">
+<!-- SideNavBar -->
+<aside class="w-[260px] h-screen fixed left-0 top-0 bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline flex flex-col py-6 z-20">
+<div class="px-6 mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">ViralCut</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">Brand Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center px-6 py-3 border-l-4 border-primary bg-primary-fixed text-on-primary-fixed font-bold font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">campaign</span> Campaigns
+            </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-3">send_and_archive</span> Submissions
+            </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-3">analytics</span> Analytics
+            </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-3">payments</span> Billing
+            </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-3">settings</span> Settings
+            </a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-primary-container text-on-primary font-label-md text-label-md py-3 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined">add</span> New Campaign
+            </button>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="h-16 fixed top-0 right-0 left-[260px] z-10 bg-surface dark:bg-background border-b border-outline-variant dark:border-outline flex items-center justify-between px-margin-desktop">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md focus-within:ring-2 focus-within:ring-primary rounded-lg overflow-hidden transition-all">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border-none focus:ring-0 font-body-md text-body-md" placeholder="Search campaigns, creators..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">apps</span>
+</button>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="font-label-md text-label-md text-on-surface">Zomato Marketing</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Brand Switcher</p>
+</div>
+<img alt="User Profile Avatar" class="w-10 h-10 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADbmq8xxnvHTJmRK0fscEHjGmhaLoNMzqNvJiJu8Ocj6b9kPSSw2yGf8u3IXo2SkxoeeA3wjehY2f2l_GuPMEuSXz6R7RKJjSwhMe9MuEbsySm2tPgaFI_FMqWies-sXfTch_gXqGyPSZZp-SjcvlOeprGrgs-XHj-99bny_d4zF7YPcGefVc0qEttgg5L_4KWJTCf6W9Y7kvrzNNoK3jrUX292s7jGaQxGat_zywLG07c_NJaRv4TVlWeh2EjsJtFxFY5EEN5K94"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-[260px] pt-16 h-screen flex flex-col overflow-hidden">
+<!-- Stepper Component -->
+<section class="px-margin-desktop py-6 bg-surface-container-lowest border-b border-outline-variant">
+<div class="max-w-[1200px] mx-auto flex items-center justify-between px-10 relative">
+<div class="absolute top-1/2 left-0 right-0 h-[2px] bg-surface-container-high -translate-y-1/2 z-0 mx-20"></div>
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-success-deep text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Basics</span>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-success-deep text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Brief</span>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-success-deep text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'wght' 700;">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface">Payouts</span>
+</div>
+<!-- Step 4 Active -->
+<div class="relative z-10 flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold">4</div>
+<span class="font-label-md text-label-md text-primary">Review &amp; Publish</span>
+</div>
+</div>
+</section>
+<!-- Canvas Body (Split Panel) -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Left: Review Summary (Scrollable) -->
+<div class="flex-1 overflow-y-auto px-margin-desktop py-8 hide-scrollbar">
+<div class="max-w-[800px] mx-auto space-y-gutter">
+<header class="mb-8">
+<h2 class="font-headline-lg text-headline-lg text-text-main">Review your Campaign</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Check all the details before going live to creators.</p>
+</header>
+<!-- Summary Cards Bento Grid Style -->
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Basics -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline-sm text-headline-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">info</span> Basics
+                                </h3>
+<button class="text-primary font-label-sm text-label-sm hover:underline">Edit</button>
+</div>
+<div class="space-y-3">
+<div>
+<p class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Campaign Name</p>
+<p class="font-body-md text-body-md font-semibold">Summer Monsoon Food Fest 2024</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Timeline</p>
+<p class="font-body-md text-body-md font-semibold">Jun 15 - Jul 15, 2024</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Category</p>
+<p class="px-2 py-0.5 bg-surface-container inline-block rounded font-label-sm text-label-sm">Food &amp; Dining</p>
+</div>
+</div>
+</div>
+<!-- Budget -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline-sm text-headline-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span> Budget
+                                </h3>
+<button class="text-primary font-label-sm text-label-sm hover:underline">Edit</button>
+</div>
+<div class="space-y-3">
+<div>
+<p class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-wider">Total Pool</p>
+<p class="font-headline-md text-headline-md font-bold">₹ 5,00,000</p>
+</div>
+<div class="flex items-center gap-2 text-success-deep bg-tertiary-fixed px-3 py-2 rounded-lg">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-md text-label-md">Budget Fully Funded</span>
+</div>
+</div>
+</div>
+<!-- Brief Recap -->
+<div class="col-span-2 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-headline-sm text-headline-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">description</span> Content Brief
+                                </h3>
+<button class="text-primary font-label-sm text-label-sm hover:underline">Edit</button>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md text-success-deep flex items-center gap-2">
+<span class="material-symbols-outlined">check_circle</span> THINGS TO DO
+                                    </h4>
+<ul class="space-y-2 list-disc pl-5 font-body-md text-body-md text-on-surface-variant">
+<li>Show the Zomato app interface clearly</li>
+<li>Mention the "RAINY50" coupon code</li>
+<li>Include the "Order Now" call to action</li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-label-md text-error flex items-center gap-2">
+<span class="material-symbols-outlined">cancel</span> THINGS TO AVOID
+                                    </h4>
+<ul class="space-y-2 list-disc pl-5 font-body-md text-body-md text-on-surface-variant">
+<li>Avoid showing competitor logos (Swiggy, etc.)</li>
+<li>Do not mention alcohol or tobacco</li>
+<li>Don't record in low-light environments</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Payouts -->
+<div class="col-span-2 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline-sm text-headline-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">payments</span> Payout Structure
+                                </h3>
+<button class="text-primary font-label-sm text-label-sm hover:underline">Edit</button>
+</div>
+<div class="grid grid-cols-3 gap-4">
+<div class="p-4 bg-surface rounded-lg border border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Per 1,000 Views</p>
+<p class="font-headline-sm text-headline-sm font-bold text-text-main">₹ 150</p>
+</div>
+<div class="p-4 bg-surface rounded-lg border border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Cap per Creator</p>
+<p class="font-headline-sm text-headline-sm font-bold text-text-main">₹ 25,000</p>
+</div>
+<div class="p-4 bg-surface rounded-lg border border-outline-variant/30">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Min. Followers</p>
+<p class="font-headline-sm text-headline-sm font-bold text-text-main">5,000+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right: Preview Panel (Fixed) -->
+<div class="w-[480px] bg-surface-container-low border-l border-outline-variant flex flex-col items-center justify-center p-8">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-6 uppercase tracking-widest">Creator Preview</p>
+<!-- Phone Mockup -->
+<div class="w-[300px] h-[600px] bg-[#0F172A] rounded-[40px] border-[8px] border-on-surface-variant relative overflow-hidden shadow-2xl">
+<!-- Notch -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-on-surface-variant rounded-b-2xl z-20"></div>
+<!-- App Screen Content -->
+<div class="absolute inset-0 bg-white overflow-y-auto hide-scrollbar pt-10">
+<div class="h-48 bg-primary-container relative">
+<img class="w-full h-full object-cover mix-blend-overlay opacity-40" data-alt="A cinematic, high-quality photograph of a steaming hot bowl of butter chicken and garlic naan, captured with professional food lighting. The scene uses vibrant warm tones and rich textures, characteristic of high-end Indian culinary marketing. Soft bokeh highlights the restaurant environment in the background, creating an inviting and authentic brand experience for the food campaign preview." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATAIjk2KgKDWRR_o3raQH1B_DzBwVC6jGjCYAuGZT08ar9ZiCj9MlzNmUO4hCGqC29qhiib8XGAD6Svg0eCa84U4aJ1l1l57x-JS82aqtLqIuGGQ1W69QsnzWxg3fXL4Drf3tQujHvg4unXmELW6Y8_NWZC4DoqEJsA9s0diva3Orb4up-dicodih-LNRkOPEoh70wUWTzEnRn23det8Zcn-hetMTOhGwwCNu9IN8uJpzC0hZx4Kkmxgq4qP0a1y8ku9iJ7P45Phc"/>
+<div class="absolute bottom-4 left-4 text-white">
+<span class="bg-white/20 backdrop-blur-md px-2 py-1 rounded text-[10px] font-bold uppercase">Viral Campaign</span>
+<h4 class="font-bold text-lg leading-tight mt-1">Zomato Monsoon Fest</h4>
+</div>
+</div>
+<div class="p-4 space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-success-deep bg-success-deep/10 px-2 py-1 rounded">LIVE NOW</span>
+<span class="text-xs font-bold text-primary">₹150 / 1k Views</span>
+</div>
+<div class="space-y-2">
+<p class="text-[10px] text-slate-500 font-bold uppercase">Description</p>
+<p class="text-xs text-slate-700 leading-relaxed">Promote our new monsoon collection. Show us your favorite comfort food and use the app to order with RAINY50.</p>
+</div>
+<div class="bg-slate-50 p-3 rounded-lg space-y-2">
+<p class="text-[10px] text-slate-500 font-bold uppercase">Creator Tasks</p>
+<div class="flex gap-2 items-start">
+<span class="material-symbols-outlined text-success-deep text-xs">check_circle</span>
+<p class="text-[10px]">Show app order screen</p>
+</div>
+<div class="flex gap-2 items-start">
+<span class="material-symbols-outlined text-success-deep text-xs">check_circle</span>
+<p class="text-[10px]">Tag @ZomatoIndia</p>
+</div>
+</div>
+<button class="w-full bg-primary text-white text-xs font-bold py-3 rounded-lg mt-4">JOIN CAMPAIGN</button>
+</div>
+</div>
+</div>
+<p class="mt-6 font-body-sm text-body-sm text-center text-on-surface-variant max-w-[280px]">
+                    This is how your campaign will appear to qualified creators in the ViralCut mobile app.
+                </p>
+</div>
+</div>
+<!-- Footer Actions Bar -->
+<footer class="h-20 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between px-margin-desktop z-10 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-container rounded-lg transition-colors">
+<span class="material-symbols-outlined">arrow_back</span> Back
+                </button>
+<div class="h-6 w-[1px] bg-outline-variant"></div>
+<button class="px-6 py-3 font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">
+                    Save as Draft
+                </button>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right mr-4">
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ready to launch?</p>
+<p class="font-label-md text-label-md font-bold text-success-deep">Funding Verified</p>
+</div>
+<button class="bg-success-deep text-white px-10 py-4 rounded-xl font-headline-sm text-headline-sm font-bold shadow-lg shadow-success-deep/20 hover:scale-[1.02] transition-transform flex items-center gap-3">
+                    Publish Campaign <span class="material-symbols-outlined">rocket_launch</span>
+</button>
+</div>
+</footer>
+</main>
+<!-- Overlay Micro-Interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const publishBtn = document.querySelector('button.bg-success-deep');
+            publishBtn.addEventListener('click', () => {
+                publishBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span> Launching...';
+                setTimeout(() => {
+                    alert('Campaign Published Successfully!');
+                    publishBtn.innerHTML = 'Publish Campaign <span class="material-symbols-outlined">rocket_launch</span>';
+                }, 2000);
+            });
+        });
+    </script>
+</body></html>

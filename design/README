@@ -1,0 +1,9 @@
+# Design
+
+| Path | Purpose |
+|------|---------|
+| `stitch/` | Current UI exports (Stitch) — use for implementation |
+| `archive/figma-screenshots/` | Original Figma PNG baseline (reference only) |
+| `assets/` | Shared brand assets (e.g. app icon) |
+
+Product spec: `docs/FIGMA_PRODUCT_ANALYSIS.md`

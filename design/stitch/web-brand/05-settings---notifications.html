@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings — Notifications | ViralCut</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Plus+Jakarta+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface": "#f8f9ff",
+                    "on-surface-variant": "#4a4455",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#eff0f6",
+                    "on-background": "#191c20",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#191c20",
+                    "on-secondary-container": "#5c647a",
+                    "surface-container-lowest": "#ffffff",
+                    "warning-orange": "#F59E0B",
+                    "surface-bright": "#f8f9ff",
+                    "tertiary-fixed-dim": "#62df7d",
+                    "surface-container-low": "#f2f3f9",
+                    "on-tertiary-container": "#5cd978",
+                    "on-primary-container": "#cdb4ff",
+                    "tertiary-fixed": "#7ffc97",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-fixed-variant": "#005320",
+                    "on-tertiary": "#ffffff",
+                    "surface-container": "#eceef3",
+                    "secondary": "#565e74",
+                    "secondary-container": "#dae2fd",
+                    "error-red": "#EF4444",
+                    "primary-container": "#630ed4",
+                    "on-error": "#ffffff",
+                    "text-main": "#0B1C30",
+                    "primary-fixed-dim": "#d2bbff",
+                    "on-secondary-fixed": "#131b2e",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#005c25",
+                    "primary-fixed": "#eaddff",
+                    "outline-variant": "#ccc3d8",
+                    "brand-accent": "#7C3AED",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "inverse-primary": "#d2bbff",
+                    "surface-variant": "#e1e2e8",
+                    "surface-tint": "#732ee4",
+                    "success-deep": "#006C49",
+                    "on-primary": "#ffffff",
+                    "primary": "#4800a0",
+                    "on-error-container": "#93000a",
+                    "background": "#f8f9ff",
+                    "surface-dim": "#d8dae0",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "outline": "#7b7487",
+                    "secondary-fixed": "#dae2fd",
+                    "surface-container-highest": "#e1e2e8",
+                    "tertiary": "#004218",
+                    "inverse-surface": "#2e3135",
+                    "on-primary-fixed": "#25005a",
+                    "surface-container-high": "#e7e8ee",
+                    "on-tertiary-fixed": "#002109"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-padding": "40px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "base": "4px",
+                    "gutter": "24px",
+                    "column-gap": "16px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-sm": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg-mobile": ["Plus Jakarta Sans"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "headline-lg": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .toggle-checkbox:checked + .toggle-slot {
+            background-color: #4800a0;
+        }
+        .toggle-checkbox:checked + .toggle-slot .toggle-dot {
+            transform: translateX(1.25rem);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #ccc3d8;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Sidebar Navigation -->
+<aside class="w-[260px] h-screen fixed left-0 top-0 bg-surface-container-lowest border-r border-outline-variant flex flex-col py-6 z-20">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">movie_filter</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">ViralCut</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant leading-none uppercase tracking-widest">Brand Portal</p>
+</div>
+</div>
+<div class="px-4 mb-6">
+<button class="w-full bg-primary-container text-on-primary text-label-md font-label-md py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                New Campaign
+            </button>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-4">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-4">campaign</span>
+                Campaigns
+            </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-4">send_and_archive</span>
+                Submissions
+            </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-4">analytics</span>
+                Analytics
+            </a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-4">payments</span>
+                Billing
+            </a>
+<a class="flex items-center px-6 py-3 border-l-4 border-primary bg-primary-fixed text-on-primary-fixed font-bold font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined mr-4" style="font-variation-settings: 'FILL' 1;">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="px-6 py-4 mt-auto">
+<div class="p-4 bg-surface-container-low rounded-xl border border-outline-variant">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-2 h-2 rounded-full bg-success-deep animate-pulse"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">System Status: Live</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">Campaign sync active in Mumbai Region</p>
+</div>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="h-16 fixed top-0 right-0 left-[260px] z-10 bg-surface border-b border-outline-variant flex items-center justify-between px-margin-desktop">
+<div class="flex items-center flex-1 max-w-md">
+<div class="relative w-full focus-within:ring-2 focus-within:ring-primary rounded-lg transition-all">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 font-body-md text-body-md focus:ring-0" placeholder="Search brands, creators, or campaigns..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error-red rounded-full border-2 border-surface"></span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">apps</span>
+</button>
+</div>
+<div class="h-8 w-px bg-outline-variant"></div>
+<button class="flex items-center gap-3 py-1.5 px-3 rounded-full hover:bg-surface-container transition-colors group">
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface">Priya Sharma</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Marketing Lead</span>
+</div>
+<img alt="Priya Sharma Profile" class="w-10 h-10 rounded-full border-2 border-primary-fixed group-hover:border-primary transition-all" data-alt="A professional portrait of a confident Indian woman in her late 20s with long dark hair, wearing business-casual attire. She is smiling warmly at the camera against a soft-focus office background with warm lighting and a modern aesthetic. The image exudes professional expertise and high-energy productivity, matching a corporate SaaS identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiIPSuwOCD0NlySket9F_g0I9YxdGKGyA0e_rkxTTCoYI_u27pXS7Ivs0WtjWpxd2V-_N9enws6i46nfqUrxJKXttbRqZsOse35pYFyvCsxANh4zHKqtSKF4ti9zrrIJDov7i5eAO7_a2IRIpao_S9Cod3mbT_zq69m0lPevKgercoQjqqyqAp-tGXbFu-unk_9DKTtUJrPcn9UXK_jaqCw5fpwgwhbSlbJed9q9060JAdIk55lH-pvCOd-ESmVmYwoPjuMr4LhW4"/>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-[260px] pt-16 min-h-screen bg-surface">
+<div class="max-w-[1200px] mx-auto px-margin-desktop py-12">
+<!-- Page Header -->
+<div class="mb-10">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md mb-2">
+<a class="hover:text-primary transition-colors" href="#">Settings</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary font-bold">Notifications</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Communication Preferences</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2">Manage how and when you receive updates about your creator campaigns and account activity.</p>
+</div>
+<!-- Settings Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Settings Tabs Sidebar (Internal) -->
+<div class="col-span-3">
+<nav class="flex flex-col gap-1 sticky top-28">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">person</span>
+                            Profile Details
+                        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">security</span>
+                            Security &amp; Privacy
+                        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-container-lowest text-primary font-bold shadow-sm border border-outline-variant font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+                            Notifications
+                        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">hub</span>
+                            Connected Apps
+                        </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">group</span>
+                            Team Management
+                        </a>
+</nav>
+</div>
+<!-- Settings Content Canvas -->
+<div class="col-span-9 space-y-6">
+<!-- Notification Table/Grid Container -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+<div class="p-6 border-b border-outline-variant flex items-center justify-between bg-surface-container-low/50">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Alert Controls</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Select your preferred channels for each activity type.</p>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest text-center w-24">Email</span>
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest text-center w-24">In-App</span>
+</div>
+</div>
+<!-- Toggle List -->
+<div class="divide-y divide-outline-variant">
+<!-- Row: New Submission -->
+<div class="p-6 flex items-center justify-between hover:bg-surface-container-lowest/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">upload_file</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">New submission</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Notify me when a creator uploads content for review.</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Row: Budget 80% -->
+<div class="p-6 flex items-center justify-between hover:bg-surface-container-lowest/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Budget 80%</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Critical alert when campaign spend reaches 80% of limit.</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Row: Campaign ended -->
+<div class="p-6 flex items-center justify-between hover:bg-surface-container-lowest/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Campaign ended</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Receive a summary report when a campaign timeframe closes.</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Row: Daily digest -->
+<div class="p-6 flex items-center justify-between hover:bg-surface-container-lowest/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed-dim/30 flex items-center justify-center text-on-tertiary-fixed-variant">
+<span class="material-symbols-outlined">history_edu</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Daily digest</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Morning briefing of yesterday's engagement metrics.</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Row: Payout processed -->
+<div class="p-6 flex items-center justify-between hover:bg-surface-container-lowest/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed/50 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Payout processed</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Confirmation when payments are dispatched to creators.</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+<div class="w-24 flex justify-center">
+<label class="relative inline-block w-11 h-6 transition duration-200 ease-in-out cursor-pointer">
+<input checked="" class="sr-only toggle-checkbox" type="checkbox"/>
+<div class="toggle-slot w-11 h-6 bg-outline-variant rounded-full p-0.5 transition-colors duration-200">
+<div class="toggle-dot w-5 h-5 bg-white rounded-full transition-transform duration-200"></div>
+</div>
+</label>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 bg-surface-container-low/30 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-warning-orange">info</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Changes are saved automatically.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md text-label-md shadow-md hover:bg-surface-tint transition-all active:scale-95">
+                                Export Preferences
+                            </button>
+</div>
+</div>
+<!-- Side Info Card (Bento Style) -->
+<div class="grid grid-cols-2 gap-gutter">
+<div class="bg-on-background p-6 rounded-xl text-white relative overflow-hidden flex flex-col justify-between">
+<div class="relative z-10">
+<h4 class="font-headline-sm text-headline-sm mb-2">Power User Tip</h4>
+<p class="font-body-md text-body-md text-white/70">Connect your team's Slack or Discord workspace to get these alerts in shared channels for faster collaboration.</p>
+</div>
+<button class="mt-6 flex items-center gap-2 font-label-md text-label-md text-primary-fixed hover:text-white transition-colors">
+                                Set up Integrations
+                                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<!-- Abstract Graphic -->
+<div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary opacity-20 blur-3xl rounded-full"></div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Email Delivery</span>
+<span class="text-success-deep font-bold text-label-sm">High Reliability</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Current primary email: <strong>p.sharma@viralcut.in</strong></p>
+<div class="h-2 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-success-deep w-[98%]"></div>
+</div>
+</div>
+<a class="mt-4 font-label-md text-label-md text-primary hover:underline" href="#">Change Email Address</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Success Feedback Micro-interaction -->
+<div class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl opacity-0 pointer-events-none transition-all duration-300 translate-y-4" id="toast">
+<span class="material-symbols-outlined text-tertiary-fixed">check_circle</span>
+<span class="font-label-md text-label-md">Notification settings updated.</span>
+</div>
+<script>
+        // Simple logic for the toast and toggle interactions
+        const toggles = document.querySelectorAll('.toggle-checkbox');
+        const toast = document.getElementById('toast');
+        let toastTimeout;
+
+        toggles.forEach(toggle => {
+            toggle.addEventListener('change', () => {
+                // Show toast
+                clearTimeout(toastTimeout);
+                toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                toast.classList.add('opacity-100', 'translate-y-0');
+
+                // Hide toast after 3s
+                toastTimeout = setTimeout(() => {
+                    toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                }, 3000);
+            });
+        });
+
+        // Search bar interaction
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-primary-fixed');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-primary-fixed');
+        });
+    </script>
+</body></html>

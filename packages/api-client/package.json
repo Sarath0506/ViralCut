@@ -1,0 +1,16 @@
+{
+  "name": "@viralcut/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Generated from services/api OpenAPI spec (orval) — run codegen after API is running",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "codegen": "echo \"Run orval against http://localhost:3001/docs-json after API starts\""
+  },
+  "dependencies": {
+    "@viralcut/shared-types": "workspace:*"
+  }
+}

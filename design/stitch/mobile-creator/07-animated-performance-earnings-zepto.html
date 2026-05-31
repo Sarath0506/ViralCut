@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#002113",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "outline": "#7b7487",
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#eff4ff",
+                    "on-surface": "#0b1c30",
+                    "secondary": "#006c49",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#ffdbca",
+                    "tertiary-container": "#aa4900",
+                    "secondary-fixed": "#6ffbbe",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-container": "#ffdecf",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#4a4455",
+                    "inverse-surface": "#213145",
+                    "on-secondary-container": "#00714d",
+                    "deep-surface": "#0F172A",
+                    "primary-fixed-dim": "#d2bbff",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#630ed4",
+                    "on-tertiary-fixed": "#341100",
+                    "surface-tint": "#732ee4",
+                    "surface": "#f8f9ff",
+                    "silver-clipper": "#E2E8F0",
+                    "secondary-fixed-dim": "#4edea3",
+                    "secondary-container": "#6cf8bb",
+                    "outline-variant": "#ccc3d8",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed": "#eaddff",
+                    "surface-variant": "#d3e4fe",
+                    "surface-container": "#e5eeff",
+                    "money-green": "#22C55E",
+                    "inverse-primary": "#d2bbff",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#843700",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary": "#ffffff",
+                    "urgency-orange": "#EA580C",
+                    "on-secondary-fixed-variant": "#005236",
+                    "background": "#f8f9ff",
+                    "on-primary-fixed": "#25005a",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-container": "#7c3aed",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#783200",
+                    "danger-red": "#EF4444",
+                    "on-primary-container": "#ede0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "20px",
+                    "unit": "4px",
+                    "stack-gap-md": "16px",
+                    "stack-gap-lg": "24px",
+                    "stack-gap-sm": "8px",
+                    "section-margin": "32px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "financial-data": ["Plus Jakarta Sans"],
+                    "status-pill": ["Inter"],
+                    "display-hero": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "headline-md-mobile": ["18px", {"lineHeight": "24px", "fontWeight": "700"}],
+                    "financial-data": ["20px", {"lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "800"}],
+                    "status-pill": ["11px", {"lineHeight": "12px", "fontWeight": "600"}],
+                    "display-hero": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .shimmer-text {
+            background: linear-gradient(90deg, #22C55E 0%, #a7f3d0 50%, #22C55E 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 4s linear infinite;
+        }
+
+        .custom-spring {
+            transition-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .waterfall-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .waterfall-active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .scale-up-entrance {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .scale-up-active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .ambient-glow {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 120vw;
+            height: 120vh;
+            background: radial-gradient(circle at center, rgba(99, 14, 212, 0.03) 0%, rgba(99, 14, 212, 0) 70%);
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+            animation: slow-orbit 20s linear infinite;
+        }
+
+        @keyframes slow-orbit {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .waterfall-item, .scale-up-entrance, .animate-float, .shimmer-text, .ambient-glow, .animate-pulse {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased mb-24 overflow-x-hidden">
+<div class="ambient-glow"></div>
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-md bg-surface/80 dark:bg-deep-surface/80 flex justify-between items-center px-container-padding h-16 w-full">
+<div class="flex items-center gap-stack-gap-md">
+<button aria-label="Go back" class="flex items-center justify-center w-10 h-10 rounded-full active:scale-95 transition-all hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-on-surface">arrow_back</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile text-primary dark:text-primary-fixed-dim">ViralCut</h1>
+</div>
+<div class="flex items-center gap-stack-gap-sm bg-surface-container rounded-full px-3 py-1 cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-money-green text-[18px]" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-financial-data text-[14px]">₹12,450</span>
+</div>
+</header>
+<main class="pt-20 px-container-padding space-y-section-margin">
+<!-- Success Banner -->
+<section class="waterfall-item -translate-y-10" id="banner">
+<div class="bg-money-green text-on-primary p-4 rounded-xl flex items-center gap-stack-gap-md shadow-sm">
+<div class="bg-white/20 p-2 rounded-full">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps opacity-90 uppercase tracking-wider">Campaign Success</p>
+<p class="font-headline-md text-headline-md-mobile">Reel live</p>
+</div>
+</div>
+</section>
+<!-- Reel Preview Card & Earnings Section -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-stack-gap-lg">
+<!-- Reel Preview Card -->
+<div class="scale-up-entrance relative aspect-[9/16] max-h-[400px] md:max-h-none rounded-xl overflow-hidden border border-silver-clipper shadow-sm group active:scale-98 transition-transform duration-500 cursor-pointer" id="reel-preview">
+<img class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" data-alt="A vibrant and dynamic smartphone screen displaying a vertical high-energy video reel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4SPSXI8RVW9F6MFUmwxLuo6mVV2jrDEdJMz6MCgzolSeoOj0XSWVt7AX54DKe7yA_crBimIwNilb-Yem2caxzQZvXdZJWJk2cxOiBBhjTtt6DcSs4dxeXn610S8uYSyjrypyiOdyRJQTtC6-j1vDqTQ1LzF6hP5VZh5ZvzrdyXtFDPLjV2PoSzl-FBDX11B6Qvz046LLZK6J7GUXvn8OGImp35Pf9gyE2_jHDMT9xRQzhgbdgUw__3MBGdua_AK4tpliuxj383tmC"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="bg-danger-red text-white font-status-pill text-status-pill px-3 py-1 rounded-full flex items-center gap-1 shadow-lg animate-pulse">
+<span class="w-1.5 h-1.5 bg-white rounded-full"></span>
+                        LIVE
+                    </span>
+</div>
+<div class="absolute bottom-4 left-4 right-4">
+<div class="flex items-center gap-stack-gap-sm mb-2">
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="Zepto logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAx1YV8bI3L8H8gwVa_aqKhcmY7ym9iTAdu-iGcwH7sYc29kmP5JMlMWg-5dclwQ8dM8Ydp13nNdXlLCwXaPSyiGXa2Prmy5l0XrQM9Z0Ikwy3MNZiVYR4MwY3I0lYmASVnqoVpHNxgnWyLenGMXuEJPiW4PiDlIBao9eEY9J8WkZqPrw09fMizRNRN_y9xC-aUR1d1QsMo3kPjsGLSloWnzJ5yiKPU9NzsJK16F9iNH5ch-VmBq_Xw2LkiSxLTtDqKW6J5KvTUwG7r"/>
+<span class="text-white font-label-caps">ZEPTO x VIRALCUT</span>
+</div>
+</div>
+</div>
+<!-- Earnings Section -->
+<div class="space-y-stack-gap-lg waterfall-item translate-y-10" id="earnings-col">
+<div class="bg-deep-surface text-white p-6 rounded-xl relative overflow-hidden shadow-xl border border-white/10 group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[60px] -mr-16 -mt-16 group-hover:bg-primary/30 transition-colors duration-700"></div>
+<p class="font-label-caps text-label-caps text-primary-fixed-dim uppercase mb-2">Estimated earnings</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-hero shimmer-text">₹2,436.80</span>
+<span class="font-body-md text-white/60">Total</span>
+</div>
+<div class="mt-4 flex items-center justify-between border-t border-white/10 pt-4">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-white/50">CPM RATE</span>
+<span class="font-financial-data text-white">₹560 <span class="font-body-md font-normal text-white/50">/ 1K views</span></span>
+</div>
+<div class="bg-money-green/10 p-2 rounded-lg animate-float">
+<span class="material-symbols-outlined text-money-green block">trending_up</span>
+</div>
+</div>
+</div>
+<!-- Metrics Grid -->
+<div class="grid grid-cols-2 gap-stack-gap-md">
+<div class="metric-card bg-surface-container-low border border-silver-clipper p-4 rounded-xl hover:bg-surface-container hover:scale-[1.02] hover:shadow-md active:scale-95 transition-all custom-spring cursor-pointer">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[20px]">visibility</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">VIEWS</span>
+</div>
+<p class="font-financial-data text-on-surface">4,352</p>
+</div>
+<div class="metric-card bg-surface-container-low border border-silver-clipper p-4 rounded-xl hover:bg-surface-container hover:scale-[1.02] hover:shadow-md active:scale-95 transition-all custom-spring cursor-pointer">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[20px]">groups</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">REACH</span>
+</div>
+<p class="font-financial-data text-on-surface">12.1K</p>
+</div>
+<div class="metric-card bg-surface-container-low border border-silver-clipper p-4 rounded-xl hover:bg-surface-container hover:scale-[1.02] hover:shadow-md active:scale-95 transition-all custom-spring cursor-pointer">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[20px]">favorite</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">LIKES</span>
+</div>
+<p class="font-financial-data text-on-surface">843</p>
+</div>
+<div class="metric-card bg-surface-container-low border border-silver-clipper p-4 rounded-xl hover:bg-surface-container hover:scale-[1.02] hover:shadow-md active:scale-95 transition-all custom-spring cursor-pointer">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[20px]">share</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">SHARES</span>
+</div>
+<p class="font-financial-data text-on-surface">126</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Important Notes Section -->
+<section class="pb-8 waterfall-item translate-y-10" id="notes">
+<div class="bg-surface-container-high/50 rounded-xl p-5 border border-dashed border-outline hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-urgency-orange">info</span>
+<h3 class="font-headline-md-mobile text-on-surface">Important notes</h3>
+</div>
+<ul class="space-y-stack-gap-sm">
+<li class="flex items-start gap-3">
+<span class="w-1.5 h-1.5 bg-primary rounded-full mt-2 shrink-0"></span>
+<p class="font-body-md text-on-surface-variant">Earnings are calculated based on valid views verified by Instagram APIs.</p>
+</li>
+<li class="flex items-start gap-3">
+<span class="w-1.5 h-1.5 bg-primary rounded-full mt-2 shrink-0"></span>
+<p class="font-body-md text-on-surface-variant">Settlement takes up to 72 hours after the campaign ends.</p>
+</li>
+<li class="flex items-start gap-3">
+<span class="w-1.5 h-1.5 bg-primary rounded-full mt-2 shrink-0"></span>
+<p class="font-body-md text-on-surface-variant">Ensure your account remains public to continue tracking metrics.</p>
+</li>
+</ul>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 h-[84px] bg-surface dark:bg-deep-surface border-t border-silver-clipper dark:border-outline-variant shadow-lg flex justify-around items-center px-4 pb-safe w-full">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim relative active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">campaign</span>
+<span class="font-label-caps text-label-caps mt-1">Campaigns</span>
+<span class="absolute -bottom-1 w-1 h-1 bg-primary rounded-full"></span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">upload_file</span>
+<span class="font-label-caps text-label-caps mt-1">Submissions</span>
+</a>
+<a class="wallet-nav-item flex flex-col items-center justify-center text-on-surface-variant dark:text-outline active:scale-[0.85] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-caps text-label-caps mt-1">Wallet</span>
+</a>
+</nav>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // 1. Choreographed Waterfall Entrance
+        const delays = {
+            banner: 100,
+            reel: 300,
+            earnings: 500,
+            metrics: 700,
+            notes: 1200
+        };
+
+        setTimeout(() => document.getElementById('banner').classList.add('waterfall-active'), delays.banner);
+        setTimeout(() => document.getElementById('reel-preview').classList.add('scale-up-active'), delays.reel);
+        setTimeout(() => document.getElementById('earnings-col').classList.add('waterfall-active'), delays.earnings);
+        
+        const metrics = document.querySelectorAll('.metric-card');
+        metrics.forEach((card, i) => {
+            setTimeout(() => {
+                card.classList.add('waterfall-active');
+            }, delays.metrics + (i * 100));
+        });
+
+        setTimeout(() => document.getElementById('notes').classList.add('waterfall-active'), delays.notes);
+
+        // 3. High-quality scale interaction for Reel card
+        const reelCard = document.getElementById('reel-preview');
+        reelCard.addEventListener('mousemove', (e) => {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const rect = reelCard.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+            reelCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+        });
+
+        reelCard.addEventListener('mouseleave', () => {
+            reelCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+        });
+    });
+</script>
+</body></html>

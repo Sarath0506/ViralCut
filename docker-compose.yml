@@ -1,0 +1,15 @@
+# Free local Postgres for development (no cloud cost)
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: viralcut
+      POSTGRES_PASSWORD: viralcut
+      POSTGRES_DB: viralcut
+    volumes:
+      - viralcut_pg_data:/var/lib/postgresql/data
+
+volumes:
+  viralcut_pg_data:

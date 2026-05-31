@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#002113",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "outline": "#7b7487",
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#eff4ff",
+                    "on-surface": "#0b1c30",
+                    "secondary": "#006c49",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#ffdbca",
+                    "tertiary-container": "#aa4900",
+                    "secondary-fixed": "#6ffbbe",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-container": "#ffdecf",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#4a4455",
+                    "inverse-surface": "#213145",
+                    "on-secondary-container": "#00714d",
+                    "deep-surface": "#0F172A",
+                    "primary-fixed-dim": "#d2bbff",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#630ed4",
+                    "on-tertiary-fixed": "#341100",
+                    "surface-tint": "#732ee4",
+                    "surface": "#f8f9ff",
+                    "silver-clipper": "#E2E8F0",
+                    "secondary-fixed-dim": "#4edea3",
+                    "secondary-container": "#6cf8bb",
+                    "outline-variant": "#ccc3d8",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed": "#eaddff",
+                    "surface-variant": "#d3e4fe",
+                    "surface-container": "#e5eeff",
+                    "money-green": "#22C55E",
+                    "inverse-primary": "#d2bbff",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#843700",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary": "#ffffff",
+                    "urgency-orange": "#EA580C",
+                    "on-secondary-fixed-variant": "#005236",
+                    "background": "#f8f9ff",
+                    "on-primary-fixed": "#25005a",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-container": "#7c3aed",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#783200",
+                    "danger-red": "#EF4444",
+                    "on-primary-container": "#ede0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "20px",
+                    "unit": "4px",
+                    "stack-gap-md": "16px",
+                    "stack-gap-lg": "24px",
+                    "stack-gap-sm": "8px",
+                    "section-margin": "32px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "financial-data": ["Plus Jakarta Sans"],
+                    "status-pill": ["Inter"],
+                    "display-hero": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "financial-data": ["20px", {"lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "800"}],
+                    "status-pill": ["11px", {"lineHeight": "12px", "fontWeight": "600"}],
+                    "display-hero": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-md-mobile": ["18px", {"lineHeight": "24px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #f8f9ff;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .balance-card-gradient {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        /* Entrance Animations */
+        .reveal-section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes revealUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        /* Withdraw Button Shimmer & Pulse */
+        .withdraw-btn {
+            position: relative;
+            overflow: hidden;
+            animation: buttonPulse 3s ease-in-out infinite;
+        }
+        .withdraw-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to bottom right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+            transform: rotate(45deg);
+            animation: shimmer 4s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-150%) rotate(45deg); }
+            100% { transform: translateX(150%) rotate(45deg); }
+        }
+        @keyframes buttonPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(99, 14, 212, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(99, 14, 212, 0); }
+        }
+
+        /* Micro-interactions */
+        .shake-gentle {
+            animation: shake 5s ease-in-out infinite;
+        }
+        @keyframes shake {
+            0%, 90%, 100% { transform: rotate(0); }
+            92% { transform: rotate(10deg); }
+            94% { transform: rotate(-10deg); }
+            96% { transform: rotate(5deg); }
+            98% { transform: rotate(-5deg); }
+        }
+
+        .growth-slide-up {
+            opacity: 0;
+            transform: translateY(10px);
+            animation: slideUpFade 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.8s forwards;
+        }
+        @keyframes slideUpFade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tab Bar Pulse */
+        .active-tab-indicator {
+            position: relative;
+        }
+        .active-tab-indicator::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: currentColor;
+            border-radius: 50%;
+            animation: dotPulse 2s infinite;
+        }
+        @keyframes dotPulse {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) scale(3); opacity: 0; }
+        }
+
+        /* Press Feedback */
+        .press-scale {
+            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .press-scale:active {
+            transform: scale(0.96);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-section, .withdraw-btn, .shake-gentle, .growth-slide-up, .active-tab-indicator::before, .balance-card-gradient {
+                animation: none !important;
+                transition: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+        }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md flex justify-between items-center px-container-padding h-16">
+<div class="flex items-center gap-stack-gap-sm">
+<span class="font-display-hero text-headline-md text-primary">ViralCut</span>
+</div>
+<div class="flex items-center gap-stack-gap-md">
+<div class="bg-surface-container-low text-primary px-3 py-1 rounded-full font-financial-data text-body-md border border-outline-variant/30 transition-transform active:scale-95 duration-150">
+                ₹12,450
+            </div>
+<div class="w-8 h-8 rounded-full overflow-hidden border-2 border-primary">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a stylish young digital creator with a warm smile, set against a clean, minimalist studio background with soft purple ambient lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXAE97zv50Iyg-SyhHopHQeAYj5_gGQrJKb2pgbGCRJiG1rOnpUI9cGUamfQjPq8borWkxxOZc_bwUDwMWueWJqXLhl2g8vh15BOBhW9kAbH2cazZflvjuLMa2j-TdpmUXbQejqkP_h0zXb-LljOhgsTGT-xmW25Zwj9CUR1DDXvpwTnIq0WYsGCFiuG1Ws53p3zkox_pBxb5lqB4Y7q7PeSFbds5YvQqV8e8RgyqBJh6NVzgg3bKbY6BoCwp6yUGVDATcfP2di924"/>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-32 px-container-padding max-w-md mx-auto">
+<!-- Section: Title -->
+<section class="mb-stack-gap-lg reveal-section">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Wallet</h1>
+</section>
+<!-- Balance Card -->
+<section class="mb-stack-gap-lg reveal-section delay-1">
+<div class="balance-card-gradient rounded-xl p-6 text-white shadow-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl -mr-16 -mt-16"></div>
+<div class="relative z-10">
+<div class="mb-stack-gap-md">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim uppercase">Available Balance</span>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-lg font-financial-data text-white scale-0 transition-transform duration-700 ease-out" id="main-balance" style="transform: scale(1);">₹35,170</span>
+<span class="material-symbols-outlined text-money-green text-[18px] growth-slide-up">trending_up</span>
+</div>
+</div>
+<div class="flex justify-between items-end border-t border-white/10 pt-4 mt-4">
+<div>
+<span class="font-label-caps text-label-caps text-white/60 block mb-1">Pending Clearance</span>
+<span class="font-financial-data text-body-lg text-white">₹5,220</span>
+</div>
+<button class="withdraw-btn press-scale bg-primary text-white font-label-caps py-2 px-6 rounded-full">
+                            WITHDRAW
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- KYC Banner -->
+<section class="mb-stack-gap-lg reveal-section delay-2">
+<div class="press-scale bg-urgency-orange/10 border border-urgency-orange/20 rounded-xl p-4 flex items-center gap-3 cursor-pointer">
+<div class="bg-urgency-orange text-white p-2 rounded-lg">
+<span class="material-symbols-outlined text-[20px] shake-gentle">warning</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface font-semibold">Verify email + payout method to withdraw</p>
+<p class="text-[12px] text-on-surface-variant">Estimated verification time: 24-48 hours</p>
+</div>
+<span class="material-symbols-outlined text-urgency-orange ml-auto">chevron_right</span>
+</div>
+</section>
+<!-- Earnings Overview -->
+<section class="mb-section-margin reveal-section delay-3">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-gap-md">Earnings overview</h2>
+<div class="grid grid-cols-2 gap-stack-gap-md">
+<div class="bg-surface-container-lowest border border-silver-clipper p-4 rounded-xl">
+<span class="font-label-caps text-label-caps text-outline block mb-2">LAST 30 DAYS</span>
+<span class="font-financial-data text-headline-md text-on-surface">₹14,500</span>
+<div class="mt-2 flex items-center text-money-green text-[12px] font-bold">
+<span class="material-symbols-outlined text-[14px] mr-1">arrow_upward</span>
+                        12% vs last month
+                    </div>
+</div>
+<div class="bg-surface-container-lowest border border-silver-clipper p-4 rounded-xl">
+<span class="font-label-caps text-label-caps text-outline block mb-2">LIFETIME</span>
+<span class="font-financial-data text-headline-md text-on-surface">₹2.4L</span>
+<div class="mt-2 text-on-surface-variant text-[12px]">
+                        Since Oct 2023
+                    </div>
+</div>
+</div>
+</section>
+<!-- Transaction History -->
+<section class="mb-section-margin reveal-section delay-4">
+<div class="flex justify-between items-center mb-stack-gap-md">
+<h2 class="font-headline-md text-headline-md text-on-surface">Transactions</h2>
+<button class="text-primary font-label-caps text-label-caps press-scale">VIEW ALL</button>
+</div>
+<div class="flex flex-col gap-stack-gap-sm">
+<!-- Transaction 1 -->
+<div class="flex items-center gap-stack-gap-md p-4 bg-white border border-silver-clipper rounded-xl hover:bg-surface-container-low active:bg-surface-container-high transition-colors press-scale cursor-pointer group">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-high flex items-center justify-center border border-outline-variant/20">
+<img alt="CRED" class="w-8 h-8 object-contain" data-alt="CRED logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDa-oyWHJJTKY7TK3lqAICNjnWZU98C0skc4pJovqsCJF_l9HDQmgbfhJcmdRmAymMQqXT6DlN-o7edRDA6uX47IycWp6g5TpM6bBawbAm2DEA6gXEvO01pXCcYKzlOlgj9fo5nyiDUubLHidQHzqo6tzoW5kg_UIFgwuianlRu8O-FF_O4TBoqmXg7ElgfLHHkObc8j2eM03AMUxfBMLNH2QVTts9ERWcR7wpgfRh9jN52MtVvYfSnnhzMaA77rSCDa0FxGQDgHc8-"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-body-lg font-bold text-on-surface">CRED Payback</h4>
+<p class="text-[12px] text-on-surface-variant">Campaign: Credit Freedom</p>
+</div>
+<div class="text-right">
+<span class="font-financial-data text-body-lg text-money-green">+₹4,500</span>
+<p class="text-[10px] text-on-surface-variant uppercase">TODAY</p>
+</div>
+</div>
+<!-- Transaction 2 -->
+<div class="flex items-center gap-stack-gap-md p-4 bg-white border border-silver-clipper rounded-xl hover:bg-surface-container-low active:bg-surface-container-high transition-colors press-scale cursor-pointer group">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-container-high flex items-center justify-center border border-outline-variant/20">
+<img alt="boAt" class="w-8 h-8 object-contain" data-alt="boAt logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9Ubbgidgaxl0BpcshDMWMxXzQhVCYo0wYpCcVneCiXQVxAjoqdqiX_7U1Jsfap-OWHtijnCwp6xuHtIv2KkRUM4ogMeaRXud6EaLr7bvF6e9FrM4ChmzPxHzSSv1js0u5pjO3nGhjY0WUKc5TkTLrFKu9B9jAaCxC38JCQwalIq8AfU-k2NtJOev5wiHl8RpdNFGUvMdrFa8RKgI4WmuTquxhxw2geq2ojiNwbNfO9vIxjrpny21OOwWY4F_2GbzsXfupYfg4To7e"/>
+</div>
+<div class="flex-grow">
+<h4 class="font-body-lg font-bold text-on-surface">boAt Lifestyle</h4>
+<p class="text-[12px] text-on-surface-variant">Campaign: Bassheads Unlocked</p>
+</div>
+<div class="text-right">
+<span class="font-financial-data text-body-lg text-money-green">+₹2,200</span>
+<p class="text-[10px] text-on-surface-variant uppercase">YESTERDAY</p>
+</div>
+</div>
+<!-- Transaction 3 -->
+<div class="flex items-center gap-stack-gap-md p-4 bg-white border border-silver-clipper rounded-xl opacity-80 press-scale cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">account_balance_wallet</span>
+</div>
+<div class="flex-grow">
+<h4 class="font-body-lg font-bold text-on-surface">Withdrawal to Bank</h4>
+<p class="text-[12px] text-on-surface-variant">Ending in •••• 9012</p>
+</div>
+<div class="text-right">
+<span class="font-financial-data text-body-lg text-on-surface">-₹12,000</span>
+<p class="text-[10px] text-on-surface-variant uppercase">3 DAYS AGO</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 h-[84px] bg-surface border-t border-silver-clipper shadow-lg flex justify-around items-center px-4 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant press-scale p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-[10px] mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant press-scale p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-label-caps text-[10px] mt-1">Campaigns</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant press-scale p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined">upload_file</span>
+<span class="font-label-caps text-[10px] mt-1">Submissions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary active-tab-indicator press-scale p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-label-caps text-[10px] mt-1">Wallet</span>
+</a>
+</nav>
+<script>
+        // Count up simulation for main balance
+        window.addEventListener('DOMContentLoaded', () => {
+            const balanceEl = document.getElementById('main-balance');
+            const finalVal = 35170;
+            let currentVal = 0;
+            const duration = 1200;
+            const step = Math.floor(finalVal / (duration / 16));
+
+            const timer = setInterval(() => {
+                currentVal += step;
+                if (currentVal >= finalVal) {
+                    currentVal = finalVal;
+                    clearInterval(timer);
+                }
+                balanceEl.textContent = `₹${currentVal.toLocaleString('en-IN')}`;
+            }, 16);
+
+            // Scale effect on load
+            setTimeout(() => {
+                balanceEl.style.transform = 'scale(1)';
+            }, 100);
+        });
+
+        // Navigation simulation
+        const navItems = document.querySelectorAll('nav a');
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                navItems.forEach(i => {
+                    i.classList.remove('text-primary', 'active-tab-indicator');
+                    i.classList.add('text-on-surface-variant');
+                    const icon = i.querySelector('.material-symbols-outlined');
+                    if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+                });
+                item.classList.add('text-primary', 'active-tab-indicator');
+                item.classList.remove('text-on-surface-variant');
+                const activeIcon = item.querySelector('.material-symbols-outlined');
+                if (activeIcon) activeIcon.style.fontVariationSettings = "'FILL' 1";
+            });
+        });
+    </script>
+</body></html>

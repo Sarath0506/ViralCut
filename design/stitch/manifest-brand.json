@@ -1,0 +1,193 @@
+﻿{
+    "screens":  [
+                    {
+                        "id":  "projects/1425801701065968675/screens/4a8545a315864eedb71fd3a0b07059b4",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\01-billing-invoices.html",
+                                      "design\\stitch\\web-brand\\01-billing-invoices.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Billing \u0026 Invoices",
+                        "height":  "2166"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/543430922838448aab258aebc745701a",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\02-settings---brand-profile.html",
+                                      "design\\stitch\\web-brand\\02-settings---brand-profile.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Settings - Brand Profile",
+                        "height":  "2420"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/0f11aa9536884a9fbf6f86ea0246fa88",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\03-brand-login.html",
+                                      "design\\stitch\\web-brand\\03-brand-login.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Brand Login",
+                        "height":  "2048"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/5450488434da4acfaab8ce0adbd3b5f0",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\04-campaign-detail-live.html",
+                                      "design\\stitch\\web-brand\\04-campaign-detail-live.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Campaign Detail (Live)",
+                        "height":  "2462"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/35dabe45bf2b4123943566eea664d26c",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\05-settings---notifications.html",
+                                      "design\\stitch\\web-brand\\05-settings---notifications.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Settings - Notifications",
+                        "height":  "2278"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/55d5d35ecbfe4bc29a8bd7c10d05f2ba",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\06-analytics.html",
+                                      "design\\stitch\\web-brand\\06-analytics.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Analytics",
+                        "height":  "2630"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/658efcde7a2342be8b1b6452598fb630",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\07-settings---team-roles.html",
+                                      "design\\stitch\\web-brand\\07-settings---team-roles.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Settings - Team \u0026 Roles",
+                        "height":  "2048"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/81f91e1ace4948f3b273a925496afbe7",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\08-create-campaign---step-1-basics.html",
+                                      "design\\stitch\\web-brand\\08-create-campaign---step-1-basics.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Create Campaign - Step 1: Basics",
+                        "height":  "2048"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/9f27089919d34dcb9fbc07b36d85347c",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\09-create-campaign---step-2-brief-rules.html",
+                                      "design\\stitch\\web-brand\\09-create-campaign---step-2-brief-rules.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Create Campaign - Step 2: Brief \u0026 Rules",
+                        "height":  "2456"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/ad7d65f0f5714d9195bfcdb3595cc3ff",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\10-submission-review-detail.html",
+                                      "design\\stitch\\web-brand\\10-submission-review-detail.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Submission Review Detail",
+                        "height":  "2048"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/e7a5fcefb1e042d49d90c3006e6fb0e1",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\11-brand-sign-up-request-access.html",
+                                      "design\\stitch\\web-brand\\11-brand-sign-up-request-access.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Brand Sign Up (Request Access)",
+                        "height":  "2256"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/1d93b0fa747e4db28f29f0b2c8a75827",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\12-campaigns-list.html",
+                                      "design\\stitch\\web-brand\\12-campaigns-list.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Campaigns List",
+                        "height":  "2048"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/59f67c186ea04548888ac7342d9c54cd",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\13-brand-dashboard.html",
+                                      "design\\stitch\\web-brand\\13-brand-dashboard.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Brand Dashboard",
+                        "height":  "2354"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/2c3927cc2a7a4396afc0859b16ed0bf2",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\14-create-campaign---step-4-review-publish.html",
+                                      "design\\stitch\\web-brand\\14-create-campaign---step-4-review-publish.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Create Campaign - Step 4: Review \u0026 Publish",
+                        "height":  "2048"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/1f06ce84522c4002868253622ea74071",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\15-submissions-queue.html",
+                                      "design\\stitch\\web-brand\\15-submissions-queue.png"
+                                  ],
+                        "width":  "2560",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Submissions Queue",
+                        "height":  "2054"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/11346949158819240881",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\16-brand_web_stitch_promptsmd.md"
+                                  ],
+                        "width":  "780",
+                        "deviceType":  null,
+                        "title":  "BRAND_WEB_STITCH_PROMPTS.md",
+                        "height":  "1768"
+                    },
+                    {
+                        "id":  "projects/1425801701065968675/screens/a6d2a57e60ec432db499ffad269c6bd9",
+                        "files":  [
+                                      "design\\stitch\\web-brand\\17-create-campaign---step-3-payout-budget.html",
+                                      "design\\stitch\\web-brand\\17-create-campaign---step-3-payout-budget.png"
+                                  ],
+                        "width":  "3080",
+                        "deviceType":  "DESKTOP",
+                        "title":  "Create Campaign - Step 3: Payout \u0026 Budget",
+                        "height":  "2302"
+                    }
+                ],
+    "exportedAt":  "2026-05-30T18:49:55.3505237Z",
+    "source":  "stitch",
+    "projectId":  "1425801701065968675"
+}

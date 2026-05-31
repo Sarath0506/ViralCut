@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#002113",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "outline": "#7b7487",
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#eff4ff",
+                    "on-surface": "#0b1c30",
+                    "secondary": "#006c49",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#ffdbca",
+                    "tertiary-container": "#aa4900",
+                    "secondary-fixed": "#6ffbbe",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-container": "#ffdecf",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#4a4455",
+                    "inverse-surface": "#213145",
+                    "on-secondary-container": "#00714d",
+                    "deep-surface": "#0F172A",
+                    "primary-fixed-dim": "#d2bbff",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#630ed4",
+                    "on-tertiary-fixed": "#341100",
+                    "surface-tint": "#732ee4",
+                    "surface": "#f8f9ff",
+                    "silver-clipper": "#E2E8F0",
+                    "secondary-fixed-dim": "#4edea3",
+                    "secondary-container": "#6cf8bb",
+                    "outline-variant": "#ccc3d8",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed": "#eaddff",
+                    "surface-variant": "#d3e4fe",
+                    "surface-container": "#e5eeff",
+                    "money-green": "#22C55E",
+                    "inverse-primary": "#d2bbff",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#843700",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary": "#ffffff",
+                    "urgency-orange": "#EA580C",
+                    "on-secondary-fixed-variant": "#005236",
+                    "background": "#f8f9ff",
+                    "on-primary-fixed": "#25005a",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-container": "#7c3aed",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#783200",
+                    "danger-red": "#EF4444",
+                    "on-primary-container": "#ede0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "20px",
+                    "unit": "4px",
+                    "stack-gap-md": "16px",
+                    "stack-gap-lg": "24px",
+                    "stack-gap-sm": "8px",
+                    "section-margin": "32px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "financial-data": ["Plus Jakarta Sans"],
+                    "status-pill": ["Inter"],
+                    "display-hero": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "financial-data": ["20px", {"lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "800"}],
+                    "status-pill": ["11px", {"lineHeight": "12px", "fontWeight": "600"}],
+                    "display-hero": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-waterfall {
+            opacity: 0;
+            animation: fadeInUp 0.4s ease-out forwards;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-orange {
+            0% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(234, 88, 12, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(234, 88, 12, 0); }
+        }
+
+        @keyframes pulse-purple {
+            0% { box-shadow: 0 0 0 0 rgba(99, 14, 212, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(99, 14, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 14, 212, 0); }
+        }
+
+        .pulse-orange { animation: pulse-orange 2s infinite; }
+        .pulse-purple { animation: pulse-purple 2s infinite; }
+
+        #tab-indicator {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-waterfall, .animate-float, .pulse-orange, .pulse-purple {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+            #tab-indicator {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen pb-32 overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-md bg-surface/80 flex justify-between items-center px-container-padding h-16 w-full animate-waterfall" style="animation-delay: 0ms;">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+<h1 class="font-display-hero text-headline-md text-primary">ViralCut</h1>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-low border border-silver-clipper">
+<span class="material-symbols-outlined text-money-green text-[18px]" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-financial-data text-body-md text-on-surface">₹12,450</span>
+</div>
+</header>
+<main class="mt-20 px-container-padding space-y-stack-gap-lg">
+<!-- Page Title & Toggle Tabs -->
+<section class="space-y-stack-gap-md animate-waterfall" style="animation-delay: 50ms;">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg text-headline-lg text-on-background">Submissions</h2>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-surface-container-high text-primary active:scale-95 transition-transform animate-float">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Custom Segmented Control -->
+<div class="relative flex p-1 bg-surface-container-low rounded-xl border border-silver-clipper">
+<div class="absolute top-1 left-1 bottom-1 w-[calc(50%-4px)] bg-white shadow-sm rounded-lg" id="tab-indicator"></div>
+<button class="relative flex-1 py-2 text-center rounded-lg font-label-caps text-label-caps transition-all text-primary z-10 active:scale-95" id="tab-active" onclick="switchTab('active')">
+                Active (3)
+            </button>
+<button class="relative flex-1 py-2 text-center rounded-lg font-label-caps text-label-caps transition-all text-on-surface-variant z-10 active:scale-95" id="tab-completed" onclick="switchTab('completed')">
+                Completed (21)
+            </button>
+</div>
+</section>
+<!-- Active Submissions List -->
+<div class="space-y-stack-gap-sm" id="content-active">
+<!-- Zepto Card -->
+<div class="relative overflow-hidden rounded-xl border border-silver-clipper bg-white p-3 group transition-all hover:border-primary/30 active:scale-95 animate-waterfall" style="animation-delay: 100ms;">
+<div class="flex items-start justify-between mb-2">
+<div class="flex gap-2 items-center">
+<div class="w-8 h-8 rounded-full border border-silver-clipper flex items-center justify-center bg-surface overflow-hidden">
+<img alt="Zepto Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8biZiwlcmIGCXtkP7hJYbs6fT_JgrfwurFJ5mL_UO_-4XnuTi3myEaZH-plkFcf_d_3Y-XwfE_yHO3qy_Ym_BlWN4QmDfhIQ4GwBqX2SNPSLzQ_kmzUgyoZiUJKKFWxPRuUEPGR0bYzWVopiPFaySJhjQo5nM5tZ3FFY7cag6ecW9UEluKEgx4xRJlrHO62q9Pbqo-rt7M1LxZLPKej8L9myHAmC3UNTaYSdi7lPQH_LcGSW6KPJqtAw9pKFIPOOaCMl3ylniNe58"/>
+</div>
+<div>
+<h3 class="font-headline-md text-body-md text-on-background leading-tight">Zepto</h3>
+<p class="font-body-md text-[12px] text-on-surface-variant leading-tight">10-Min Delivery Challenge</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-urgency-orange/10 text-urgency-orange font-status-pill text-[10px] uppercase h-fit pulse-orange">Under Review</span>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-2 border-t border-silver-clipper">
+<div class="flex items-center justify-between col-span-2">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">VIEWS:</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">visibility</span>
+<span class="font-financial-data text-body-md">45.2K</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PAYOUT:</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-money-green">payments</span>
+<span class="font-financial-data text-body-md">₹1,200</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- boAt Card -->
+<div class="relative overflow-hidden rounded-xl border border-silver-clipper bg-white p-3 group transition-all hover:border-primary/30 active:scale-95 animate-waterfall" style="animation-delay: 150ms;">
+<div class="flex items-start justify-between mb-2">
+<div class="flex gap-2 items-center">
+<div class="w-8 h-8 rounded-full border border-silver-clipper flex items-center justify-center bg-surface overflow-hidden">
+<img alt="boAt Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCR5l9uXmatc5efxxOA9O8VXwMZoPCudFfGwJj_99YRyk0IXBWNjlH_auasG-fZb2dDEinmRYfPpRj-CJQHvXyJ131HgXyOJ-KR6nnJXGmbEIXAzl_enKtIq0mweELk1QMNlPLZa2zmvjnKUpxSR1TinY1kv1DKhKaDVMB6-FrJFAumv-y9uS6gMu4tE7XzhvINcfHXA3Pc8tl3pAiM6A_i9SS1T-2s3Ml8MJD70rjTHXyGgLUatL8gfB2ow-V7iotNqYvv_ZtG6rhi"/>
+</div>
+<div>
+<h3 class="font-headline-md text-body-md text-on-background leading-tight">boAt</h3>
+<p class="font-body-md text-[12px] text-on-surface-variant leading-tight">Immortal Gaming Audio</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-status-pill text-[10px] uppercase h-fit pulse-purple">In Review</span>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-2 border-t border-silver-clipper">
+<div class="flex items-center justify-between col-span-2">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">VIEWS:</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">visibility</span>
+<span class="font-financial-data text-body-md">12.8K</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PAYOUT:</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-money-green">payments</span>
+<span class="font-financial-data text-body-md">₹850</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Myntra Card -->
+<div class="relative overflow-hidden rounded-xl border border-silver-clipper bg-white p-3 group transition-all hover:border-primary/30 active:scale-95 animate-waterfall" style="animation-delay: 200ms;">
+<div class="flex items-start justify-between mb-2">
+<div class="flex gap-2 items-center">
+<div class="w-8 h-8 rounded-full border border-silver-clipper flex items-center justify-center bg-surface overflow-hidden">
+<img alt="Myntra Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAz_ealsJVZAU_XqZJYNrH5Rh0INYn23MJy_1vqYqMHybtriT7ryVamZae8_28iYwe_AFjk_lSC65v1JVwZFv-WdYMCqJOf_doAWBQ10ktJQRCOj2hiLRDHoaO6OvkHFBtzshB1QUh1ncWLRPFExMzhITyorhPtozQJVLXrvlrI3Ve6CMIclXDu0ljKdpZkqynn2VUU6c5zpOWgHaVm-LSO1YwEbCnzIMFBVjdP3zEIZchTzJX8X2RzEYRbuk-SFeVPhJAjK47Aoyd2"/>
+</div>
+<div>
+<h3 class="font-headline-md text-body-md text-on-background leading-tight">Myntra</h3>
+<p class="font-body-md text-[12px] text-on-surface-variant leading-tight">End of Reason Sale</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-low text-on-surface-variant font-status-pill text-[10px] uppercase h-fit">Pending Review</span>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-2 border-t border-silver-clipper">
+<div class="flex items-center justify-between col-span-2">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">VIEWS:</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">visibility</span>
+<span class="font-financial-data text-body-md">8.1K</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PAYOUT:</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-money-green">payments</span>
+<span class="font-financial-data text-body-md">₹450</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Completed Submissions List (Hidden by default) -->
+<div class="hidden space-y-stack-gap-sm" id="content-completed">
+<!-- CRED Card -->
+<div class="relative overflow-hidden rounded-xl border border-silver-clipper bg-white flex justify-between items-center p-3 active:scale-95 transition-transform">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-deep-surface flex items-center justify-center overflow-hidden">
+<img alt="CRED Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7Ua4ri08VgHDbBiHCX2Rgr6X-8afSPn-gQjjAL6XzJGCorbyqQenFzEsShDWoWXx0iqJqXeC1mzc-e0713PDmxq9p4ADkdCiI5RDaibA2HzWj-HRzoi534B84b--dq6xFR2Z3mSbGNUKhel1tpJnSHjXr1Euupf2AVhQs2VOCC69lTDr_Qof8fTVGMTKKNP7i3ysih6y1nAoNQ5IaqbuJ-2j090618JcxQJ70NCbRAoO3u-aZmeUmvSR009rABAHqMUhmZa8cc3Eh"/>
+</div>
+<div>
+<h3 class="font-headline-md text-body-md text-on-background">CRED</h3>
+<p class="font-body-md text-[12px] text-on-surface-variant">Pay Rent Rewards</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-financial-data text-money-green text-body-lg">+₹2,450</span>
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Credited</p>
+</div>
+</div>
+<!-- Noise Card -->
+<div class="relative overflow-hidden rounded-xl border border-silver-clipper bg-white flex justify-between items-center p-3 active:scale-95 transition-transform">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img alt="Noise Logo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMJfkfYlBfco6Ajl4G1f7noTkOG9zEH2GBD0apfCPm8NEqG1IvzCExEOEn_t7jfHF77kvD2puLbIfuPOHdhUv9dwi3QM_UIStcwLQyxmOK2p8BNecvKM3dKW0Kkm7wyoPRSAdHIdia9ltxhEyITeiLEUvAm1KkR44JVccvx5pBovLB4B_YQ5S9xZcDZQiXXE8qI9MeBfk9oVnJSIemWHmZ3Dp8pNojN4mVxpvy17GXm9_HpF0BkPVPEUi1EChR9Zu0q3YDhjTWZq_b"/>
+</div>
+<div>
+<h3 class="font-headline-md text-body-md text-on-background">Noise</h3>
+<p class="font-body-md text-[12px] text-on-surface-variant">ColorFit Icon 2</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-financial-data text-money-green text-body-lg">+₹1,120</span>
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Credited</p>
+</div>
+</div>
+<div class="text-center py-4">
+<p class="font-body-md text-on-surface-variant italic">Showing last 2 of 21 completions</p>
+<button class="mt-4 font-label-caps text-label-caps text-primary uppercase tracking-widest active:scale-95 transition-transform">View History</button>
+</div>
+</div>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 w-full z-50 h-[84px] bg-surface border-t border-silver-clipper shadow-lg flex justify-around items-center px-4 pb-safe w-full">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps uppercase">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-label-caps text-label-caps uppercase">Campaigns</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary relative after:content-[''] after:w-1 after:h-1 after:bg-primary after:rounded-full after:mt-1 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">upload_file</span>
+<span class="font-label-caps text-label-caps uppercase">Submissions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-label-caps text-label-caps uppercase">Wallet</span>
+</a>
+</nav>
+<script>
+    function switchTab(type) {
+        const activeTab = document.getElementById('tab-active');
+        const completedTab = document.getElementById('tab-completed');
+        const activeContent = document.getElementById('content-active');
+        const completedContent = document.getElementById('content-completed');
+        const indicator = document.getElementById('tab-indicator');
+
+        if (type === 'active') {
+            indicator.style.transform = 'translateX(0)';
+            activeTab.classList.add('text-primary');
+            activeTab.classList.remove('text-on-surface-variant');
+            completedTab.classList.remove('text-primary');
+            completedTab.classList.add('text-on-surface-variant');
+            
+            activeContent.classList.remove('hidden');
+            completedContent.classList.add('hidden');
+        } else {
+            indicator.style.transform = 'translateX(100%)';
+            completedTab.classList.add('text-primary');
+            completedTab.classList.remove('text-on-surface-variant');
+            activeTab.classList.remove('text-primary');
+            activeTab.classList.add('text-on-surface-variant');
+
+            completedContent.classList.remove('hidden');
+            activeContent.classList.add('hidden');
+            
+            // Re-trigger waterfall for the newly shown list
+            const completedItems = completedContent.children;
+            Array.from(completedItems).forEach((item, index) => {
+                item.style.animation = 'none';
+                item.offsetHeight; // trigger reflow
+                item.style.animation = `fadeInUp 0.4s ease-out forwards ${index * 50}ms`;
+                item.classList.add('animate-waterfall');
+            });
+        }
+    }
+</script>
+</body></html>

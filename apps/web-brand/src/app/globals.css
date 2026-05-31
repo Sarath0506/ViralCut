@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@import "../../../../packages/ui-tokens/dist/web.css";
+
+@theme inline {
+  --color-background: var(--vc-background);
+  --color-foreground: var(--vc-on-background);
+  --color-primary: var(--vc-primary);
+  --color-primary-foreground: var(--vc-on-primary);
+  --color-surface: var(--vc-surface);
+  --color-surface-variant: var(--vc-surface-variant);
+  --color-muted: var(--vc-muted);
+  --color-border: var(--vc-border);
+  --color-money: var(--vc-money);
+  --color-money-bright: var(--vc-money-bright);
+  --color-destructive: var(--vc-error);
+  --color-warning: var(--vc-warning);
+  --color-deep: var(--vc-deep-surface);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", var(--font-sans);
+  --radius-lg: 1rem;
+  --radius-xl: 1.25rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+}

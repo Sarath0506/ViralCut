@@ -1,0 +1,13 @@
+.dart_tool/
+.packages
+build/
+*.iml
+.idea/
+.vscode/
+*.lock
+pubspec.lock
+
+# Platform dirs added after `flutter create .` in this folder
+android/.gradle/
+ios/Pods/
+ios/.symlinks/

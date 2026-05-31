@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Campaign Detail | ViralCut</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Include Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#002113",
+                    "surface-container-lowest": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "outline": "#7b7487",
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#eff4ff",
+                    "on-surface": "#0b1c30",
+                    "secondary": "#006c49",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "tertiary-fixed": "#ffdbca",
+                    "tertiary-container": "#aa4900",
+                    "secondary-fixed": "#6ffbbe",
+                    "surface-container-high": "#dce9ff",
+                    "on-primary-fixed-variant": "#5a00c6",
+                    "on-tertiary-container": "#ffdecf",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#4a4455",
+                    "inverse-surface": "#213145",
+                    "on-secondary-container": "#00714d",
+                    "deep-surface": "#0F172A",
+                    "primary-fixed-dim": "#d2bbff",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#630ed4",
+                    "on-tertiary-fixed": "#341100",
+                    "surface-tint": "#732ee4",
+                    "surface": "#f8f9ff",
+                    "silver-clipper": "#E2E8F0",
+                    "secondary-fixed-dim": "#4edea3",
+                    "secondary-container": "#6cf8bb",
+                    "outline-variant": "#ccc3d8",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed": "#eaddff",
+                    "surface-variant": "#d3e4fe",
+                    "surface-container": "#e5eeff",
+                    "money-green": "#22C55E",
+                    "inverse-primary": "#d2bbff",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#843700",
+                    "tertiary-fixed-dim": "#ffb690",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary": "#ffffff",
+                    "urgency-orange": "#EA580C",
+                    "on-secondary-fixed-variant": "#005236",
+                    "background": "#f8f9ff",
+                    "on-primary-fixed": "#25005a",
+                    "surface-container-highest": "#d3e4fe",
+                    "primary-container": "#7c3aed",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#783200",
+                    "danger-red": "#EF4444",
+                    "on-primary-container": "#ede0ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "20px",
+                    "unit": "4px",
+                    "stack-gap-md": "16px",
+                    "stack-gap-lg": "24px",
+                    "stack-gap-sm": "8px",
+                    "section-margin": "32px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-lg": ["Plus Jakarta Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "financial-data": ["Plus Jakarta Sans"],
+                    "status-pill": ["Inter"],
+                    "display-hero": ["Plus Jakarta Sans"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "financial-data": ["20px", {"lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "800"}],
+                    "status-pill": ["11px", {"lineHeight": "12px", "fontWeight": "600"}],
+                    "display-hero": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9ff; -webkit-tap-highlight-color: transparent; }
+        .glass-panel { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.8); }
+        .tier-card-gradient { background: linear-gradient(135deg, #E2E8F0 0%, #F8FAFC 100%); }
+        .custom-dashed { border: 2px dashed #ccc3d8; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Motion & Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes pulse-gentle {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .animate-fade-up { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .animate-scale-in { animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .animate-pulse-icon { animation: pulse-gentle 2s ease-in-out infinite; }
+        
+        .shimmer-btn {
+            background: linear-gradient(90deg, #630ed4 0%, #7c3aed 45%, #a855f7 50%, #7c3aed 55%, #630ed4 100%);
+            background-size: 200% 100%;
+            animation: shimmer 4s infinite linear;
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        .stagger-5 { animation-delay: 0.5s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .animate-fade-up, .animate-scale-in, .animate-pulse-icon, .shimmer-btn {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+        
+        body { min-height: max(884px, 100dvh); }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 glass-panel h-16 flex items-center px-container-padding justify-between">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-all active:scale-90 duration-150" onclick="history.back()">
+<span class="material-symbols-outlined text-primary">arrow_back</span>
+</button>
+<span class="font-headline-md text-headline-md text-on-surface">Campaign Detail</span>
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors active:scale-90">
+<span class="material-symbols-outlined text-on-surface-variant">share</span>
+</button>
+</header>
+<main class="pt-20 pb-32 px-container-padding max-w-2xl mx-auto">
+<!-- Hero Campaign Card -->
+<div class="animate-fade-up stagger-1 relative overflow-hidden rounded-xl bg-surface-container-lowest border border-silver-clipper p-stack-gap-md mb-section-margin shadow-sm">
+<div class="flex justify-between items-start mb-stack-gap-md">
+<div class="flex items-center gap-stack-gap-sm">
+<img alt="boAt Logo" class="w-10 h-10 rounded-full object-cover bg-on-background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOjrEDGYfRdb_WzhrmiRZHZa7ycRiFzeo2rwKsMsjcs9yacVcmjkgRtWUFH0eNQe8y9WlqlzqWaD9MFREerriU1XEDlWTggeIv4aggmQ0SUiLKYzdFwBhrG3Tvmzwf1sUKq5VN6dBa7_fXsziBsGMH7NWgnFQNkQQmTfnowAqB9ET3XaC7PzrRA4PhGVE-w-F365uKQd5BolicaQAU-jhSsQ7B01qbQsiIZrngPWd0XbtsTP2aQ_GyoSJREGJmJJ60GAWRuKp-46wB"/>
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface">boAt</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Instagram Reels</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="animate-scale-in stagger-3 bg-urgency-orange text-white px-3 py-1 rounded-full font-status-pill text-status-pill">2 days left</div>
+<div class="animate-scale-in stagger-4 bg-primary/10 text-primary px-3 py-1 rounded-full font-status-pill text-status-pill">Trending</div>
+</div>
+</div>
+<div class="mb-stack-gap-md">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">REWARD RATE</p>
+<p class="font-financial-data text-financial-data text-money-green">₹50 <span class="font-body-md text-body-md text-on-surface-variant">per 1K views</span></p>
+</div>
+<!-- Stats Bar -->
+<div class="grid grid-cols-2 gap-stack-gap-sm p-stack-gap-sm bg-surface-container-low rounded-lg mb-stack-gap-md">
+<div class="text-center border-r border-outline-variant">
+<p class="font-label-caps text-label-caps text-on-surface-variant">MAX PAYOUT</p>
+<p class="font-financial-data text-financial-data text-on-surface">₹50,000</p>
+</div>
+<div class="text-center">
+<p class="font-label-caps text-label-caps text-on-surface-variant">POOL USED</p>
+<p class="font-financial-data text-financial-data text-on-surface">82%</p>
+</div>
+</div>
+<!-- Campaign Progress Bar -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CAMPAIGN POOL</span>
+<span class="font-label-caps text-label-caps text-money-green">₹1,80,000 REMAINING</span>
+</div>
+<div class="h-2 w-full bg-outline-variant rounded-full overflow-hidden">
+<div class="h-full bg-money-green transition-all duration-1000 ease-out" id="pool-progress" style="width: 0%"></div>
+</div>
+</div>
+</div>
+<!-- Brief Section -->
+<section class="animate-fade-up stagger-2 mb-section-margin">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-gap-sm">Campaign Brief</h2>
+<div class="bg-white rounded-xl p-stack-gap-md border border-silver-clipper">
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    Unleash the sound of the future with the <span class="font-bold text-on-surface">boAt Airdopes 800</span>. Create an engaging Instagram Reel showcasing the cinematic sound quality and sleek design of our latest earbuds. Focus on the AI-ENx technology and 40-hour playback features.
+                </p>
+<div class="mt-stack-gap-md flex items-center gap-2 text-primary cursor-pointer active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined text-[20px]">link</span>
+<span class="font-label-caps text-label-caps">VIEW PRODUCT DETAILS</span>
+</div>
+</div>
+</section>
+<!-- How you earn -->
+<section class="animate-fade-up stagger-3 mb-section-margin">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-gap-sm">How you earn</h2>
+<div class="tier-card-gradient rounded-xl p-stack-gap-md border border-silver-clipper shadow-sm">
+<div class="flex items-center gap-3 mb-stack-gap-md">
+<span class="material-symbols-outlined text-primary" data-weight="fill">verified_user</span>
+<span class="font-label-caps text-label-caps text-on-primary-fixed-variant">ACTIVE FOR SILVER CLIPPER TIER</span>
+</div>
+<div class="space-y-stack-gap-md">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface">Your Slot Availability</span>
+<span class="font-label-caps text-label-caps text-primary">18% LEFT</span>
+</div>
+<div class="h-3 w-full bg-white/50 rounded-full overflow-hidden border border-silver-clipper">
+<div class="h-full bg-primary transition-all duration-1000 ease-out" id="slot-progress" style="width: 0%"></div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant italic">
+                        *Earning potential is based on organic reach. Only videos above 10K views qualify for the bonus multiplier.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Submission Zone -->
+<section class="animate-fade-up stagger-4 mb-section-margin">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-gap-sm">Deliverables</h2>
+<div class="custom-dashed rounded-xl p-8 flex flex-col items-center justify-center text-center bg-surface-container-lowest active:bg-surface-container transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-outline text-4xl mb-stack-gap-sm animate-pulse-icon group-active:scale-90 transition-transform">upload_file</span>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Post your Reel then paste the link here</p>
+<p class="font-label-caps text-label-caps text-outline mt-2">LINK VIDEO • CONFIRM DETAILS</p>
+</div>
+</section>
+<!-- Image Gallery/Inspiration -->
+<section class="animate-fade-up stagger-5 mb-stack-gap-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-gap-sm">Brand Aesthetics</h2>
+<div class="flex gap-stack-gap-sm overflow-x-auto no-scrollbar pb-2 px-1">
+<img class="w-40 h-56 rounded-lg object-cover flex-shrink-0 transition-transform duration-300 active:scale-105 hover:scale-105 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFdCeSsv8JRLhN1vFIQoYsSx0rV_ClqwKGnbqGDYaTd2NYC3b7oAsSnA5hL-TSC2OqnEZxf1qpxLOrmelkjgmIUNd7D5jQSD5ia7z0aGO1Hztdr8_ADYVcFCqUpHAgzRpvC6mu-Vv7fVW8t8Vo561CK366kK0_6P9vrNS2v_qMhkAq5QtcXLa4hl50I4UC7xVpU7gO53U1FH6kgd21ysf67VsZm9rPBfp8DQjCRL8z3YIWMYWL-M3ipqvBG8VuqbQ6igz-6MpaW1XK"/>
+<img class="w-40 h-56 rounded-lg object-cover flex-shrink-0 transition-transform duration-300 active:scale-105 hover:scale-105 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9fT9DroxSKzaqHituXR1c7VNf38BmREBmwi3WY_A7RAUfoPqwv4MiDip7AznV9aAjOX3cizwYkrVDCcJpVks_1R2NSSgkIRFq1sTx3IFnJwhUrTrLgBdE5y2HVWPE5ubWzxqDcsX0gjm1KJq15PxD0LAYS4p6Aeps2faaPjOnp4p2xfQaOnQHUFasVI_H1mE2ZTrBnVANcgP2xDQX5ogyBPcUUkLODs-brEX-OA40Jxf3Ju5VWAE9bd3h7gfnUmAjWqPZfK_fpmEy"/>
+<img class="w-40 h-56 rounded-lg object-cover flex-shrink-0 transition-transform duration-300 active:scale-105 hover:scale-105 shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqWXe5Y7UDcGRaLxQl6OKoxsF4MaPznekaOD5paqCpeaFWClpppxl4JI8WiMA03Gi0Z4meimFeLtja8EOtD2eXF1LsQTO35oMKXJNv35rPH2IaWN2whZBeA_fg2w6CZmetK2QLj9cTifz9d-xTAwtj0OIr-QUQtgfpNJqoi-vxTkEo99QqnrQGsZ9Q-hHCpYne8UukpDC8tGtuXMJXsD4NZCnan3KdbzknVoG6rVed8p1xtkP4dawAxFNkcHiCSizeDt1tzt9dn6eF"/>
+</div>
+</section>
+</main>
+<!-- Fixed Bottom CTA -->
+<div class="fixed bottom-0 w-full p-container-padding glass-panel border-t border-silver-clipper z-50">
+<button class="shimmer-btn w-full h-14 text-on-primary rounded-full font-headline-md text-headline-md flex items-center justify-center gap-2 shadow-lg active:scale-95 transition-all duration-150">
+<span>Join Campaign</span>
+<span class="material-symbols-outlined">bolt</span>
+</button>
+</div>
+<script>
+        window.addEventListener('DOMContentLoaded', () => {
+            // Respect accessibility settings
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            
+            if (!prefersReducedMotion) {
+                // Animate progress bars after content appears
+                setTimeout(() => {
+                    const poolBar = document.getElementById('pool-progress');
+                    const slotBar = document.getElementById('slot-progress');
+                    
+                    if(poolBar) poolBar.style.width = '82%';
+                    if(slotBar) slotBar.style.width = '18%';
+                }, 600);
+            } else {
+                // Instantly set values if motion is reduced
+                const poolBar = document.getElementById('pool-progress');
+                const slotBar = document.getElementById('slot-progress');
+                if(poolBar) poolBar.style.width = '82%';
+                if(slotBar) slotBar.style.width = '18%';
+            }
+        });
+    </script>
+</body></html>

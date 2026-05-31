@@ -1,0 +1,40 @@
+# Environment & secrets (never commit)
+.env
+.env.local
+.env.*.local
+*.pem
+credentials.json
+
+# Node / monorepo build artifacts
+node_modules/
+dist/
+.turbo/
+*.tsbuildinfo
+packages/ui-tokens/dist/
+
+# Next.js
+.next/
+apps/web-brand/.env.local
+
+# Prisma client is generated; migrations ARE committed for production deploy
+# (do not ignore services/api/prisma/migrations/)
+
+# Flutter / Dart
+.dart_tool/
+.packages
+build/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+
+# IDE & OS
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Logs, temp, coverage
+*.log
+tmp/
+temp/
+coverage/

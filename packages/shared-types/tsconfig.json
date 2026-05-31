@@ -1,0 +1,9 @@
+{
+  "extends": "@viralcut/config/typescript",
+  "compilerOptions": {
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
+  },
+  "include": ["src/**/*"]
+}
