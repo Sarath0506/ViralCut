@@ -1,13 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AuthPasswordField } from "@/components/auth/auth-password-field";
+import { AuthPrimaryButton } from "@/components/auth/auth-primary-button";
+import {
+  authFooterLinkClass,
+  authFormClass,
+  authMutedFooterClass,
+  authPrimaryButtonClass,
+} from "@/components/auth/auth-styles";
+import { cn } from "@/lib/utils";
+import {
+  AuthMobileBrandMark,
+  AuthPageHeader,
+  AuthSplitLayout,
+  AuthTrustBadges,
+} from "@/components/layout/auth-split-layout";
 import { authApi, ApiError } from "@/lib/api";
 import { useToast } from "@/components/ui/toaster";
 
@@ -47,76 +59,100 @@ function ResetPasswordForm() {
 
   if (!token) {
     return (
-      <Card>
-        <CardTitle className="mb-1">Invalid reset link</CardTitle>
-        <p className="mb-6 text-sm text-muted">
-          Request a new link from the forgot password page.
-        </p>
+      <>
+        <AuthMobileBrandMark />
+
+        <AuthPageHeader
+          title="Invalid reset link"
+          description="This link may have expired. Request a new password reset email."
+        />
+
         <Link
           href="/forgot-password"
-          className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground hover:opacity-90"
+          className={cn(
+            authPrimaryButtonClass,
+            "inline-flex items-center justify-center bg-primary text-primary-foreground hover:opacity-90",
+          )}
         >
           Request reset link
         </Link>
-      </Card>
+
+        <p className={authMutedFooterClass}>
+          <Link
+            href="/login"
+            className={`inline-flex items-center justify-center gap-1.5 ${authFooterLinkClass}`}
+          >
+            <ArrowLeft className="size-4" aria-hidden />
+            Back to sign in
+          </Link>
+        </p>
+      </>
     );
   }
 
   return (
-    <Card>
-      <CardTitle className="mb-1">Set new password</CardTitle>
-      <p className="mb-6 text-sm text-muted">
-        Choose a new password for your brand account.
-      </p>
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="password">New password</Label>
-          <Input
-            id="password"
-            type="password"
-            autoComplete="new-password"
-            minLength={8}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirm">Confirm password</Label>
-          <Input
-            id="confirm"
-            type="password"
-            autoComplete="new-password"
-            minLength={8}
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-            required
-          />
-        </div>
-        <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Saving…" : "Update password"}
-        </Button>
+    <>
+      <AuthMobileBrandMark />
+
+      <AuthPageHeader
+        title="Set new password"
+        description="Choose a new password for your brand account."
+      />
+
+      <form onSubmit={onSubmit} className={authFormClass}>
+        <AuthPasswordField
+          id="password"
+          label="New password"
+          autoComplete="new-password"
+          value={password}
+          onChange={setPassword}
+        />
+
+        <AuthPasswordField
+          id="confirm"
+          label="Confirm password"
+          autoComplete="new-password"
+          value={confirm}
+          onChange={setConfirm}
+        />
+
+        <AuthPrimaryButton loading={loading} loadingText="Saving…">
+          Update password
+        </AuthPrimaryButton>
       </form>
-      <p className="mt-4 text-center text-sm">
-        <Link href="/login" className="text-primary hover:underline">
-          Back to login
+
+      <p className={authMutedFooterClass}>
+        <Link
+          href="/login"
+          className={`inline-flex items-center justify-center gap-1.5 ${authFooterLinkClass}`}
+        >
+          <ArrowLeft className="size-4" aria-hidden />
+          Back to sign in
         </Link>
       </p>
-    </Card>
+    </>
+  );
+}
+
+function ResetPasswordFallback() {
+  return (
+    <>
+      <AuthMobileBrandMark />
+      <AuthPageHeader
+        title="Set new password"
+        description="Loading your reset link…"
+      />
+      <p className="text-sm text-muted">Please wait.</p>
+    </>
   );
 }
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense
-      fallback={
-        <Card>
-          <CardTitle className="mb-1">Set new password</CardTitle>
-          <p className="text-sm text-muted">Loading…</p>
-        </Card>
-      }
-    >
-      <ResetPasswordForm />
-    </Suspense>
+    <AuthSplitLayout heroVariant="login" footer={<AuthTrustBadges />}>
+      <Suspense fallback={<ResetPasswordFallback />}>
+        <ResetPasswordForm />
+      </Suspense>
+    </AuthSplitLayout>
   );
 }

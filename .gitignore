@@ -38,3 +38,9 @@ Thumbs.db
 tmp/
 temp/
 coverage/
+
+# Cursor IDE (local / team-specific)
+.cursor/
+.stitch/
+# Stitch design exports (optional — keep locally only)
+design/stitch/

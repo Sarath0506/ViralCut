@@ -1,12 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowLeft, Mail } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AuthPrimaryButton } from "@/components/auth/auth-primary-button";
+import {
+  authFooterLinkClass,
+  authFormClass,
+  authMutedFooterClass,
+} from "@/components/auth/auth-styles";
+import { AuthTextField } from "@/components/auth/auth-text-field";
+import {
+  AuthMobileBrandMark,
+  AuthPageHeader,
+  AuthSplitLayout,
+  AuthTrustBadges,
+} from "@/components/layout/auth-split-layout";
 import { authApi, ApiError } from "@/lib/api";
 import { useToast } from "@/components/ui/toaster";
 
@@ -32,31 +42,45 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <Card>
-      <CardTitle className="mb-1">Forgot password</CardTitle>
-      <p className="mb-6 text-sm text-muted">
-        Enter your brand account email.
-      </p>
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="email">Work email</Label>
-          <Input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <Button type="submit" className="w-full" disabled={loading}>
+    <AuthSplitLayout heroVariant="login" footer={<AuthTrustBadges />}>
+      <AuthMobileBrandMark />
+
+      <AuthPageHeader
+        title="Forgot password?"
+        description="Enter your brand work email and we'll send a link to reset your password."
+      />
+
+      <form onSubmit={onSubmit} className={authFormClass}>
+        <AuthTextField
+          id="email"
+          label="Work email"
+          icon={Mail}
+          type="email"
+          autoComplete="email"
+          placeholder="name@company.in"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+
+        <AuthPrimaryButton
+          loading={loading}
+          loadingText="Sending…"
+          trailingIcon={<Mail className="size-4" />}
+        >
           Send reset link
-        </Button>
+        </AuthPrimaryButton>
       </form>
-      <p className="mt-4 text-center text-sm">
-        <Link href="/login" className="text-primary hover:underline">
-          Back to login
+
+      <p className={authMutedFooterClass}>
+        <Link
+          href="/login"
+          className={`inline-flex items-center justify-center gap-1.5 ${authFooterLinkClass}`}
+        >
+          <ArrowLeft className="size-4" aria-hidden />
+          Back to sign in
         </Link>
       </p>
-    </Card>
+    </AuthSplitLayout>
   );
 }

@@ -9,6 +9,8 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(16),
   JWT_ACCESS_TTL: z.string().default("15m"),
   JWT_REFRESH_TTL: z.string().default("7d"),
+  /** Password reset link lifetime, e.g. `1h`, `30m` */
+  PASSWORD_RESET_TTL: z.string().default("1h"),
   REDIS_URL: z.string().optional(),
   CORS_ORIGINS: z.string().default("http://localhost:3000"),
   BRAND_WEB_URL: z.string().url().default("http://localhost:3000"),
@@ -24,6 +26,11 @@ const envSchema = z.object({
   EMAIL_FROM: z.string().optional(),
   OTP_TTL_SECONDS: z.coerce.number().default(300),
   OTP_MAX_ATTEMPTS: z.coerce.number().default(5),
+  /** When true, log OTP codes in API console (use with NODE_ENV=development). */
+  OTP_DEV_LOG: z
+    .string()
+    .optional()
+    .transform((v) => v === "true" || v === "1"),
 });
 
 export type Env = z.infer<typeof envSchema>;

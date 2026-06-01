@@ -17,9 +17,16 @@ export class WhatsappService {
     );
   }
 
+  private shouldLogOtpInConsole(): boolean {
+    return (
+      this.config.get("NODE_ENV") !== "production" ||
+      this.config.get("OTP_DEV_LOG") === true
+    );
+  }
+
   async sendOtp(phone: string, code: string): Promise<void> {
     if (!this.isConfigured()) {
-      if (this.config.get("NODE_ENV") !== "production") {
+      if (this.shouldLogOtpInConsole()) {
         this.logger.warn(
           `WhatsApp not configured — OTP for ${phone}: ${code}`,
         );

@@ -25,8 +25,40 @@
   * {
     @apply border-border;
   }
+  html {
+    height: 100%;
+  }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply min-h-full bg-background text-foreground antialiased;
     font-family: var(--font-sans);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes toast-enter {
+    from {
+      opacity: 0;
+      transform: translateX(0.75rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@layer utilities {
+  .brand-login-gradient {
+    background-color: #4800a0;
+    background-image:
+      radial-gradient(at 0% 0%, hsl(263 88% 45%) 0, transparent 50%),
+      radial-gradient(at 50% 0%, hsl(272 81% 57%) 0, transparent 50%),
+      radial-gradient(at 100% 0%, hsl(220 78% 32%) 0, transparent 50%);
+  }
+
+  .brand-login-glass {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(226, 232, 240, 0.5);
   }
 }

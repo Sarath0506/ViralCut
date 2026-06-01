@@ -6,17 +6,16 @@ import {
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
-import { UserRole } from "@prisma/client";
+import { User, UserRole } from "@prisma/client";
 import * as bcrypt from "bcryptjs";
 import { randomBytes } from "node:crypto";
 
+import { parseDurationMs } from "../common/parse-duration";
 import type { Env } from "../config/env";
 import { PrismaService } from "../prisma/prisma.service";
 import { EmailService } from "../notifications/email.service";
 import type { AuthJwtPayload, AuthTokens } from "./auth.types";
 import { hashRefreshToken, OtpService } from "./otp.service";
-
-const PASSWORD_RESET_TTL_MS = 60 * 60 * 1000;
 import type { BrandLoginDto, BrandRegisterDto } from "./dto/brand-auth.dto";
 import type { CreatorOtpVerifyDto } from "./dto/creator-auth.dto";
 
@@ -31,24 +30,21 @@ export class AuthService {
   ) {}
 
   async registerBrand(dto: BrandRegisterDto) {
-    const existing = await this.prisma.user.findUnique({
-      where: { email: dto.email.toLowerCase() },
-    });
+    const email = dto.email.toLowerCase();
+    const existing = await this.prisma.user.findUnique({ where: { email } });
     if (existing) {
-      throw new ConflictException({
-        code: "CONFLICT",
-        message: "Email already registered",
-      });
+      throw brandEmailConflict(existing);
     }
 
     const passwordHash = await bcrypt.hash(dto.password, 12);
     const user = await this.prisma.user.create({
       data: {
         role: UserRole.brand,
-        email: dto.email.toLowerCase(),
+        email,
         passwordHash,
-        displayName: dto.displayName ?? dto.companyName,
-        brandProfile: { create: { companyName: dto.companyName } },
+        displayName: dto.displayName?.trim() || dto.companyName,
+        termsAcceptedAt: new Date(),
+        brandProfile: { create: { companyName: dto.companyName.trim() } },
       },
     });
 
@@ -56,22 +52,28 @@ export class AuthService {
   }
 
   async loginBrand(dto: BrandLoginDto) {
-    const user = await this.prisma.user.findUnique({
-      where: { email: dto.email.toLowerCase() },
-    });
-    if (!user?.passwordHash || user.role !== UserRole.brand) {
+    const email = dto.email.toLowerCase();
+    const user = await this.prisma.user.findUnique({ where: { email } });
+
+    if (!user?.passwordHash) {
+      throw invalidBrandCredentials();
+    }
+
+    if (user.role === UserRole.creator) {
       throw new UnauthorizedException({
-        code: "UNAUTHORIZED",
-        message: "Invalid email or password",
+        code: "WRONG_PORTAL",
+        message:
+          "This email is registered as a creator. Use the creator app to sign in.",
       });
+    }
+
+    if (user.role !== UserRole.brand) {
+      throw invalidBrandCredentials();
     }
 
     const ok = await bcrypt.compare(dto.password, user.passwordHash);
     if (!ok) {
-      throw new UnauthorizedException({
-        code: "UNAUTHORIZED",
-        message: "Invalid email or password",
-      });
+      throw invalidBrandCredentials();
     }
 
     return this.issueTokens(user);
@@ -87,6 +89,7 @@ export class AuthService {
 
     const resetToken = randomBytes(32).toString("hex");
     const tokenHash = hashRefreshToken(resetToken);
+    const resetTtlMs = this.passwordResetTtlMs();
 
     await this.prisma.passwordResetToken.updateMany({
       where: { userId: user.id, usedAt: null },
@@ -97,7 +100,7 @@ export class AuthService {
       data: {
         userId: user.id,
         tokenHash,
-        expiresAt: new Date(Date.now() + PASSWORD_RESET_TTL_MS),
+        expiresAt: new Date(Date.now() + resetTtlMs),
       },
     });
 
@@ -174,8 +177,9 @@ export class AuthService {
       });
     } else if (user.role !== UserRole.creator) {
       throw new ConflictException({
-        code: "CONFLICT",
-        message: "Phone registered with another account type",
+        code: "WRONG_PORTAL",
+        message:
+          "This phone number is registered as a brand account. Use the brand portal.",
       });
     } else if (!user.wallet) {
       await this.prisma.wallet.create({ data: { userId: user.id } });
@@ -221,6 +225,12 @@ export class AuthService {
       where: { tokenHash, revokedAt: null },
       data: { revokedAt: new Date() },
     });
+  }
+
+  private passwordResetTtlMs(): number {
+    return parseDurationMs(
+      this.config.get("PASSWORD_RESET_TTL", { infer: true }),
+    );
   }
 
   private async issueTokens(user: {
@@ -272,6 +282,35 @@ export class AuthService {
       },
     };
   }
+}
+
+function brandEmailConflict(existing: User): ConflictException {
+  if (existing.role === UserRole.creator) {
+    return new ConflictException({
+      code: "WRONG_PORTAL",
+      message:
+        "This email is registered as a creator account. Use the creator app or a different email.",
+    });
+  }
+
+  if (existing.role === UserRole.brand) {
+    return new ConflictException({
+      code: "CONFLICT",
+      message: "This email already has a brand account. Sign in instead.",
+    });
+  }
+
+  return new ConflictException({
+    code: "CONFLICT",
+    message: "Email already registered",
+  });
+}
+
+function invalidBrandCredentials(): UnauthorizedException {
+  return new UnauthorizedException({
+    code: "UNAUTHORIZED",
+    message: "Invalid email or password",
+  });
 }
 
 function parseRefreshDays(ttl: string): number {

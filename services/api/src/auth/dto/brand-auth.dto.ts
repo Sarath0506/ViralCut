@@ -1,9 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import {
+  Equals,
+  IsBoolean,
   IsEmail,
+  IsOptional,
   IsString,
-  MinLength,
   MaxLength,
+  MinLength,
 } from "class-validator";
 
 export class BrandRegisterDto {
@@ -24,9 +27,15 @@ export class BrandRegisterDto {
   companyName!: string;
 
   @ApiPropertyOptional()
+  @IsOptional()
   @IsString()
   @MaxLength(80)
   displayName?: string;
+
+  @ApiProperty({ example: true })
+  @IsBoolean()
+  @Equals(true, { message: "You must accept the Terms of Service" })
+  acceptTerms!: boolean;
 }
 
 export class BrandLoginDto {

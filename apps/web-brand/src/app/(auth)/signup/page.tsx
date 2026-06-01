@@ -1,12 +1,23 @@
 "use client";
 
 import Link from "next/link";
+import { Building2, Mail, User } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AuthPasswordField } from "@/components/auth/auth-password-field";
+import { AuthPrimaryButton } from "@/components/auth/auth-primary-button";
+import {
+  authFooterLinkClass,
+  authFormClass,
+  authMutedFooterClass,
+} from "@/components/auth/auth-styles";
+import { AuthTextField } from "@/components/auth/auth-text-field";
+import {
+  AuthMobileBrandMark,
+  AuthPageHeader,
+  AuthSplitLayout,
+  AuthTrustBadges,
+} from "@/components/layout/auth-split-layout";
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
 import { useToast } from "@/components/ui/toaster";
@@ -15,27 +26,48 @@ export default function SignupPage() {
   const { register } = useAuth();
   const { toast } = useToast();
   const [form, setForm] = useState({
-    email: "",
-    password: "",
     companyName: "",
     displayName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  function updateField<K extends keyof typeof form>(
+    key: K,
+    value: (typeof form)[K],
+  ) {
+    setForm((current) => ({ ...current, [key]: value }));
+  }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (form.password !== form.confirmPassword) {
+      toast("Passwords do not match.", "error");
+      return;
+    }
+
+    if (!acceptedTerms) {
+      toast("Please accept the Terms of Service to continue.", "error");
+      return;
+    }
+
     setLoading(true);
     try {
       await register({
         email: form.email,
         password: form.password,
         companyName: form.companyName,
-        displayName: form.displayName || undefined,
+        displayName: form.displayName.trim() || undefined,
+        acceptTerms: true,
       });
       toast("Account created!");
     } catch (err) {
       toast(
-        err instanceof ApiError ? err.message : "Signup failed",
+        err instanceof ApiError ? err.message : "Sign up failed",
         "error",
       );
     } finally {
@@ -44,56 +76,94 @@ export default function SignupPage() {
   }
 
   return (
-    <Card>
-      <CardTitle className="mb-1">Brand sign up</CardTitle>
-      <p className="mb-6 text-sm text-muted">
-        Post campaigns. Pay creators per 1K views.
-      </p>
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="company">Company name</Label>
-          <Input
+    <AuthSplitLayout heroVariant="signup" footer={<AuthTrustBadges />}>
+      <AuthMobileBrandMark />
+
+      <AuthPageHeader
+        title="Sign up"
+        description="Create your brand account to post campaigns and review creator clips."
+      />
+
+      <form onSubmit={onSubmit} className={authFormClass}>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <AuthTextField
             id="company"
+            label="Company name"
+            icon={Building2}
+            autoComplete="organization"
+            placeholder="Your company"
             value={form.companyName}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, companyName: e.target.value }))
-            }
+            onChange={(e) => updateField("companyName", e.target.value)}
             required
           />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Work email</Label>
-          <Input
+
+          <AuthTextField
+            id="displayName"
+            label="Brand display name"
+            icon={User}
+            autoComplete="organization"
+            placeholder="Public brand name"
+            value={form.displayName}
+            onChange={(e) => updateField("displayName", e.target.value)}
+          />
+
+          <AuthTextField
             id="email"
+            label="Work email"
+            icon={Mail}
             type="email"
+            autoComplete="email"
+            placeholder="name@company.in"
             value={form.email}
-            onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+            onChange={(e) => updateField("email", e.target.value)}
+            wrapperClassName="sm:col-span-2"
             required
           />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
+
+          <AuthPasswordField
             id="password"
-            type="password"
-            minLength={8}
+            label="Password"
+            autoComplete="new-password"
             value={form.password}
-            onChange={(e) =>
-              setForm((f) => ({ ...f, password: e.target.value }))
+            onChange={(password) => updateField("password", password)}
+          />
+
+          <AuthPasswordField
+            id="confirmPassword"
+            label="Confirm password"
+            autoComplete="new-password"
+            value={form.confirmPassword}
+            onChange={(confirmPassword) =>
+              updateField("confirmPassword", confirmPassword)
             }
-            required
           />
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Creating…" : "Create account"}
-        </Button>
+
+        <label className="flex cursor-pointer select-none items-start gap-2.5 pt-1">
+          <input
+            type="checkbox"
+            checked={acceptedTerms}
+            onChange={(e) => setAcceptedTerms(e.target.checked)}
+            className="mt-0.5 size-4 shrink-0 rounded border-border text-primary focus:ring-primary"
+          />
+          <span className="text-sm leading-snug text-muted">
+            I agree to the{" "}
+            <span className="font-semibold text-primary">Terms of Service</span>{" "}
+            and Brand Guidelines.
+          </span>
+        </label>
+
+        <AuthPrimaryButton loading={loading} loadingText="Creating account…">
+          Create account
+        </AuthPrimaryButton>
       </form>
-      <p className="mt-4 text-center text-sm text-muted">
-        Already have an account?{" "}
-        <Link href="/login" className="font-semibold text-primary hover:underline">
-          Log in
+
+      <p className={authMutedFooterClass}>
+        Already have a brand account?{" "}
+        <Link href="/login" className={authFooterLinkClass}>
+          Sign in
         </Link>
       </p>
-    </Card>
+    </AuthSplitLayout>
   );
 }

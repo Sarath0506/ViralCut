@@ -9,9 +9,12 @@
     "tokens:build": "pnpm --filter @viralcut/ui-tokens build",
     "build:web": "pnpm tokens:build && pnpm --filter @viralcut/web-brand build",
     "db:up": "docker compose up -d postgres",
-    "db:migrate": "dotenv -e .env -- pnpm --filter @viralcut/api db:migrate",
     "db:push": "dotenv -e .env -- pnpm --filter @viralcut/api db:push",
+    "db:migrate": "dotenv -e .env -- pnpm --filter @viralcut/api db:migrate",
+    "db:migrate:deploy": "dotenv -e .env -- pnpm --filter @viralcut/api prisma:migrate:deploy",
+    "db:migrate:resolve": "dotenv -e .env -- pnpm --filter @viralcut/api prisma:migrate:resolve",
     "db:seed": "dotenv -e .env -- pnpm --filter @viralcut/api prisma:seed",
+    "db:studio": "dotenv -e .env -- pnpm --filter @viralcut/api prisma:studio",
     "mobile": "cd apps/mobile-creator && flutter run",
     "mobile:pub": "cd apps/mobile-creator && flutter pub get"
   },

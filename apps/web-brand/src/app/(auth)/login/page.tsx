@@ -1,11 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowRight, Mail } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { AuthDivider } from "@/components/auth/auth-divider";
+import { AuthPasswordField } from "@/components/auth/auth-password-field";
+import { AuthPrimaryButton } from "@/components/auth/auth-primary-button";
+import {
+  authFooterLinkClass,
+  authFormClass,
+  authMutedFooterClass,
+} from "@/components/auth/auth-styles";
+import { AuthTextField } from "@/components/auth/auth-text-field";
+import { GoogleSignInButton } from "@/components/auth/google-sign-in-button";
+import {
+  AuthMobileBrandMark,
+  AuthPageHeader,
+  AuthSplitLayout,
+  AuthTrustBadges,
+} from "@/components/layout/auth-split-layout";
 import { Label } from "@/components/ui/label";
 import { ApiError } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
@@ -34,50 +48,72 @@ export default function LoginPage() {
     }
   }
 
+  function onGoogleSignIn() {
+    toast("Google sign-in is coming soon.", "error");
+  }
+
   return (
-    <Card>
-      <CardTitle className="mb-1">Brand login</CardTitle>
-      <p className="mb-6 text-sm text-muted">
-        Manage campaigns and review creator clips.
-      </p>
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="email">Work email</Label>
-          <Input
-            id="email"
-            type="email"
-            autoComplete="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
+    <AuthSplitLayout heroVariant="login" footer={<AuthTrustBadges />}>
+      <AuthMobileBrandMark />
+
+      <AuthPageHeader
+        title="Welcome Back"
+        description="Log in to manage your creator campaigns and performance metrics."
+      />
+
+      <form onSubmit={onSubmit} className={authFormClass}>
+        <AuthTextField
+          id="email"
+          label="Work Email"
+          icon={Mail}
+          type="email"
+          autoComplete="email"
+          placeholder="name@company.in"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+
+        <div>
+          <div className="mb-1.5 flex items-center justify-between gap-2">
+            <Label htmlFor="password">Password</Label>
+            <Link
+              href="/forgot-password"
+              className="text-xs font-semibold text-primary hover:underline sm:text-sm"
+            >
+              Forgot password?
+            </Link>
+          </div>
+          <AuthPasswordField
             id="password"
-            type="password"
+            label="Password"
+            hideLabel
             autoComplete="current-password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            onChange={setPassword}
           />
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Signing in…" : "Log in"}
-        </Button>
+
+        <AuthPrimaryButton
+          loading={loading}
+          loadingText="Signing in…"
+          className="mt-1"
+          trailingIcon={<ArrowRight className="size-4" />}
+        >
+          Log in to Brand Portal
+        </AuthPrimaryButton>
       </form>
-      <p className="mt-4 text-center text-sm text-muted">
-        <Link href="/forgot-password" className="text-primary hover:underline">
-          Forgot password?
+
+      <AuthDivider />
+
+      <GoogleSignInButton onClick={onGoogleSignIn} />
+
+      <p className={authMutedFooterClass}>
+        New brand partner?{" "}
+        <Link href="/signup" className={authFooterLinkClass}>
+          Sign up
         </Link>
       </p>
-      <p className="mt-2 text-center text-sm text-muted">
-        New brand?{" "}
-        <Link href="/signup" className="font-semibold text-primary hover:underline">
-          Request access
-        </Link>
-      </p>
-    </Card>
+    </AuthSplitLayout>
   );
 }

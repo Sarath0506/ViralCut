@@ -66,6 +66,7 @@ export const authApi = {
     password: string;
     companyName: string;
     displayName?: string;
+    acceptTerms: true;
   }) =>
     apiFetch<AuthResponse>("/auth/brand/register", {
       method: "POST",

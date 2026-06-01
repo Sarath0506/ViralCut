@@ -26,6 +26,7 @@ type AuthContextValue = {
     password: string;
     companyName: string;
     displayName?: string;
+    acceptTerms: true;
   }) => Promise<void>;
   logout: () => void;
   getToken: () => string | null;
@@ -63,6 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password: string;
       companyName: string;
       displayName?: string;
+      acceptTerms: true;
     }) => {
       const res = await authApi.registerBrand(data);
       persist(res);
