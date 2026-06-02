@@ -5,7 +5,7 @@ Creator mobile app, brand web dashboard, and API monorepo.
 ## Apps
 
 - `apps/mobile-creator` — Flutter creator app
-- `apps/web-brand` — Next.js brand dashboard
+- `apps/web-brand-spa` — Vite + React brand dashboard
 - `services/api` — NestJS API
 
 ## Local development

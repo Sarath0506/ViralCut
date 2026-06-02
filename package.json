@@ -5,10 +5,11 @@
   "scripts": {
     "build": "turbo run build",
     "dev:api": "pnpm --filter @viralcut/api dev",
-    "dev:web": "pnpm --filter @viralcut/web-brand dev",
+    "dev:web": "pnpm --filter @viralcut/web-brand-spa dev",
     "tokens:build": "pnpm --filter @viralcut/ui-tokens build",
-    "build:web": "pnpm tokens:build && pnpm --filter @viralcut/web-brand build",
+    "build:web": "pnpm tokens:build && pnpm --filter @viralcut/web-brand-spa build",
     "db:up": "docker compose up -d postgres",
+    "db:generate": "pnpm --filter @viralcut/api prisma:generate",
     "db:push": "dotenv -e .env -- pnpm --filter @viralcut/api db:push",
     "db:migrate": "dotenv -e .env -- pnpm --filter @viralcut/api db:migrate",
     "db:migrate:deploy": "dotenv -e .env -- pnpm --filter @viralcut/api prisma:migrate:deploy",

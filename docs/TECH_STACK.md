@@ -10,7 +10,7 @@
 | Surface | Who | Device | Code |
 |---------|-----|--------|------|
 | **Creator app** | Clippers, influencers | iOS + Android (native) | `apps/mobile-creator` — **Flutter** |
-| **Brand portal** | Brands, agencies | Desktop web | `apps/web-brand` — **Next.js** |
+| **Brand portal** | Brands, agencies | Desktop web | `apps/web-brand-spa` — **Vite + React** |
 | **API** | Both | — | `services/api` — **NestJS** on **Railway** |
 
 Design reference (not codegen): `design/stitch/`, `figma-screenshots/`, `docs/FIGMA_PRODUCT_ANALYSIS.md`
@@ -23,7 +23,7 @@ Design reference (not codegen): `design/stitch/`, `figma-screenshots/`, `docs/FI
 Viralcut/
 ├── apps/
 │   ├── mobile-creator/          # Flutter — creator app (Dart)
-│   └── web-brand/               # Next.js — brand portal (TS) [scaffold pending]
+│   └── web-brand-spa/           # Vite + React Router — brand portal (TS)
 ├── packages/
 │   ├── shared-types/            # TS enums/types → OpenAPI source
 │   ├── api-client/              # Generated from OpenAPI
@@ -81,17 +81,21 @@ flutter run
 
 ---
 
-## 4. Brand web — Next.js
+## 4. Brand web — Vite + React
 
 | Layer | Choice |
 |-------|--------|
-| Framework | **Next.js 15** (App Router) |
+| Framework | **Vite 6** + **React 19** + **React Router 7** |
 | Language | **TypeScript** |
-| Styling | **Tailwind CSS** + **shadcn/ui** |
+| Styling | **Tailwind CSS 4** + shared `ui-tokens` |
 | State | **TanStack Query** |
-| Auth | Email + password, `role=brand` |
+| Auth | Email + password, `role=brand` (JWT in localStorage) |
 
-**Hosting:** **Vercel** (Hobby/Pro) — not Railway (better Next.js DX, free tier).
+**App structure:** `features/*/pages` (screens), `routes/*` (layouts/guards), `components/` (shared UI), `app/router.tsx` (URL map).
+
+**Env:** `VITE_API_URL` (was `NEXT_PUBLIC_API_URL` on the legacy Next app).
+
+**Hosting:** **Vercel** or static CDN — configure SPA fallback (`/*` → `index.html`).
 
 Prompts: `design/stitch/BRAND_WEB_STITCH_PROMPTS.md`
 
@@ -149,7 +153,7 @@ Prompts: `design/stitch/BRAND_WEB_STITCH_PROMPTS.md`
 
 1. `services/api` skeleton on Railway + Postgres  
 2. OpenAPI spec + generated clients (TS + Dart)  
-3. `apps/web-brand` — campaign create + submission review  
+3. `apps/web-brand-spa` — campaign create + submission review  
 4. `apps/mobile-creator` — auth → dashboard → campaigns → submit → wallet  
 5. Integrations: Instagram/YouTube metrics, KYC, payouts (India)
 

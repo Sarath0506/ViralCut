@@ -33,6 +33,9 @@ build/
 .DS_Store
 Thumbs.db
 
+# API local uploads (reference images/videos); DB stores URLs only
+services/api/uploads/
+
 # Logs, temp, coverage
 *.log
 tmp/

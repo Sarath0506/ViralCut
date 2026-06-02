@@ -1,0 +1,14 @@
+-- DBeaver / psql: execute files in this order on an EMPTY database:
+--   00_enums.sql
+--   01_users.sql
+--   02_brand_profiles.sql
+--   03_creator_profiles.sql
+--   04_refresh_tokens.sql
+--   05_password_reset_tokens.sql
+--   06_otp_sessions.sql
+--
+-- Existing Railway / production DB (tables already exist):
+--   Run only 07_alter_users_terms.sql if terms_accepted_at is missing.
+--
+-- Source of truth for app code: services/api/prisma/schema.prisma
+-- Prisma migrations: services/api/prisma/migrations/

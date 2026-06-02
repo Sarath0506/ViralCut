@@ -146,13 +146,22 @@ model Campaign {
   title            String
   category         String?
   platform         String         @default("instagram_reels")
+  platforms        String[]       @default([])
   status           CampaignStatus @default(draft)
   brief            String         @db.Text
+  briefHook        String?        @map("brief_hook") @db.Text
+  productFocus     String?        @map("product_focus") @db.Text
+  toneOfVoice      String[]       @default([]) @map("tone_of_voice")
+  doRules          String?        @map("do_rules") @db.Text
+  avoidRules       String?        @map("avoid_rules") @db.Text
+  referenceAssets  Json?          @map("reference_assets")
+  coverImageUrl    String?        @map("cover_image_url")
   productUrl       String?        @map("product_url")
   ratePer1kPaise   Int            @map("rate_per_1k_paise")
   maxPayoutPaise   Int            @map("max_payout_paise")
   budgetPaise      Int            @map("budget_paise")
   budgetUsedPaise  Int            @default(0) @map("budget_used_paise")
+  startDate        DateTime?      @map("start_date")
   endsAt           DateTime?      @map("ends_at")
   createdAt        DateTime       @default(now()) @map("created_at")
   updatedAt        DateTime       @updatedAt @map("updated_at")
