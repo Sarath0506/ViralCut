@@ -21,4 +21,10 @@ export default defineConfig({
   build: {
     outDir: "dist",
   },
+  preview: {
+    host: true,
+    strictPort: true,
+    // Railway (and custom domains) proxy with their own Host header
+    allowedHosts: true,
+  },
 });
