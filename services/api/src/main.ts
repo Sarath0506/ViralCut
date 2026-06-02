@@ -1,6 +1,6 @@
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import express, { type NextFunction, type Request, type Response } from "express";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { join } from "node:path";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import helmet from "helmet";
@@ -9,7 +9,9 @@ import { Logger } from "nestjs-pino";
 import { AppModule } from "./app.module";
 
 async function bootstrap(): Promise<void> {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bufferLogs: true,
+  });
   app.useLogger(app.get(Logger));
 
   app.use(
@@ -29,15 +31,13 @@ async function bootstrap(): Promise<void> {
       transform: true,
     }),
   );
-  app.use(
-    "/uploads",
-    (_req: Request, res: Response, next: NextFunction) => {
+  app.useStaticAssets(join(process.cwd(), "uploads"), {
+    prefix: "/uploads",
+    setHeaders: (res) => {
       res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
       res.setHeader("Access-Control-Allow-Origin", "*");
-      next();
     },
-    express.static(join(process.cwd(), "uploads")),
-  );
+  });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle("ViralCut API")
