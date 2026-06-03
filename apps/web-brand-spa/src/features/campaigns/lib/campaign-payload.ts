@@ -29,7 +29,6 @@ export function buildCampaignBody(
   draft: CampaignDraft,
   status: "draft" | "live",
 ): Record<string, unknown> {
-  const primaryPlatform = draft.platforms[0] ?? "instagram_reels";
   const referenceAssets = toApiReferenceAssets(draft.referenceAssets);
   const brief = composeCampaignBrief(draft);
 
@@ -37,8 +36,7 @@ export function buildCampaignBody(
     title: draft.title.trim(),
     status,
     category: draft.category || undefined,
-    platform: primaryPlatform,
-    platforms: draft.platforms,
+    platforms: draft.platforms.length > 0 ? draft.platforms : ["instagram_reels"],
     startDate: draft.startDate || undefined,
     briefHook: draft.briefHook || undefined,
     productFocus: draft.productFocus || undefined,

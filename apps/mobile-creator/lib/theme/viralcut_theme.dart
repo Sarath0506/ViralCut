@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'token_colors.dart';
 
@@ -21,9 +22,14 @@ abstract final class ViralCutTheme {
         ? ViralCutTokenColors.onSurfaceDark
         : ViralCutTokenColors.onSurfaceLight;
 
+    final textTheme = brightness == Brightness.light
+        ? GoogleFonts.interTextTheme(ThemeData.light().textTheme)
+        : GoogleFonts.interTextTheme(ThemeData.dark().textTheme);
+
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
+      textTheme: textTheme,
       colorScheme: ColorScheme(
         brightness: brightness,
         primary: primary,

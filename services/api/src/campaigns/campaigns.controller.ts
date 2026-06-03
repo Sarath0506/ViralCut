@@ -11,22 +11,16 @@ import {
   Patch,
   Post,
   Query,
-  Req,
   UseInterceptors,
   UseGuards,
 } from "@nestjs/common";
-import type { Request } from "express";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { memoryStorage } from "multer";
 import { UserRole } from "@prisma/client";
 
-import {
-  buildUploadedFileResponse,
-  ensureUploadDir,
-  finalizeUploadedFile,
-  imageOnlyFileFilter,
-  imageOrVideoFileFilter,
-} from "./campaign-upload.util";
+import { imageOnlyFileFilter, imageOrVideoFileFilter } from "./campaign-upload.util";
+import { ObjectStorageService } from "../storage/object-storage.service";
 import { CurrentUser } from "../common/decorators/current-user.decorator";
 import { Roles } from "../common/decorators/roles.decorator";
 import { RolesGuard } from "../common/guards/roles.guard";
@@ -42,50 +36,53 @@ import { ListCampaignsQueryDto } from "./dto/list-campaigns-query.dto";
 @Roles(UserRole.brand)
 @Controller("campaigns")
 export class CampaignsController {
-  constructor(private readonly campaigns: CampaignsService) {}
+  constructor(
+    private readonly campaigns: CampaignsService,
+    private readonly storage: ObjectStorageService,
+  ) {}
 
   @Post("cover/upload")
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(
     FileInterceptor("file", {
-      dest: ensureUploadDir("cover-images"),
+      storage: memoryStorage(),
       limits: { fileSize: 3 * 1024 * 1024 },
       fileFilter: imageOnlyFileFilter,
     }),
   )
-  uploadCoverImage(
+  async uploadCoverImage(
     @UploadedFile()
-    file: { filename: string; originalname: string; mimetype?: string } | undefined,
-    @Req() req: Request,
+    file:
+      | { buffer: Buffer; originalname: string; mimetype: string }
+      | undefined,
   ) {
-    if (!file) {
+    if (!file?.buffer) {
       throw new BadRequestException("File is required");
     }
-    const saved = finalizeUploadedFile("cover-images", file);
-    return buildUploadedFileResponse(req, "cover-images", saved);
+    return this.storage.saveUploadedFile("cover-images", file);
   }
 
   @Post("reference-assets/upload")
   @HttpCode(HttpStatus.OK)
   @UseInterceptors(
     FileInterceptor("file", {
-      dest: ensureUploadDir("reference-assets"),
+      storage: memoryStorage(),
       limits: { fileSize: 25 * 1024 * 1024 },
       fileFilter: imageOrVideoFileFilter,
     }),
   )
-  uploadReferenceAsset(
+  async uploadReferenceAsset(
     @UploadedFile()
-    file: { filename: string; mimetype: string; originalname: string } | undefined,
-    @Req() req: Request,
+    file:
+      | { buffer: Buffer; mimetype: string; originalname: string }
+      | undefined,
   ) {
-    if (!file) {
+    if (!file?.buffer) {
       throw new BadRequestException("File is required");
     }
-    const saved = finalizeUploadedFile("reference-assets", file);
     const type = file.mimetype.startsWith("image/") ? "image" : "video";
     return {
-      ...buildUploadedFileResponse(req, "reference-assets", saved),
+      ...(await this.storage.saveUploadedFile("reference-assets", file)),
       type,
     };
   }

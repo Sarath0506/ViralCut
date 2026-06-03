@@ -12,6 +12,7 @@ import { createHash, randomInt } from "node:crypto";
 import type { Env } from "../config/env";
 import { PrismaService } from "../prisma/prisma.service";
 import { WhatsappService } from "../notifications/whatsapp.service";
+import { FixedOtpService } from "./fixed-otp.service";
 
 @Injectable()
 export class OtpService {
@@ -21,6 +22,7 @@ export class OtpService {
     private readonly prisma: PrismaService,
     private readonly config: ConfigService<Env, true>,
     private readonly whatsapp: WhatsappService,
+    private readonly fixedOtp: FixedOtpService,
   ) {}
 
   async requestOtp(phone: string): Promise<{ expiresInSeconds: number }> {
@@ -42,7 +44,8 @@ export class OtpService {
 
     await this.prisma.otpSession.deleteMany({ where: { phone } });
 
-    const code = randomInt(100_000, 999_999).toString();
+    const fixedCode = await this.fixedOtp.getFixedCodeForPhone(phone);
+    const code = fixedCode ?? randomInt(100_000, 999_999).toString();
     const codeHash = await bcrypt.hash(code, 10);
     const ttl = this.config.get("OTP_TTL_SECONDS", { infer: true });
     const expiresAt = new Date(Date.now() + ttl * 1000);
@@ -50,6 +53,13 @@ export class OtpService {
     await this.prisma.otpSession.create({
       data: { phone, codeHash, expiresAt },
     });
+
+    if (fixedCode) {
+      this.logger.log(
+        `Fixed OTP profile ${phone} — enter ${fixedCode} (no WhatsApp)`,
+      );
+      return { expiresInSeconds: ttl };
+    }
 
     try {
       await this.whatsapp.sendOtp(phone, code);
@@ -65,6 +75,12 @@ export class OtpService {
   }
 
   async verifyOtp(phone: string, code: string): Promise<void> {
+    const fixedCode = await this.fixedOtp.getFixedCodeForPhone(phone);
+    if (fixedCode && code === fixedCode) {
+      await this.prisma.otpSession.deleteMany({ where: { phone } });
+      return;
+    }
+
     const session = await this.prisma.otpSession.findFirst({
       where: { phone },
       orderBy: { createdAt: "desc" },

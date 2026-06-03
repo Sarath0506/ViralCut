@@ -92,9 +92,9 @@ export function ReferenceAssetsEditor({
           {assets.map((asset) => (
             <li
               key={asset.id}
-              className="rounded-xl border border-border bg-surface p-3"
+              className="overflow-hidden rounded-xl border border-border bg-surface p-3"
             >
-              <div className="grid gap-2 sm:grid-cols-[7rem_1fr_auto] sm:items-center">
+              <div className="grid gap-2 sm:grid-cols-[7rem_minmax(0,1fr)_auto] sm:items-start">
                 <div className="space-y-1">
                   <Label className="text-xs font-semibold text-muted">Type</Label>
                   <select
@@ -113,7 +113,7 @@ export function ReferenceAssetsEditor({
                     ))}
                   </select>
                 </div>
-                <div className="space-y-1">
+                <div className="min-w-0 space-y-1">
                   {asset.type === "link" ? (
                     <>
                       <Label className="text-xs font-semibold text-muted">URL</Label>
@@ -121,6 +121,7 @@ export function ReferenceAssetsEditor({
                         type="url"
                         placeholder="https://..."
                         value={asset.url}
+                        className="min-w-0"
                         onChange={(e) => updateAsset(asset.id, { url: e.target.value })}
                         onBlur={() => {
                           if (!asset.url.trim()) return;
@@ -163,7 +164,15 @@ export function ReferenceAssetsEditor({
                         />
                       ) : null}
                       {asset.url ? (
-                        <p className="truncate text-xs text-muted">{asset.url}</p>
+                        <p
+                          className="min-w-0 truncate text-xs text-muted"
+                          title={asset.url}
+                        >
+                          {asset.label.trim() ||
+                            decodeURIComponent(
+                              asset.url.split("/").pop()?.split("?")[0] ?? "Uploaded file",
+                            )}
+                        </p>
                       ) : (
                         <p className="text-xs text-muted">
                           Upload a {asset.type} file to attach it.

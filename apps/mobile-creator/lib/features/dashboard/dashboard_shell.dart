@@ -6,34 +6,36 @@ class DashboardShell extends StatelessWidget {
 
   final Widget child;
 
+  static const _tabs = [
+    '/dashboard',
+    '/campaigns',
+    '/submissions',
+    '/wallet',
+    '/profile',
+  ];
+
+  int _indexForPath(String path) {
+    if (path.startsWith('/profile')) return 4;
+    if (path.startsWith('/wallet')) return 3;
+    if (path.startsWith('/submissions')) return 2;
+    if (path.startsWith('/campaigns')) return 1;
+    return 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     final path = GoRouterState.of(context).uri.path;
-    int index = 0;
-    if (path.startsWith('/campaigns')) index = 1;
-    if (path.startsWith('/submissions')) index = 2;
-    if (path.startsWith('/wallet')) index = 3;
+    final index = _indexForPath(path);
 
     return Scaffold(
       body: child,
       bottomNavigationBar: NavigationBar(
         selectedIndex: index,
-        onDestinationSelected: (i) {
-          switch (i) {
-            case 0:
-              context.go('/dashboard');
-            case 1:
-              context.go('/campaigns');
-            case 2:
-              context.go('/submissions');
-            case 3:
-              context.go('/wallet');
-          }
-        },
+        onDestinationSelected: (i) => context.go(_tabs[i]),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.grid_view_outlined),
+            selectedIcon: Icon(Icons.grid_view),
             label: 'Dashboard',
           ),
           NavigationDestination(
@@ -50,6 +52,11 @@ class DashboardShell extends StatelessWidget {
             icon: Icon(Icons.account_balance_wallet_outlined),
             selectedIcon: Icon(Icons.account_balance_wallet),
             label: 'Wallet',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: 'You',
           ),
         ],
       ),

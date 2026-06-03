@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
 import { Rocket } from "lucide-react";
 
 import { Card, CardTitle } from "@/components/ui/card";
@@ -10,23 +11,31 @@ import {
 import { WizardStepper } from "@/features/campaigns/components/wizard-stepper";
 import { useCampaignDraftSave } from "@/features/campaigns/hooks/use-campaign-draft-save";
 import { hasInvalidReferenceAssets } from "@/features/campaigns/lib/campaign-payload";
+import { parseRulePoints } from "@/features/campaigns/lib/rule-points";
 import { resolveMediaUrl } from "@/lib/media-url";
 import { useCampaignWizard } from "@/providers/campaign-wizard";
 
 export function CampaignReviewPage() {
   const navigate = useNavigate();
-  const { draft, paths, reset } = useCampaignWizard();
+  const { draft, paths } = useCampaignWizard();
   const { toast } = useToast();
   const { saveDraftWithFeedback, publishWithFeedback, saving } =
     useCampaignDraftSave();
 
   const invalidAssets = hasInvalidReferenceAssets(draft.referenceAssets);
+  const hookPoints = useMemo(() => parseRulePoints(draft.briefHook), [draft.briefHook]);
+  const focusPoints = useMemo(
+    () => parseRulePoints(draft.productFocus),
+    [draft.productFocus],
+  );
+  const doPoints = useMemo(() => parseRulePoints(draft.doRules), [draft.doRules]);
+  const avoidPoints = useMemo(
+    () => parseRulePoints(draft.avoidRules),
+    [draft.avoidRules],
+  );
 
   async function onPublish() {
-    const id = await publishWithFeedback(toast);
-    if (!id) return;
-    reset();
-    navigate(`/campaigns/${id}`);
+    await publishWithFeedback(toast);
   }
 
   return (
@@ -100,18 +109,74 @@ export function CampaignReviewPage() {
                 Edit
               </button>
             </div>
-            <div className="grid gap-3 text-sm sm:grid-cols-2">
+            <div className="grid gap-4 text-sm sm:grid-cols-2">
               <div>
-                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-emerald-700">
-                  Things to do
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-primary">
+                  The hook
                 </p>
-                <p className="whitespace-pre-wrap text-muted">{draft.doRules || "-"}</p>
+                {hookPoints.length > 0 ? (
+                  <ul className="space-y-1.5 text-foreground">
+                    {hookPoints.map((point) => (
+                      <li key={point.id} className="flex gap-2">
+                        <span className="text-primary">•</span>
+                        <span>{point.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted">-</p>
+                )}
               </div>
               <div>
-                <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-rose-700">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-violet-400">
+                  Product focus
+                </p>
+                {focusPoints.length > 0 ? (
+                  <ul className="space-y-1.5 text-foreground">
+                    {focusPoints.map((point) => (
+                      <li key={point.id} className="flex gap-2">
+                        <span className="text-violet-400">•</span>
+                        <span>{point.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted">-</p>
+                )}
+              </div>
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-emerald-400">
+                  Things to do
+                </p>
+                {doPoints.length > 0 ? (
+                  <ul className="space-y-1.5 text-foreground">
+                    {doPoints.map((point) => (
+                      <li key={point.id} className="flex gap-2">
+                        <span className="text-emerald-400">•</span>
+                        <span>{point.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted">-</p>
+                )}
+              </div>
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-rose-400">
                   Things to avoid
                 </p>
-                <p className="whitespace-pre-wrap text-muted">{draft.avoidRules || "-"}</p>
+                {avoidPoints.length > 0 ? (
+                  <ul className="space-y-1.5 text-foreground">
+                    {avoidPoints.map((point) => (
+                      <li key={point.id} className="flex gap-2">
+                        <span className="text-rose-400">•</span>
+                        <span>{point.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-muted">-</p>
+                )}
               </div>
             </div>
             {draft.referenceAssets.length > 0 && (

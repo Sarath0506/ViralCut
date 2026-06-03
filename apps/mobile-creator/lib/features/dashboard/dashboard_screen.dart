@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/api/api_base_url.dart';
 import '../../core/api/api_client.dart';
 import '../../core/auth/auth_provider.dart';
 import '../../core/format/money_format.dart';
@@ -23,7 +24,39 @@ class DashboardScreen extends ConsumerWidget {
 
     return dash.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (e, _) => Center(child: Text('$e')),
+      error: (e, _) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('$e', textAlign: TextAlign.center),
+              const SizedBox(height: 12),
+              Text(
+                'Cannot reach API at $kApiBaseUrl',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Physical phone: use your PC IP, not 10.0.2.2.\n'
+                'flutter run --dart-define=API_BASE_URL=http://192.168.x.x:3001',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+              const SizedBox(height: 16),
+              FilledButton(
+                onPressed: () => ref.invalidate(dashboardProvider),
+                child: const Text('Retry'),
+              ),
+              TextButton(
+                onPressed: () => context.go('/profile'),
+                child: const Text('Go to You → Log out'),
+              ),
+            ],
+          ),
+        ),
+      ),
       data: (data) => RefreshIndicator(
         onRefresh: () async {
           ref.invalidate(dashboardProvider);
@@ -50,7 +83,7 @@ class DashboardScreen extends ConsumerWidget {
                   ],
                 ),
                 IconButton(
-                  onPressed: () => context.push('/profile'),
+                  onPressed: () => context.go('/profile'),
                   icon: const CircleAvatar(child: Icon(Icons.person)),
                 ),
               ],

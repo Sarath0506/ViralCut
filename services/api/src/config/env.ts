@@ -19,6 +19,13 @@ const envSchema = z.object({
   WHATSAPP_ACCESS_TOKEN: z.string().optional(),
   WHATSAPP_API_VERSION: z.string().default("v22.0"),
   WHATSAPP_OTP_TEMPLATE_NAME: z.string().optional(),
+  /** Meta template language code, e.g. en_US or en (must match approved template). */
+  WHATSAPP_OTP_TEMPLATE_LANGUAGE: z.string().default("en_US"),
+  /** Set true only if your WhatsApp template includes a URL button with OTP param. */
+  WHATSAPP_OTP_TEMPLATE_HAS_BUTTON: z
+    .string()
+    .optional()
+    .transform((v) => v === "true" || v === "1"),
   SMTP_HOST: z.string().optional(),
   SMTP_PORT: z.coerce.number().default(465),
   SMTP_USER: z.string().optional(),
@@ -31,6 +38,39 @@ const envSchema = z.object({
     .string()
     .optional()
     .transform((v) => v === "true" || v === "1"),
+  /**
+   * Fixed OTP for local testing (e.g. 000000). Only used when NODE_ENV=development.
+   * Run seed for demo creator phones; no WhatsApp required.
+   */
+  OTP_DEV_BYPASS_CODE: z.string().length(6).optional(),
+  /** Cloudflare R2 (S3-compatible). When all five are set, uploads go to R2. */
+  S3_ENDPOINT: z.string().url().optional(),
+  S3_REGION: z.string().default("auto"),
+  S3_BUCKET: z.string().optional(),
+  S3_ACCESS_KEY_ID: z.string().optional(),
+  S3_SECRET_ACCESS_KEY: z.string().optional(),
+  S3_PUBLIC_BASE_URL: z.string().url().optional(),
+}).superRefine((data, ctx) => {
+  const r2Fields = [
+    ["S3_ENDPOINT", data.S3_ENDPOINT],
+    ["S3_BUCKET", data.S3_BUCKET],
+    ["S3_ACCESS_KEY_ID", data.S3_ACCESS_KEY_ID],
+    ["S3_SECRET_ACCESS_KEY", data.S3_SECRET_ACCESS_KEY],
+    ["S3_PUBLIC_BASE_URL", data.S3_PUBLIC_BASE_URL],
+  ] as const;
+  const setCount = r2Fields.filter(([, value]) => Boolean(value)).length;
+
+  if (setCount === 0 || setCount === r2Fields.length) {
+    return;
+  }
+
+  for (const [field] of r2Fields) {
+    ctx.addIssue({
+      code: "custom",
+      path: [field],
+      message: "Set all S3_* variables together for R2 uploads, or leave them all unset",
+    });
+  }
 });
 
 export type Env = z.infer<typeof envSchema>;

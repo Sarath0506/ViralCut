@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../auth/auth_storage.dart';
+import 'api_base_url.dart';
 
 class ApiException implements Exception {
   ApiException(this.code, this.message);
@@ -39,10 +40,7 @@ class ApiClient {
       : _storage = storage ?? AuthStorage(),
         _dio = Dio(
           BaseOptions(
-            baseUrl: const String.fromEnvironment(
-              'API_BASE_URL',
-              defaultValue: 'http://10.0.2.2:3001',
-            ),
+            baseUrl: kApiBaseUrl,
             connectTimeout: const Duration(seconds: 15),
             receiveTimeout: const Duration(seconds: 15),
             headers: {'Content-Type': 'application/json'},
@@ -51,6 +49,50 @@ class ApiClient {
 
   final Dio _dio;
   final AuthStorage _storage;
+
+  Future<Response<dynamic>> _request(Future<Response<dynamic>> Function() call) async {
+    try {
+      return await call();
+    } on DioException catch (e) {
+      throw _mapDioError(e);
+    }
+  }
+
+  ApiException _mapDioError(DioException e) {
+    final isEmulatorHost = kApiBaseUrl.contains('10.0.2.2');
+    final deviceHint = isEmulatorHost
+        ? 'On a real phone, run:\n'
+            'flutter run --dart-define=API_BASE_URL=http://YOUR_PC_IP:3001\n'
+            '(same Wi‑Fi, API running on PC)'
+        : 'Check API is running at $kApiBaseUrl and firewall allows port 3001.';
+
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.sendTimeout:
+      case DioExceptionType.receiveTimeout:
+        return ApiException(
+          'NETWORK_TIMEOUT',
+          'Cannot reach the API (timed out).\n$deviceHint',
+        );
+      case DioExceptionType.connectionError:
+        return ApiException(
+          'NETWORK_ERROR',
+          'Cannot connect to the API.\n$deviceHint',
+        );
+      default:
+        final status = e.response?.statusCode;
+        if (status != null) {
+          return ApiException(
+            'HTTP_$status',
+            'Request failed ($status).',
+          );
+        }
+        return ApiException(
+          'NETWORK_ERROR',
+          'Network error. $deviceHint',
+        );
+    }
+  }
 
   Future<T> _parse<T>(
     Response<dynamic> response,
@@ -77,10 +119,12 @@ class ApiClient {
     Map<String, dynamic>? query,
   }) async {
     final headers = auth ? await _authHeaders() : null;
-    final res = await _dio.get<dynamic>(
-      path,
-      queryParameters: query,
-      options: Options(headers: headers),
+    final res = await _request(
+      () => _dio.get<dynamic>(
+        path,
+        queryParameters: query,
+        options: Options(headers: headers),
+      ),
     );
     return _parse(res, mapData);
   }
@@ -92,10 +136,12 @@ class ApiClient {
     bool auth = true,
   }) async {
     final headers = auth ? await _authHeaders() : null;
-    final res = await _dio.post<dynamic>(
-      path,
-      data: body,
-      options: Options(headers: headers),
+    final res = await _request(
+      () => _dio.post<dynamic>(
+        path,
+        data: body,
+        options: Options(headers: headers),
+      ),
     );
     return _parse(res, mapData);
   }
@@ -107,10 +153,12 @@ class ApiClient {
     bool auth = true,
   }) async {
     final headers = auth ? await _authHeaders() : null;
-    final res = await _dio.patch<dynamic>(
-      path,
-      data: body,
-      options: Options(headers: headers),
+    final res = await _request(
+      () => _dio.patch<dynamic>(
+        path,
+        data: body,
+        options: Options(headers: headers),
+      ),
     );
     return _parse(res, mapData);
   }
@@ -121,6 +169,23 @@ class ApiClient {
       throw ApiException('UNAUTHORIZED', 'Not logged in');
     }
     return {'Authorization': 'Bearer $token'};
+  }
+
+  /// Revokes refresh token on server (best-effort).
+  Future<void> logoutSession() async {
+    final refresh = await _storage.getRefreshToken();
+    if (refresh == null) return;
+    try {
+      await _request(
+        () => _dio.post<void>(
+          '/auth/logout',
+          data: {'refreshToken': refresh},
+          options: Options(headers: {'Content-Type': 'application/json'}),
+        ),
+      );
+    } on ApiException {
+      // Still clear local session if API is unreachable.
+    }
   }
 
   // Auth

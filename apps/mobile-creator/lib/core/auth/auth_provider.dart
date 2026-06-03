@@ -34,6 +34,11 @@ class AuthNotifier extends StateNotifier<bool> {
   }
 
   Future<void> logout() async {
+    try {
+      await _ref.read(apiClientProvider).logoutSession();
+    } catch (_) {
+      // Clear local tokens even when API is down.
+    }
     await _ref.read(authStorageProvider).clear();
     state = false;
   }

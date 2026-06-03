@@ -4,7 +4,11 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/api/api_client.dart';
 import '../../core/auth/auth_provider.dart';
-import '../../core/widgets/vc_scaffold.dart';
+import '../../theme/token_colors.dart';
+import 'widgets/auth_page_layout.dart';
+import 'widgets/auth_switch_link.dart';
+import 'widgets/auth_ui.dart';
+import 'widgets/otp_pin_input.dart';
 
 class OtpScreen extends ConsumerStatefulWidget {
   const OtpScreen({super.key});
@@ -14,80 +18,121 @@ class OtpScreen extends ConsumerStatefulWidget {
 }
 
 class _OtpScreenState extends ConsumerState<OtpScreen> {
-  final _codeController = TextEditingController();
-  final _nameController = TextEditingController(text: 'Pragnatej');
-  bool _loading = false;
+  final _pinKey = GlobalKey<OtpPinInputState>();
+  bool _verifying = false;
+  bool _resending = false;
 
-  @override
-  void dispose() {
-    _codeController.dispose();
-    _nameController.dispose();
-    super.dispose();
+  String get _phone =>
+      GoRouterState.of(context).uri.queryParameters['phone'] ?? '';
+
+  String get _flow =>
+      GoRouterState.of(context).uri.queryParameters['flow'] ?? 'login';
+
+  String? get _displayName {
+    final name =
+        GoRouterState.of(context).uri.queryParameters['name']?.trim();
+    return name != null && name.isNotEmpty ? name : null;
+  }
+
+  bool get _isSignup => _flow == 'signup';
+
+  String get _backRoute => _isSignup ? '/signup' : '/login';
+
+  void _goBackToPhone() {
+    if (mounted) context.go(_backRoute);
+  }
+
+  Future<void> _resendOtp() async {
+    if (_phone.isEmpty || _resending) return;
+    setState(() => _resending = true);
+    try {
+      await ref.read(apiClientProvider).requestOtp(_phone);
+      _pinKey.currentState?.clear();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OTP resent.'),
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } on ApiException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message), behavior: SnackBarBehavior.floating),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _resending = false);
+    }
+  }
+
+  Future<void> _verify(String code) async {
+    if (_phone.isEmpty || _verifying) return;
+
+    setState(() => _verifying = true);
+    try {
+      final session = await ref.read(apiClientProvider).verifyOtp(
+            phone: _phone,
+            code: code,
+            displayName: _isSignup ? _displayName : null,
+          );
+      await ref.read(authStateProvider.notifier).login(session);
+      if (mounted) context.go('/dashboard');
+    } on ApiException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.message), behavior: SnackBarBehavior.floating),
+        );
+        _goBackToPhone();
+      }
+    } finally {
+      if (mounted) setState(() => _verifying = false);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final phone =
-        GoRouterState.of(context).uri.queryParameters['phone'] ??
-            '+919876543210';
+    final masked = _phone.length >= 4
+        ? '******${_phone.substring(_phone.length - 4)}'
+        : _phone;
 
-    return VcScaffold(
-      title: 'Verify OTP',
+    return AuthPageLayout(
+      title: 'Enter OTP',
+      subtitle: 'We sent a 6-digit code to $masked',
       showBack: true,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
+      onBack: _goBackToPhone,
+      footer: AuthSwitchLink(
+        leadText: _isSignup ? 'Already have an account? ' : 'New to ViralCut? ',
+        linkText: _isSignup ? 'Log in' : 'Sign up',
+        route: _isSignup ? '/login' : '/signup',
+      ),
+      form: AuthFormCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Code sent to $phone'),
-            const SizedBox(height: 8),
-            Text(
-              'In dev, check API console for OTP if WhatsApp is not configured.',
-              style: Theme.of(context).textTheme.bodySmall,
+            OtpPinInput(
+              key: _pinKey,
+              enabled: !_verifying,
+              onCompleted: _verify,
             ),
-            const SizedBox(height: 24),
-            TextField(
-              controller: _codeController,
-              decoration: const InputDecoration(labelText: '6-digit OTP'),
-              keyboardType: TextInputType.number,
-              maxLength: 6,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Display name (new users)',
+            if (_verifying) ...[
+              const SizedBox(height: 20),
+              const Center(child: CircularProgressIndicator()),
+            ],
+            const SizedBox(height: 20),
+            Center(
+              child: TextButton(
+                onPressed: _resending || _phone.isEmpty ? null : _resendOtp,
+                child: Text(
+                  _resending ? 'Sending…' : 'Resend OTP',
+                  style: AuthUi.bodyFont(context).copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            FilledButton(
-              onPressed: _loading
-                  ? null
-                  : () async {
-                      setState(() => _loading = true);
-                      try {
-                        final session = await ref
-                            .read(apiClientProvider)
-                            .verifyOtp(
-                              phone: phone,
-                              code: _codeController.text.trim(),
-                              displayName: _nameController.text.trim(),
-                            );
-                        await ref
-                            .read(authStateProvider.notifier)
-                            .login(session);
-                        if (context.mounted) context.go('/dashboard');
-                      } on ApiException catch (e) {
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(e.message)),
-                          );
-                        }
-                      } finally {
-                        if (mounted) setState(() => _loading = false);
-                      }
-                    },
-              child: Text(_loading ? 'Verifying…' : 'Verify & continue'),
             ),
           ],
         ),

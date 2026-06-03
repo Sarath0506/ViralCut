@@ -4,61 +4,115 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/api/api_client.dart';
 import '../../core/auth/auth_provider.dart';
-import '../../core/widgets/vc_scaffold.dart';
+import '../../core/format/phone_format.dart';
+import 'widgets/auth_page_layout.dart';
+import 'widgets/auth_switch_link.dart';
+import 'widgets/auth_ui.dart';
 
-final _phoneProvider = StateProvider<String>((ref) => '+919876543210');
-
-class LoginScreen extends ConsumerWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final phone = ref.watch(_phoneProvider);
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
 
-    return VcScaffold(
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  final _countryController = TextEditingController(text: '+91');
+  final _phoneController = TextEditingController();
+  bool _busy = false;
+  String? _lastOtpPhone;
+
+  @override
+  void initState() {
+    super.initState();
+    _phoneController.addListener(_onPhoneChanged);
+  }
+
+  @override
+  void dispose() {
+    _phoneController.removeListener(_onPhoneChanged);
+    _countryController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
+
+  String? get _phoneE164 => normalizeIndiaPhone(
+        countryCode: _countryController.text,
+        localNumber: _phoneController.text,
+      );
+
+  void _onPhoneChanged() {
+    if (_phoneController.text.length < 10) {
+      _lastOtpPhone = null;
+      return;
+    }
+    if (_busy) return;
+    final phone = _phoneE164;
+    if (phone == null || phone == _lastOtpPhone) return;
+    _lastOtpPhone = phone;
+    _sendOtpAndContinue();
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 6),
+      ),
+    );
+  }
+
+  Future<void> _sendOtpAndContinue() async {
+    final phone = _phoneE164;
+    if (phone == null) return;
+
+    setState(() => _busy = true);
+    try {
+      await ref.read(apiClientProvider).requestOtp(phone);
+      if (!mounted) return;
+      context.push(
+        Uri(
+          path: '/otp',
+          queryParameters: {'phone': phone, 'flow': 'login'},
+        ).toString(),
+      );
+    } on ApiException catch (e) {
+      _lastOtpPhone = null;
+      if (mounted) _showError(e.message);
+    } catch (_) {
+      _lastOtpPhone = null;
+      if (mounted) _showError('Something went wrong. Please try again.');
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AuthPageLayout(
       title: 'Log in',
-      showBack: true,
-      body: Padding(
-        padding: const EdgeInsets.all(24),
+      subtitle: 'Continue earning from your clips.',
+      footer: const AuthSwitchLink(
+        leadText: 'New to ViralCut? ',
+        linkText: 'Sign up',
+        route: '/signup',
+      ),
+      form: AuthFormCard(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'Welcome back',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
-            ),
-            const SizedBox(height: 8),
-            const Text('Continue earning from your clips.'),
-            const SizedBox(height: 24),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'PHONE (+91)',
-                hintText: '+919876543210',
+            AuthLabeledField(
+              label: 'Phone',
+              child: AuthPhoneRow(
+                countryController: _countryController,
+                phoneController: _phoneController,
               ),
-              keyboardType: TextInputType.phone,
-              onChanged: (v) =>
-                  ref.read(_phoneProvider.notifier).state = v.trim(),
             ),
-            const SizedBox(height: 24),
-            FilledButton(
-              onPressed: () async {
-                try {
-                  await ref.read(apiClientProvider).requestOtp(phone);
-                  if (context.mounted) {
-                    context.push('/otp?phone=${Uri.encodeComponent(phone)}');
-                  }
-                } on ApiException catch (e) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(e.message)),
-                    );
-                  }
-                }
-              },
-              child: const Text('Send OTP'),
-            ),
+            if (_busy) ...[
+              const SizedBox(height: 20),
+              const Center(child: CircularProgressIndicator()),
+            ],
           ],
         ),
       ),

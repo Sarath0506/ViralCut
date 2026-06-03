@@ -1,9 +1,11 @@
 import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import {
   buildCampaignBody,
   hasInvalidReferenceAssets,
 } from "@/features/campaigns/lib/campaign-payload";
+import { meetsMinimumRuleText } from "@/features/campaigns/lib/rule-points";
 import { ApiError, brandApi } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
 import { useCampaignWizard } from "@/providers/campaign-wizard";
@@ -15,8 +17,9 @@ function apiErrorMessage(error: unknown, fallback: string): string {
 }
 
 export function useCampaignDraftSave() {
+  const navigate = useNavigate();
   const { getToken } = useAuth();
-  const { draft, update } = useCampaignWizard();
+  const { draft, update, reset } = useCampaignWizard();
   const [saving, setSaving] = useState(false);
 
   const saveDraft = useCallback(async (): Promise<boolean> => {
@@ -56,11 +59,11 @@ export function useCampaignDraftSave() {
     if (title.length < 3) {
       throw new Error("Campaign name is required.");
     }
-    if (draft.briefHook.trim().length < 10) {
-      throw new Error("Campaign hook must be at least 10 characters.");
+    if (!meetsMinimumRuleText(draft.briefHook)) {
+      throw new Error("Add at least one hook point (10+ characters total).");
     }
-    if (draft.productFocus.trim().length < 10) {
-      throw new Error("Product focus must be at least 10 characters.");
+    if (!meetsMinimumRuleText(draft.productFocus)) {
+      throw new Error("Add at least one product focus point (10+ characters total).");
     }
 
     const token = getToken();
@@ -87,11 +90,13 @@ export function useCampaignDraftSave() {
       try {
         await saveDraft();
         toast("Campaign saved as draft.", "success");
+        reset();
+        navigate("/campaigns");
       } catch (error) {
         toast(apiErrorMessage(error, "Could not save draft."), "error");
       }
     },
-    [saveDraft],
+    [navigate, reset, saveDraft],
   );
 
   const publishWithFeedback = useCallback(
@@ -101,13 +106,15 @@ export function useCampaignDraftSave() {
       try {
         const result = await publish();
         toast("Campaign published. Creators can now discover it.", "success");
+        reset();
+        navigate("/campaigns");
         return result.id;
       } catch (error) {
         toast(apiErrorMessage(error, "Could not publish campaign."), "error");
         return null;
       }
     },
-    [publish],
+    [navigate, publish, reset],
   );
 
   return { saveDraft, publish, saveDraftWithFeedback, publishWithFeedback, saving };

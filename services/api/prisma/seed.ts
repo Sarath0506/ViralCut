@@ -46,44 +46,75 @@ async function main(): Promise<void> {
     },
   });
 
-  const creator = await prisma.user.upsert({
-    where: { phone: "+919876543210" },
-    update: {},
-    create: {
-      role: UserRole.creator,
+  const demoCreators = [
+    {
       phone: "+919876543210",
+      email: "pragnatej@demo.viralcut.in",
       displayName: "Pragnatej",
       username: "pragnatej",
-      creatorProfile: { create: { tier: "silver" } },
-      wallet: {
-        create: {
-          availablePaise: 3_517_000,
-          pendingPaise: 522_000,
-          lifetimePaise: 4_039_000,
+      fixedOtpCode: "000000",
+    },
+    {
+      phone: "+916281068402",
+      email: "creator@demo.viralcut.in",
+      displayName: "Demo Creator",
+      username: "democreator",
+      fixedOtpCode: "000000",
+    },
+  ] as const;
+
+  for (const demo of demoCreators) {
+    const creator = await prisma.user.upsert({
+      where: { phone: demo.phone },
+      update: {
+        email: demo.email,
+        displayName: demo.displayName,
+        username: demo.username,
+        fixedOtpCode: demo.fixedOtpCode,
+      },
+      create: {
+        role: UserRole.creator,
+        phone: demo.phone,
+        email: demo.email,
+        displayName: demo.displayName,
+        username: demo.username,
+        fixedOtpCode: demo.fixedOtpCode,
+        creatorProfile: { create: { tier: "silver" } },
+        wallet: {
+          create: {
+            availablePaise: 3_517_000,
+            pendingPaise: 522_000,
+            lifetimePaise: 4_039_000,
+          },
         },
       },
-    },
-    include: { wallet: true },
-  });
-
-  if (creator.wallet) {
-    await prisma.payoutMethod.upsert({
-      where: { id: "seed-payout-hdfc" },
-      update: {},
-      create: {
-        id: "seed-payout-hdfc",
-        userId: creator.id,
-        type: "bank",
-        label: "HDFC Bank",
-        accountMasked: "•••• 1234",
-        isDefault: true,
-      },
+      include: { wallet: true },
     });
+
+    if (creator.wallet) {
+      await prisma.payoutMethod.upsert({
+        where: { id: `seed-payout-${demo.username}` },
+        update: {},
+        create: {
+          id: `seed-payout-${demo.username}`,
+          userId: creator.id,
+          type: "bank",
+          label: "HDFC Bank",
+          accountMasked: "•••• 1234",
+          isDefault: true,
+        },
+      });
+    }
   }
 
   console.log("Seed complete:");
   console.log("  Brand login: brand@demo.viralcut.in / DemoBrand123!");
-  console.log("  Creator phone OTP: +919876543210 (use OTP from API logs in dev)");
+  console.log("  Demo creators (fixed OTP 000000, stored in DB — no WhatsApp):");
+  for (const demo of demoCreators) {
+    console.log(
+      `    ${demo.displayName} — ${demo.phone} — ${demo.email}`,
+    );
+  }
 }
 
 main()

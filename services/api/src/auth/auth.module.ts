@@ -7,6 +7,7 @@ import type { Env } from "../config/env";
 import { NotificationsModule } from "../notifications/notifications.module";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
+import { FixedOtpService } from "./fixed-otp.service";
 import { JwtStrategy } from "./jwt.strategy";
 import { OtpService } from "./otp.service";
 
@@ -22,7 +23,7 @@ import { OtpService } from "./otp.service";
     NotificationsModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, OtpService, JwtStrategy],
+  providers: [AuthService, OtpService, FixedOtpService, JwtStrategy],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

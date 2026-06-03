@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/auth/login_screen.dart';
 import '../../features/auth/otp_screen.dart';
+import '../../features/auth/signup_screen.dart';
 import '../../features/campaigns/campaign_detail_screen.dart';
 import '../../features/campaigns/campaigns_screen.dart';
 import '../../features/campaigns/submit_work_screen.dart';
@@ -11,6 +12,7 @@ import '../../features/dashboard/dashboard_shell.dart';
 import '../../features/dashboard/dashboard_screen.dart';
 import '../../features/onboarding/onboarding_screen.dart';
 import '../../features/profile/profile_screen.dart';
+import '../../features/splash/splash_screen.dart';
 import '../../features/submissions/submission_detail_screen.dart';
 import '../../features/submissions/submissions_screen.dart';
 import '../../features/wallet/wallet_screen.dart';
@@ -24,22 +26,26 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     navigatorKey: _rootKey,
-    initialLocation: '/onboarding',
+    initialLocation: '/splash',
     redirect: (context, state) {
       final path = state.matchedLocation;
-      final isAuthRoute = path.startsWith('/onboarding') ||
+      final isPublicRoute = path.startsWith('/splash') ||
+          path.startsWith('/onboarding') ||
           path.startsWith('/login') ||
+          path.startsWith('/signup') ||
           path.startsWith('/otp');
-      if (!isAuthed && !isAuthRoute) return '/onboarding';
-      if (isAuthed && isAuthRoute) return '/dashboard';
+      if (!isAuthed && !isPublicRoute) return '/splash';
+      if (isAuthed && isPublicRoute) return '/dashboard';
       return null;
     },
     routes: [
+      GoRoute(path: '/splash', builder: (_, __) => const SplashScreen()),
       GoRoute(
         path: '/onboarding',
         builder: (_, __) => const OnboardingScreen(),
       ),
       GoRoute(path: '/login', builder: (_, __) => const LoginScreen()),
+      GoRoute(path: '/signup', builder: (_, __) => const SignupScreen()),
       GoRoute(path: '/otp', builder: (_, __) => const OtpScreen()),
       ShellRoute(
         builder: (_, __, child) => DashboardShell(child: child),
@@ -60,6 +66,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             path: '/wallet',
             builder: (_, __) => const WalletScreen(),
           ),
+          GoRoute(
+            path: '/profile',
+            builder: (_, __) => const ProfileScreen(),
+          ),
         ],
       ),
       GoRoute(
@@ -77,7 +87,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) =>
             SubmissionDetailScreen(id: state.pathParameters['id']!),
       ),
-      GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
       GoRoute(path: '/withdraw', builder: (_, __) => const WithdrawScreen()),
     ],
   );

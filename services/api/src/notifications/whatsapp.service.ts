@@ -24,20 +24,57 @@ export class WhatsappService {
     );
   }
 
+  private logDevOtp(phone: string, code: string, reason: string): void {
+    this.logger.warn(`${reason} — OTP for ${phone}: ${code}`);
+  }
+
   async sendOtp(phone: string, code: string): Promise<void> {
     if (!this.isConfigured()) {
       if (this.shouldLogOtpInConsole()) {
-        this.logger.warn(
-          `WhatsApp not configured — OTP for ${phone}: ${code}`,
-        );
+        this.logDevOtp(phone, code, "WhatsApp not configured");
       }
       return;
     }
 
+    try {
+      await this.sendWhatsAppTemplate(phone, code);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err);
+      this.logger.error(`WhatsApp OTP failed: ${message}`);
+      if (this.shouldLogOtpInConsole()) {
+        this.logDevOtp(
+          phone,
+          code,
+          "WhatsApp send failed (check template name/language in .env) — dev fallback",
+        );
+        return;
+      }
+      throw new Error("Failed to send OTP via WhatsApp");
+    }
+  }
+
+  private async sendWhatsAppTemplate(phone: string, code: string): Promise<void> {
     const version = this.config.get("WHATSAPP_API_VERSION");
     const phoneNumberId = this.config.get("WHATSAPP_PHONE_NUMBER_ID");
     const token = this.config.get("WHATSAPP_ACCESS_TOKEN");
     const template = this.config.get("WHATSAPP_OTP_TEMPLATE_NAME");
+    const language = this.config.get("WHATSAPP_OTP_TEMPLATE_LANGUAGE");
+    const hasButton = this.config.get("WHATSAPP_OTP_TEMPLATE_HAS_BUTTON");
+
+    const components: Array<Record<string, unknown>> = [
+      {
+        type: "body",
+        parameters: [{ type: "text", text: code }],
+      },
+    ];
+    if (hasButton) {
+      components.push({
+        type: "button",
+        sub_type: "url",
+        index: "0",
+        parameters: [{ type: "text", text: code }],
+      });
+    }
 
     const url = `https://graph.facebook.com/${version}/${phoneNumberId}/messages`;
     const body = {
@@ -46,19 +83,8 @@ export class WhatsappService {
       type: "template",
       template: {
         name: template,
-        language: { code: "en" },
-        components: [
-          {
-            type: "body",
-            parameters: [{ type: "text", text: code }],
-          },
-          {
-            type: "button",
-            sub_type: "url",
-            index: "0",
-            parameters: [{ type: "text", text: code }],
-          },
-        ],
+        language: { code: language },
+        components,
       },
     };
 
@@ -73,8 +99,7 @@ export class WhatsappService {
 
     if (!response.ok) {
       const text = await response.text();
-      this.logger.error(`WhatsApp OTP failed: ${response.status} ${text}`);
-      throw new Error("Failed to send OTP via WhatsApp");
+      throw new Error(`${response.status} ${text}`);
     }
   }
 }

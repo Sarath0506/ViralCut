@@ -60,6 +60,8 @@ model User {
   passwordHash String?   @map("password_hash")
   displayName  String?   @map("display_name")
   username     String?   @unique
+  /** Demo/test accounts: always verify with this 6-digit code (no WhatsApp). */
+  fixedOtpCode String?   @map("fixed_otp_code") @db.VarChar(6)
   kycStatus        KycStatus @default(not_started) @map("kyc_status")
   termsAcceptedAt  DateTime? @map("terms_accepted_at")
   createdAt        DateTime  @default(now()) @map("created_at")
