@@ -1,21 +1,17 @@
 # Railway config for @viralcut/web-agency-spa (monorepo).
-# In the service settings set:
+#
+# Service settings (Railway dashboard → @viralcut/web-agency):
+#   Source: GitHub repo, branch main
 #   Root Directory: /  (repo root — required for pnpm workspaces)
 #   Config file path: /apps/web-agency-spa/railway.toml
+#   Watch Paths: leave EMPTY (do not set apps/web-agency-spa/** only — that skips API/brand pushes)
+#   Variables: VITE_API_URL = your API public URL
+#
+# Without watchPatterns below, every push to main triggers a deploy (same as web-brand).
 
 [build]
 builder = "NIXPACKS"
 buildCommand = "pnpm install --frozen-lockfile && pnpm build:agency"
-watchPatterns = [
-  "apps/web-agency-spa/**",
-  "packages/ui-tokens/**",
-  "packages/shared-types/**",
-  "packages/config/**",
-  "package.json",
-  "pnpm-lock.yaml",
-  "pnpm-workspace.yaml",
-  "turbo.json",
-]
 
 [deploy]
 startCommand = "pnpm --filter @viralcut/web-agency-spa start"
