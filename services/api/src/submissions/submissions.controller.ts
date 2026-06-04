@@ -21,14 +21,17 @@ import { SubmissionsService } from "./submissions.service";
 @ApiTags("submissions")
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.brand)
+@Roles(UserRole.brand, UserRole.agency)
 @Controller("submissions")
 export class SubmissionsController {
   constructor(private readonly submissions: SubmissionsService) {}
 
   @Get("stats")
-  stats(@CurrentUser() user: AuthJwtPayload) {
-    return this.submissions.brandStats(user.sub);
+  stats(
+    @CurrentUser() user: AuthJwtPayload,
+    @Query("brandProfileId") brandProfileId?: string,
+  ) {
+    return this.submissions.brandStats(user.sub, user.role, brandProfileId);
   }
 
   @Get()
@@ -36,13 +39,18 @@ export class SubmissionsController {
     @CurrentUser() user: AuthJwtPayload,
     @Query("status") status?: SubmissionStatus,
     @Query("campaignId") campaignId?: string,
+    @Query("brandProfileId") brandProfileId?: string,
   ) {
-    return this.submissions.listForBrand(user.sub, { status, campaignId });
+    return this.submissions.listForBrand(user.sub, user.role, {
+      status,
+      campaignId,
+      brandProfileId,
+    });
   }
 
   @Get(":id")
   get(@CurrentUser() user: AuthJwtPayload, @Param("id") id: string) {
-    return this.submissions.getForBrand(user.sub, id);
+    return this.submissions.getForBrand(user.sub, user.role, id);
   }
 
   @Patch(":id/review")
@@ -51,6 +59,6 @@ export class SubmissionsController {
     @Param("id") id: string,
     @Body() dto: ReviewSubmissionDto,
   ) {
-    return this.submissions.review(user.sub, id, dto);
+    return this.submissions.review(user.sub, user.role, id, dto);
   }
 }

@@ -5,6 +5,7 @@ import { PassportModule } from "@nestjs/passport";
 
 import type { Env } from "../config/env";
 import { NotificationsModule } from "../notifications/notifications.module";
+import { BrandInviteService } from "./brand-invite.service";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { FixedOtpService } from "./fixed-otp.service";
@@ -23,7 +24,13 @@ import { OtpService } from "./otp.service";
     NotificationsModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, OtpService, FixedOtpService, JwtStrategy],
-  exports: [AuthService, JwtModule],
+  providers: [
+    AuthService,
+    BrandInviteService,
+    OtpService,
+    FixedOtpService,
+    JwtStrategy,
+  ],
+  exports: [AuthService, BrandInviteService, JwtModule],
 })
 export class AuthModule {}

@@ -23,8 +23,5 @@ export class UserMeDto {
   kycStatus!: string;
 
   @ApiProperty({ nullable: true })
-  tier!: string | null;
-
-  @ApiProperty({ nullable: true })
   companyName!: string | null;
 }

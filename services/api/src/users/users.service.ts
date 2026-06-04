@@ -1,17 +1,27 @@
 import { NotFoundException, Injectable } from "@nestjs/common";
+import {
+  AgencyBrandStatus,
+  BrandInviteStatus,
+  UserRole,
+} from "@prisma/client";
 
+import { BrandAccessService } from "../access/brand-access.service";
 import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly brandAccess: BrandAccessService,
+  ) {}
 
-  async getMe(userId: string) {
+  async getMe(userId: string, role: UserRole) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
       include: {
-        creatorProfile: true,
         brandProfile: true,
+        agencyMemberships: { include: { agency: true } },
+        brandMemberships: { include: { brandProfile: true } },
       },
     });
 
@@ -22,7 +32,7 @@ export class UsersService {
       });
     }
 
-    return {
+    const base = {
       id: user.id,
       role: user.role,
       email: user.email,
@@ -30,8 +40,80 @@ export class UsersService {
       displayName: user.displayName,
       username: user.username,
       kycStatus: user.kycStatus,
-      tier: user.creatorProfile?.tier ?? null,
       companyName: user.brandProfile?.companyName ?? null,
     };
+
+    if (role === UserRole.agency) {
+      const agencyId = await this.brandAccess.getAgencyIdForUser(userId);
+      const links = await this.prisma.agencyBrand.findMany({
+        where: { agencyId, status: AgencyBrandStatus.active },
+        include: {
+          brandProfile: {
+            include: {
+              invites: {
+                where: { status: BrandInviteStatus.pending },
+                orderBy: { createdAt: "desc" },
+                take: 1,
+              },
+            },
+          },
+        },
+        orderBy: { createdAt: "desc" },
+      });
+
+      const agency = user.agencyMemberships[0]?.agency;
+      return {
+        ...base,
+        agency: agency
+          ? { id: agency.id, companyName: agency.companyName }
+          : null,
+        managedBrands: links.map((link) => ({
+          brandProfileId: link.brandProfileId,
+          companyName: link.brandProfile.companyName,
+          hasOwner: Boolean(link.brandProfile.userId),
+          inviteStatus: link.brandProfile.invites[0]?.status ?? null,
+        })),
+      };
+    }
+
+    if (role === UserRole.brand) {
+      const membership = user.brandMemberships[0];
+      const brandProfileId =
+        membership?.brandProfileId ?? user.brandProfile?.id;
+      let linkedAgency: { id: string; companyName: string } | null = null;
+      if (brandProfileId) {
+        const link = await this.prisma.agencyBrand.findFirst({
+          where: {
+            brandProfileId,
+            status: AgencyBrandStatus.active,
+          },
+          include: { agency: true },
+        });
+        if (link) {
+          linkedAgency = {
+            id: link.agency.id,
+            companyName: link.agency.companyName,
+          };
+        }
+      }
+
+      return {
+        ...base,
+        brandProfile: membership
+          ? {
+              id: membership.brandProfile.id,
+              companyName: membership.brandProfile.companyName,
+            }
+          : user.brandProfile
+            ? {
+                id: user.brandProfile.id,
+                companyName: user.brandProfile.companyName,
+              }
+            : null,
+        linkedAgency,
+      };
+    }
+
+    return base;
   }
 }

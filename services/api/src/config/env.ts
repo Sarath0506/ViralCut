@@ -12,8 +12,11 @@ const envSchema = z.object({
   /** Password reset link lifetime, e.g. `1h`, `30m` */
   PASSWORD_RESET_TTL: z.string().default("1h"),
   REDIS_URL: z.string().optional(),
-  CORS_ORIGINS: z.string().default("http://localhost:3000"),
+  CORS_ORIGINS: z.string().default("http://localhost:3000,http://localhost:3002"),
   BRAND_WEB_URL: z.string().url().default("http://localhost:3000"),
+  AGENCY_WEB_URL: z.string().url().default("http://localhost:3002"),
+  /** Brand owner invite link lifetime, e.g. `7d` */
+  BRAND_INVITE_TTL: z.string().default("7d"),
   WITHDRAWAL_FEE_BPS: z.coerce.number().default(150),
   WHATSAPP_PHONE_NUMBER_ID: z.string().optional(),
   WHATSAPP_ACCESS_TOKEN: z.string().optional(),

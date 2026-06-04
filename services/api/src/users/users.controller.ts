@@ -17,6 +17,6 @@ export class UsersController {
   @Get("me")
   @ApiOkResponse({ type: UserMeDto })
   getMe(@CurrentUser() user: AuthJwtPayload) {
-    return this.users.getMe(user.sub);
+    return this.users.getMe(user.sub, user.role);
   }
 }

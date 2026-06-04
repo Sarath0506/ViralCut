@@ -33,7 +33,7 @@ import { ListCampaignsQueryDto } from "./dto/list-campaigns-query.dto";
 @ApiTags("campaigns")
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles(UserRole.brand)
+@Roles(UserRole.brand, UserRole.agency)
 @Controller("campaigns")
 export class CampaignsController {
   constructor(
@@ -89,17 +89,17 @@ export class CampaignsController {
 
   @Get()
   list(@CurrentUser() user: AuthJwtPayload, @Query() query: ListCampaignsQueryDto) {
-    return this.campaigns.listForBrand(user.sub, query);
+    return this.campaigns.listForBrand(user.sub, user.role, query);
   }
 
   @Get(":id")
   get(@CurrentUser() user: AuthJwtPayload, @Param("id") id: string) {
-    return this.campaigns.getForBrand(user.sub, id);
+    return this.campaigns.getForBrand(user.sub, user.role, id);
   }
 
   @Post()
   create(@CurrentUser() user: AuthJwtPayload, @Body() dto: CreateCampaignDto) {
-    return this.campaigns.create(user.sub, dto);
+    return this.campaigns.create(user.sub, user.role, dto);
   }
 
   @Patch(":id")
@@ -108,12 +108,12 @@ export class CampaignsController {
     @Param("id") id: string,
     @Body() dto: UpdateCampaignDto,
   ) {
-    return this.campaigns.update(user.sub, id, dto);
+    return this.campaigns.update(user.sub, user.role, id, dto);
   }
 
   @Delete(":id")
   @HttpCode(HttpStatus.OK)
   remove(@CurrentUser() user: AuthJwtPayload, @Param("id") id: string) {
-    return this.campaigns.remove(user.sub, id);
+    return this.campaigns.remove(user.sub, user.role, id);
   }
 }

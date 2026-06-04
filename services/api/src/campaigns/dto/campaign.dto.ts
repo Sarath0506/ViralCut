@@ -8,7 +8,6 @@ import {
   IsIn,
   IsEnum,
   IsInt,
-  IsObject,
   IsOptional,
   IsString,
   IsUrl,
@@ -18,11 +17,32 @@ import {
   ValidateNested,
 } from "class-validator";
 
-export class ReferenceAssetDto {
-  @ApiProperty({ enum: ["image", "video", "link"] })
+import { CAMPAIGN_PLATFORM_IDS } from "../campaign-platforms";
+
+export class SourceAssetDto {
+  @ApiProperty({ enum: ["drive", "youtube"] })
   @IsString()
-  @IsIn(["image", "video", "link"])
-  type!: "image" | "video" | "link";
+  @IsIn(["drive", "youtube"])
+  type!: "drive" | "youtube";
+
+  @ApiProperty({ description: "Google Drive or YouTube URL" })
+  @IsString()
+  @MinLength(1)
+  @MaxLength(2048)
+  url!: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsString()
+  @MaxLength(120)
+  label?: string;
+}
+
+export class ReferenceAssetDto {
+  @ApiProperty({ enum: ["image", "video"] })
+  @IsString()
+  @IsIn(["image", "video"])
+  type!: "image" | "video";
 
   @ApiProperty({ description: "Public URL or /uploads/... path from API upload" })
   @IsString()
@@ -38,6 +58,13 @@ export class ReferenceAssetDto {
 }
 
 export class CreateCampaignDto {
+  @ApiPropertyOptional({
+    description: "Required when creating as an agency user",
+  })
+  @IsOptional()
+  @IsString()
+  brandProfileId?: string;
+
   @ApiPropertyOptional({ enum: CampaignStatus, default: CampaignStatus.draft })
   @IsOptional()
   @IsEnum(CampaignStatus)
@@ -55,9 +82,10 @@ export class CreateCampaignDto {
   @MaxLength(60)
   category?: string;
 
-  @ApiPropertyOptional({ default: "instagram_reels" })
+  @ApiPropertyOptional({ default: "instagram_reel" })
   @IsOptional()
   @IsString()
+  @IsIn([...CAMPAIGN_PLATFORM_IDS, "instagram_reels"])
   platform?: string;
 
   @ApiPropertyOptional({ type: [String] })
@@ -65,6 +93,7 @@ export class CreateCampaignDto {
   @IsArray()
   @ArrayMaxSize(5)
   @IsString({ each: true })
+  @IsIn([...CAMPAIGN_PLATFORM_IDS, "instagram_reels"], { each: true })
   platforms?: string[];
 
   @ApiPropertyOptional()
@@ -82,19 +111,6 @@ export class CreateCampaignDto {
   @IsOptional()
   @IsString()
   @MaxLength(2000)
-  productFocus?: string;
-
-  @ApiPropertyOptional({ type: [String] })
-  @IsOptional()
-  @IsArray()
-  @ArrayMaxSize(10)
-  @IsString({ each: true })
-  toneOfVoice?: string[];
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  @MaxLength(2000)
   doRules?: string;
 
   @ApiPropertyOptional()
@@ -103,11 +119,18 @@ export class CreateCampaignDto {
   @MaxLength(2000)
   avoidRules?: string;
 
+  @ApiPropertyOptional({ type: [SourceAssetDto] })
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(20)
+  @ValidateNested({ each: true })
+  @Type(() => SourceAssetDto)
+  sourceAssets?: SourceAssetDto[];
+
   @ApiPropertyOptional({ type: [ReferenceAssetDto] })
   @IsOptional()
   @IsArray()
   @ArrayMaxSize(20)
-  @IsObject({ each: true })
   @ValidateNested({ each: true })
   @Type(() => ReferenceAssetDto)
   referenceAssets?: ReferenceAssetDto[];
@@ -146,10 +169,6 @@ export class CreateCampaignDto {
   @IsInt()
   @Min(100)
   budgetPaise?: number;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  endsAt?: string;
 }
 
 export class UpdateCampaignDto {
@@ -179,19 +198,6 @@ export class UpdateCampaignDto {
   @IsOptional()
   @IsString()
   @MaxLength(2000)
-  productFocus?: string;
-
-  @ApiPropertyOptional({ type: [String] })
-  @IsOptional()
-  @IsArray()
-  @ArrayMaxSize(10)
-  @IsString({ each: true })
-  toneOfVoice?: string[];
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsString()
-  @MaxLength(2000)
   doRules?: string;
 
   @ApiPropertyOptional()
@@ -200,11 +206,18 @@ export class UpdateCampaignDto {
   @MaxLength(2000)
   avoidRules?: string;
 
+  @ApiPropertyOptional({ type: [SourceAssetDto] })
+  @IsOptional()
+  @IsArray()
+  @ArrayMaxSize(20)
+  @ValidateNested({ each: true })
+  @Type(() => SourceAssetDto)
+  sourceAssets?: SourceAssetDto[];
+
   @ApiPropertyOptional({ type: [ReferenceAssetDto] })
   @IsOptional()
   @IsArray()
   @ArrayMaxSize(20)
-  @IsObject({ each: true })
   @ValidateNested({ each: true })
   @Type(() => ReferenceAssetDto)
   referenceAssets?: ReferenceAssetDto[];
@@ -214,6 +227,7 @@ export class UpdateCampaignDto {
   @IsArray()
   @ArrayMaxSize(5)
   @IsString({ each: true })
+  @IsIn([...CAMPAIGN_PLATFORM_IDS, "instagram_reels"], { each: true })
   platforms?: string[];
 
   @ApiPropertyOptional()

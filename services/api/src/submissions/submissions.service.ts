@@ -1,11 +1,11 @@
 import {
   BadRequestException,
-  ForbiddenException,
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
-import { CampaignStatus, SubmissionStatus } from "@prisma/client";
+import { CampaignStatus, SubmissionStatus, UserRole } from "@prisma/client";
 
+import { BrandAccessService } from "../access/brand-access.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { ReviewAction, ReviewSubmissionDto } from "./dto/review-submission.dto";
 import type { CreateSubmissionDto } from "./dto/create-submission.dto";
@@ -17,22 +17,46 @@ function computeEarningsPaise(views: number, ratePer1kPaise: number): number {
 
 @Injectable()
 export class SubmissionsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly brandAccess: BrandAccessService,
+  ) {}
+
+  private async resolveBrandProfileIds(
+    userId: string,
+    role: UserRole,
+    brandProfileId?: string,
+  ): Promise<string[]> {
+    const accessible =
+      await this.brandAccess.listAccessibleBrandProfileIds(userId, role);
+    if (brandProfileId) {
+      await this.brandAccess.assertCanAccessBrand(userId, role, brandProfileId);
+      return [brandProfileId];
+    }
+    return accessible;
+  }
 
   async listForBrand(
     userId: string,
-    filters?: { status?: SubmissionStatus; campaignId?: string },
+    role: UserRole,
+    filters?: {
+      status?: SubmissionStatus;
+      campaignId?: string;
+      brandProfileId?: string;
+    },
   ) {
-    const profile = await this.prisma.brandProfile.findUnique({
-      where: { userId },
-    });
-    if (!profile) {
-      throw new ForbiddenException({ code: "FORBIDDEN", message: "Brand only" });
+    const brandProfileIds = await this.resolveBrandProfileIds(
+      userId,
+      role,
+      filters?.brandProfileId,
+    );
+    if (brandProfileIds.length === 0) {
+      return [];
     }
 
     const submissions = await this.prisma.submission.findMany({
       where: {
-        campaign: { brandProfileId: profile.id },
+        campaign: { brandProfileId: { in: brandProfileIds } },
         ...(filters?.status ? { status: filters.status } : {}),
         ...(filters?.campaignId ? { campaignId: filters.campaignId } : {}),
       },
@@ -59,19 +83,13 @@ export class SubmissionsService {
     }));
   }
 
-  async getForBrand(userId: string, submissionId: string) {
-    const profile = await this.prisma.brandProfile.findUnique({
-      where: { userId },
-    });
-    if (!profile) {
-      throw new ForbiddenException({ code: "FORBIDDEN", message: "Brand only" });
-    }
-
+  async getForBrand(
+    userId: string,
+    role: UserRole,
+    submissionId: string,
+  ) {
     const s = await this.prisma.submission.findFirst({
-      where: {
-        id: submissionId,
-        campaign: { brandProfileId: profile.id },
-      },
+      where: { id: submissionId },
       include: {
         campaign: true,
         creator: {
@@ -91,6 +109,12 @@ export class SubmissionsService {
         message: "Submission not found",
       });
     }
+
+    await this.brandAccess.assertCanAccessBrand(
+      userId,
+      role,
+      s.campaign.brandProfileId,
+    );
 
     return {
       id: s.id,
@@ -114,21 +138,13 @@ export class SubmissionsService {
 
   async review(
     userId: string,
+    role: UserRole,
     submissionId: string,
     dto: ReviewSubmissionDto,
   ) {
-    const profile = await this.prisma.brandProfile.findUnique({
-      where: { userId },
-    });
-    if (!profile) {
-      throw new ForbiddenException({ code: "FORBIDDEN", message: "Brand only" });
-    }
-
     const submission = await this.prisma.submission.findFirst({
-      where: {
-        id: submissionId,
-        campaign: { brandProfileId: profile.id },
-      },
+      where: { id: submissionId },
+      include: { campaign: true },
     });
 
     if (!submission) {
@@ -137,6 +153,12 @@ export class SubmissionsService {
         message: "Submission not found",
       });
     }
+
+    await this.brandAccess.assertCanAccessBrand(
+      userId,
+      role,
+      submission.campaign.brandProfileId,
+    );
 
     if (
       submission.status !== SubmissionStatus.draft_submitted &&
@@ -399,11 +421,13 @@ export class SubmissionsService {
   }
 
   /** Brand dashboard stats */
-  async brandStats(userId: string) {
-    const profile = await this.prisma.brandProfile.findUnique({
-      where: { userId },
-    });
-    if (!profile) {
+  async brandStats(userId: string, role: UserRole, brandProfileId?: string) {
+    const brandProfileIds = await this.resolveBrandProfileIds(
+      userId,
+      role,
+      brandProfileId,
+    );
+    if (brandProfileIds.length === 0) {
       return {
         liveCampaigns: 0,
         pendingReviews: 0,
@@ -412,14 +436,16 @@ export class SubmissionsService {
       };
     }
 
+    const brandFilter = { brandProfileId: { in: brandProfileIds } };
+
     const [liveCampaigns, pendingReviews, budgetAgg, viewsAgg] =
       await Promise.all([
         this.prisma.campaign.count({
-          where: { brandProfileId: profile.id, status: "live" },
+          where: { ...brandFilter, status: "live" },
         }),
         this.prisma.submission.count({
           where: {
-            campaign: { brandProfileId: profile.id },
+            campaign: brandFilter,
             status: {
               in: [
                 SubmissionStatus.draft_submitted,
@@ -429,11 +455,11 @@ export class SubmissionsService {
           },
         }),
         this.prisma.campaign.aggregate({
-          where: { brandProfileId: profile.id },
+          where: brandFilter,
           _sum: { budgetUsedPaise: true },
         }),
         this.prisma.submission.aggregate({
-          where: { campaign: { brandProfileId: profile.id } },
+          where: { campaign: brandFilter },
           _sum: { eligibleViews: true },
         }),
       ]);
