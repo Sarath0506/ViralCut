@@ -5,9 +5,11 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/toaster";
 import { ApiError, brandApi } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
+import { useSelectedBrand } from "@/providers/selected-brand-provider";
 
 export function BrandSettingsPage() {
   const { auth, getToken } = useAuth();
+  const { brandProfileId, companyName } = useSelectedBrand();
   const token = getToken();
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -19,13 +21,13 @@ export function BrandSettingsPage() {
   });
 
   const { data: agencyLink } = useQuery({
-    queryKey: ["brand-agency"],
-    queryFn: () => brandApi.agency.get(token!),
-    enabled: Boolean(token),
+    queryKey: ["brand-agency", brandProfileId],
+    queryFn: () => brandApi.agency.get(token!, brandProfileId ?? undefined),
+    enabled: Boolean(token && brandProfileId),
   });
 
   const revokeMutation = useMutation({
-    mutationFn: () => brandApi.agency.revoke(token!),
+    mutationFn: () => brandApi.agency.revoke(token!, brandProfileId ?? undefined),
     onSuccess: () => {
       toast("Agency disconnected.", "success");
       void queryClient.invalidateQueries({ queryKey: ["brand-agency"] });
@@ -54,7 +56,10 @@ export function BrandSettingsPage() {
           <div>
             <dt className="text-muted">Company</dt>
             <dd className="font-semibold">
-              {me?.brandProfile?.companyName ?? me?.companyName ?? "—"}
+              {companyName ??
+                me?.brandProfile?.companyName ??
+                me?.companyName ??
+                "—"}
             </dd>
           </div>
           <div>

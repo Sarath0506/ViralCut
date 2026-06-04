@@ -27,6 +27,7 @@ export function hasInvalidReferenceAssets(assets: ReferenceAsset[]): boolean {
 export function buildCampaignBody(
   draft: CampaignDraft,
   status: "draft" | "live",
+  brandProfileId?: string | null,
 ): Record<string, unknown> {
   const referenceAssets = toApiReferenceAssets(draft.referenceAssets);
   const sourceAssets = toApiSourceAssets(draft.sourceAssets);
@@ -34,6 +35,7 @@ export function buildCampaignBody(
   const platforms = draft.platforms.length > 0 ? draft.platforms : ["instagram_reel"];
 
   return {
+    ...(brandProfileId ? { brandProfileId } : {}),
     title: draft.title.trim(),
     status,
     category: draft.category || undefined,

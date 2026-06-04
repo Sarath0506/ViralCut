@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
 
+import { BrandWorkspaceBootstrap } from "@/components/shell/brand-workspace-bootstrap";
 import { PortalShellSkeleton } from "@/components/ui/page-skeletons";
 import { useAuth } from "@/providers/auth-provider";
-
 export function ProtectedRoute() {
   const { auth, isLoading } = useAuth();
 
@@ -14,5 +14,10 @@ export function ProtectedRoute() {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet />;
+  return (
+    <>
+      <BrandWorkspaceBootstrap />
+      <Outlet />
+    </>
+  );
 }

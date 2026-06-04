@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { brandApi, type CampaignStatusFilter } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
+import { useSelectedBrand } from "@/providers/selected-brand-provider";
 
 const PAGE_SIZE = 6;
 
@@ -10,18 +11,20 @@ export function useCampaignsList(
   page: number,
 ) {
   const { auth, getToken } = useAuth();
+  const { brandProfileId } = useSelectedBrand();
   const token = getToken();
   const apiStatus = status === "all" ? undefined : status;
 
   return useQuery({
-    queryKey: ["campaigns", status, page],
+    queryKey: ["campaigns", status, page, brandProfileId],
     queryFn: () =>
       brandApi.campaigns.list(token!, {
         status: apiStatus,
         page,
         limit: PAGE_SIZE,
+        brandProfileId: brandProfileId ?? undefined,
       }),
-    enabled: Boolean(auth && token),
+    enabled: Boolean(auth && token && brandProfileId),
   });
 }
 

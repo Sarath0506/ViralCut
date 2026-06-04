@@ -158,10 +158,16 @@ export const authApi = {
     password?: string;
     displayName?: string;
   }) =>
-    apiFetchPublic<{ accepted: boolean; brandProfileId: string }>(
+    apiFetchPublic<AuthResponse & { accepted: boolean; brandProfileId: string }>(
       "/auth/brand-invite/accept",
       { method: "POST", body: JSON.stringify(payload) },
     ),
+};
+
+export type BrandWorkspace = {
+  brandProfileId: string;
+  companyName: string;
+  linkedAgency: { id: string; companyName: string } | null;
 };
 
 export type Campaign = {
@@ -229,20 +235,33 @@ export const brandApi = {
       companyName: string | null;
       brandProfile?: { id: string; companyName: string } | null;
       linkedAgency?: { id: string; companyName: string } | null;
+      workspaces?: BrandWorkspace[];
     }>("/users/me", { accessToken: token }),
 
-  stats: (token: string) =>
-    apiFetch<BrandStats>("/submissions/stats", { accessToken: token }),
+  stats: (token: string, brandProfileId?: string) => {
+    const q = brandProfileId
+      ? `?brandProfileId=${encodeURIComponent(brandProfileId)}`
+      : "";
+    return apiFetch<BrandStats>(`/submissions/stats${q}`, { accessToken: token });
+  },
 
   campaigns: {
     list: (
       token: string,
-      params?: { status?: string; page?: number; limit?: number },
+      params?: {
+        status?: string;
+        page?: number;
+        limit?: number;
+        brandProfileId?: string;
+      },
     ) => {
       const search = new URLSearchParams();
       if (params?.status) search.set("status", params.status);
       if (params?.page) search.set("page", String(params.page));
       if (params?.limit) search.set("limit", String(params.limit));
+      if (params?.brandProfileId) {
+        search.set("brandProfileId", params.brandProfileId);
+      }
       const q = search.toString();
       return apiFetch<PaginatedCampaigns>(`/campaigns${q ? `?${q}` : ""}`, {
         accessToken: token,
@@ -293,11 +312,20 @@ export const brandApi = {
   },
 
   submissions: {
-    list: (token: string, params?: { status?: string }) => {
-      const q = params?.status ? `?status=${params.status}` : "";
-      return apiFetch<SubmissionListItem[]>(`/submissions${q}`, {
-        accessToken: token,
-      });
+    list: (
+      token: string,
+      params?: { status?: string; brandProfileId?: string },
+    ) => {
+      const search = new URLSearchParams();
+      if (params?.status) search.set("status", params.status);
+      if (params?.brandProfileId) {
+        search.set("brandProfileId", params.brandProfileId);
+      }
+      const q = search.toString();
+      return apiFetch<SubmissionListItem[]>(
+        `/submissions${q ? `?${q}` : ""}`,
+        { accessToken: token },
+      );
     },
     get: (token: string, id: string) =>
       apiFetch<Record<string, unknown>>(`/submissions/${id}`, {
@@ -316,15 +344,22 @@ export const brandApi = {
   },
 
   agency: {
-    get: (token: string) =>
-      apiFetch<{ agency: { id: string; companyName: string; linkedAt: string } | null }>(
-        "/brand/agency",
-        { accessToken: token },
-      ),
-    revoke: (token: string) =>
-      apiFetch<{ revoked: boolean }>("/brand/agency", {
+    get: (token: string, brandProfileId?: string) => {
+      const q = brandProfileId
+        ? `?brandProfileId=${encodeURIComponent(brandProfileId)}`
+        : "";
+      return apiFetch<{
+        agency: { id: string; companyName: string; linkedAt: string } | null;
+      }>(`/brand/agency${q}`, { accessToken: token });
+    },
+    revoke: (token: string, brandProfileId?: string) => {
+      const q = brandProfileId
+        ? `?brandProfileId=${encodeURIComponent(brandProfileId)}`
+        : "";
+      return apiFetch<{ revoked: boolean }>(`/brand/agency${q}`, {
         method: "DELETE",
         accessToken: token,
-      }),
+      });
+    },
   },
 };

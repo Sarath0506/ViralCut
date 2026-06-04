@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -377,6 +378,17 @@ export class AuthService {
     return parseDurationMs(
       this.config.get("PASSWORD_RESET_TTL", { infer: true }),
     );
+  }
+
+  async createSessionForUser(userId: string) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) {
+      throw new NotFoundException({
+        code: "NOT_FOUND",
+        message: "User not found",
+      });
+    }
+    return this.issueTokens(user);
   }
 
   private async issueTokens(user: {

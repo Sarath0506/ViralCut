@@ -1,4 +1,12 @@
-import { Controller, Delete, Get, HttpCode, HttpStatus, UseGuards } from "@nestjs/common";
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
 import { UserRole } from "@prisma/client";
 
@@ -18,13 +26,19 @@ export class BrandsController {
   constructor(private readonly brands: BrandsService) {}
 
   @Get("agency")
-  getAgency(@CurrentUser() user: AuthJwtPayload) {
-    return this.brands.getLinkedAgency(user.sub, user.role);
+  getAgency(
+    @CurrentUser() user: AuthJwtPayload,
+    @Query("brandProfileId") brandProfileId?: string,
+  ) {
+    return this.brands.getLinkedAgency(user.sub, user.role, brandProfileId);
   }
 
   @Delete("agency")
   @HttpCode(HttpStatus.OK)
-  revokeAgency(@CurrentUser() user: AuthJwtPayload) {
-    return this.brands.revokeAgency(user.sub, user.role);
+  revokeAgency(
+    @CurrentUser() user: AuthJwtPayload,
+    @Query("brandProfileId") brandProfileId?: string,
+  ) {
+    return this.brands.revokeAgency(user.sub, user.role, brandProfileId);
   }
 }

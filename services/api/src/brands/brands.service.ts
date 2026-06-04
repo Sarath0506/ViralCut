@@ -1,5 +1,9 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { AgencyBrandStatus, UserRole } from "@prisma/client";
+import {
+  AgencyBrandStatus,
+  BrandInviteStatus,
+  UserRole,
+} from "@prisma/client";
 
 import { BrandAccessService } from "../access/brand-access.service";
 import { PrismaService } from "../prisma/prisma.service";
@@ -11,18 +15,20 @@ export class BrandsService {
     private readonly brandAccess: BrandAccessService,
   ) {}
 
-  async getLinkedAgency(userId: string, role: UserRole) {
-    const brandIds = await this.brandAccess.listAccessibleBrandProfileIds(
+  async getLinkedAgency(
+    userId: string,
+    role: UserRole,
+    brandProfileId?: string,
+  ) {
+    const resolved = await this.brandAccess.resolveBrandProfileIdForMutation(
       userId,
       role,
+      brandProfileId,
     );
-    if (brandIds.length === 0) {
-      return { agency: null };
-    }
 
     const link = await this.prisma.agencyBrand.findFirst({
       where: {
-        brandProfileId: brandIds[0],
+        brandProfileId: resolved,
         status: AgencyBrandStatus.active,
       },
       include: { agency: true },
@@ -41,19 +47,17 @@ export class BrandsService {
     };
   }
 
-  async revokeAgency(userId: string, role: UserRole) {
-    const brandIds = await this.brandAccess.listAccessibleBrandProfileIds(
+  async revokeAgency(
+    userId: string,
+    role: UserRole,
+    brandProfileId?: string,
+  ) {
+    const resolved = await this.brandAccess.resolveBrandProfileIdForMutation(
       userId,
       role,
+      brandProfileId,
     );
-    if (brandIds.length === 0) {
-      throw new NotFoundException({
-        code: "NOT_FOUND",
-        message: "No brand workspace found",
-      });
-    }
-
-    const brandProfileId = brandIds[0]!;
+    const brandProfileId = resolved;
     const link = await this.prisma.agencyBrand.findFirst({
       where: {
         brandProfileId,
@@ -68,10 +72,20 @@ export class BrandsService {
       });
     }
 
-    await this.prisma.agencyBrand.update({
-      where: { id: link.id },
-      data: { status: AgencyBrandStatus.revoked },
-    });
+    await this.prisma.$transaction([
+      this.prisma.agencyBrand.update({
+        where: { id: link.id },
+        data: { status: AgencyBrandStatus.revoked },
+      }),
+      this.prisma.brandInvite.updateMany({
+        where: {
+          brandProfileId,
+          agencyId: link.agencyId,
+          status: BrandInviteStatus.pending,
+        },
+        data: { status: BrandInviteStatus.revoked },
+      }),
+    ]);
 
     return { revoked: true };
   }

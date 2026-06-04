@@ -77,32 +77,37 @@ export class UsersService {
     }
 
     if (role === UserRole.brand) {
-      const membership = user.brandMemberships[0];
-      const brandProfileId =
-        membership?.brandProfileId ?? user.brandProfile?.id;
-      let linkedAgency: { id: string; companyName: string } | null = null;
-      if (brandProfileId) {
-        const link = await this.prisma.agencyBrand.findFirst({
-          where: {
-            brandProfileId,
-            status: AgencyBrandStatus.active,
-          },
-          include: { agency: true },
-        });
-        if (link) {
-          linkedAgency = {
-            id: link.agency.id,
-            companyName: link.agency.companyName,
+      const workspaces = await Promise.all(
+        user.brandMemberships.map(async (membership) => {
+          const link = await this.prisma.agencyBrand.findFirst({
+            where: {
+              brandProfileId: membership.brandProfileId,
+              status: AgencyBrandStatus.active,
+            },
+            include: { agency: true },
+          });
+          return {
+            brandProfileId: membership.brandProfileId,
+            companyName: membership.brandProfile.companyName,
+            linkedAgency: link
+              ? {
+                  id: link.agency.id,
+                  companyName: link.agency.companyName,
+                }
+              : null,
           };
-        }
-      }
+        }),
+      );
+
+      const primary = workspaces[0] ?? null;
 
       return {
         ...base,
-        brandProfile: membership
+        workspaces,
+        brandProfile: primary
           ? {
-              id: membership.brandProfile.id,
-              companyName: membership.brandProfile.companyName,
+              id: primary.brandProfileId,
+              companyName: primary.companyName,
             }
           : user.brandProfile
             ? {
@@ -110,7 +115,7 @@ export class UsersService {
                 companyName: user.brandProfile.companyName,
               }
             : null,
-        linkedAgency,
+        linkedAgency: primary?.linkedAgency ?? null,
       };
     }
 

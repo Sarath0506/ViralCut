@@ -7,6 +7,12 @@ import { hashRefreshToken } from "./otp.service";
 
 describe("BrandInviteService", () => {
   const email = { sendBrandInvite: vi.fn() };
+  const auth = {
+    createSessionForUser: vi.fn().mockResolvedValue({
+      tokens: { accessToken: "a", refreshToken: "r", expiresIn: "15m" },
+      user: { id: "u1", role: "brand", email: "new@brand.in" },
+    }),
+  };
   const config = {
     get: vi.fn((key: string) => (key === "BRAND_INVITE_TTL" ? "7d" : "")),
   };
@@ -19,6 +25,7 @@ describe("BrandInviteService", () => {
       prisma as never,
       config as never,
       email as never,
+      auth as never,
     );
     const result = await service.preview("unknown");
     expect(result.valid).toBe(false);
@@ -59,6 +66,7 @@ describe("BrandInviteService", () => {
       prisma as never,
       config as never,
       email as never,
+      auth as never,
     );
 
     const result = await service.accept({
@@ -66,6 +74,7 @@ describe("BrandInviteService", () => {
       password: "password123",
     });
     expect(result.accepted).toBe(true);
+    expect(auth.createSessionForUser).toHaveBeenCalledWith("u1");
     expect(prisma.user.create).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({ role: UserRole.brand, email: "new@brand.in" }),
@@ -92,6 +101,7 @@ describe("BrandInviteService", () => {
       prisma as never,
       config as never,
       email as never,
+      auth as never,
     );
     await expect(service.accept({ token: "t".repeat(40) })).rejects.toBeInstanceOf(
       BadRequestException,
