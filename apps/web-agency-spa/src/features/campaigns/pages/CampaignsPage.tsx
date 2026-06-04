@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Plus, WandSparkles } from "lucide-react";
 
+import { SelectBrandPrompt } from "@/components/shell/select-brand-prompt";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -19,8 +20,10 @@ import {
 } from "@/features/campaigns/hooks/use-campaigns";
 import { ApiError, type Campaign, type CampaignStatusFilter } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { useSelectedBrand } from "@/providers/selected-brand-provider";
 
 export function CampaignsPage() {
+  const { brandProfileId } = useSelectedBrand();
   const { toast } = useToast();
   const [statusFilter, setStatusFilter] = useState<CampaignStatusFilter>("all");
   const [page, setPage] = useState(1);
@@ -66,6 +69,10 @@ export function CampaignsPage() {
   };
 
   const isConfirmLoading = updateStatus.isPending || deleteCampaign.isPending;
+
+  if (!brandProfileId) {
+    return <SelectBrandPrompt title="Select a brand to view campaigns" />;
+  }
 
   if (isPending) {
     return <CampaignListSkeleton />;

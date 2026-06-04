@@ -1,6 +1,6 @@
 import { ArrowRight, Mail } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { AuthDivider } from "@/components/auth/auth-divider";
 import { AuthPasswordField } from "@/components/auth/auth-password-field";
@@ -21,9 +21,12 @@ import {
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/toaster";
 import { ApiError } from "@/lib/api";
+import { safeRedirectPath } from "@/lib/safe-redirect";
 import { useAuth } from "@/providers/auth-provider";
 
 export function LoginPage() {
+  const [searchParams] = useSearchParams();
+  const redirectTo = safeRedirectPath(searchParams.get("next"));
   const { login } = useAuth();
   const { toast } = useToast();
   const [email, setEmail] = useState("");
@@ -34,7 +37,7 @@ export function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, password);
+      await login(email, password, redirectTo);
       toast("Welcome back!");
     } catch (err) {
       toast(

@@ -18,6 +18,7 @@ import { parseDurationMs } from "../common/parse-duration";
 import type { Env } from "../config/env";
 import { EmailService } from "../notifications/email.service";
 import { PrismaService } from "../prisma/prisma.service";
+import { AuthService } from "./auth.service";
 import { hashRefreshToken } from "./otp.service";
 import type { BrandInviteAcceptDto } from "./dto/brand-invite.dto";
 
@@ -27,6 +28,7 @@ export class BrandInviteService {
     private readonly prisma: PrismaService,
     private readonly config: ConfigService<Env, true>,
     private readonly email: EmailService,
+    private readonly auth: AuthService,
   ) {}
 
   async preview(token: string) {
@@ -80,6 +82,7 @@ export class BrandInviteService {
 
     const email = invite.email.toLowerCase();
     const existing = await this.prisma.user.findUnique({ where: { email } });
+    let ownerUserId: string;
 
     if (existing) {
       if (existing.role === UserRole.creator) {
@@ -103,6 +106,7 @@ export class BrandInviteService {
       }
 
       await this.linkExistingBrandUser(existing, invite.brandProfileId);
+      ownerUserId = existing.id;
     } else {
       if (!dto.password || dto.password.length < 8) {
         throw new BadRequestException({
@@ -110,12 +114,13 @@ export class BrandInviteService {
           message: "Password is required to create your brand account",
         });
       }
-      await this.createBrandOwnerFromInvite(
+      const created = await this.createBrandOwnerFromInvite(
         email,
         dto.password,
         dto.displayName,
         invite.brandProfileId,
       );
+      ownerUserId = created.id;
     }
 
     await this.prisma.brandInvite.update({
@@ -126,7 +131,13 @@ export class BrandInviteService {
       },
     });
 
-    return { accepted: true, brandProfileId: invite.brandProfileId };
+    const session = await this.auth.createSessionForUser(ownerUserId);
+
+    return {
+      accepted: true,
+      brandProfileId: invite.brandProfileId,
+      ...session,
+    };
   }
 
   async createAndSendInvite(
@@ -222,7 +233,7 @@ export class BrandInviteService {
     password: string,
     displayName: string | undefined,
     brandProfileId: string,
-  ) {
+  ): Promise<User> {
     const profile = await this.prisma.brandProfile.findUnique({
       where: { id: brandProfileId },
     });
@@ -265,6 +276,7 @@ export class BrandInviteService {
     ]);
 
     await this.ensureBrandWallet(user.id);
+    return user;
   }
 
   private async ensureBrandWallet(userId: string) {

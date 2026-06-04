@@ -9,6 +9,7 @@ import { meetsMinimumRuleText } from "@/features/campaigns/lib/rule-points";
 import { ApiError, brandApi } from "@/lib/api";
 import { useAuth } from "@/providers/auth-provider";
 import { useCampaignWizard } from "@/providers/campaign-wizard";
+import { useSelectedBrand } from "@/providers/selected-brand-provider";
 
 function apiErrorMessage(error: unknown, fallback: string): string {
   if (error instanceof ApiError) return error.message;
@@ -19,6 +20,7 @@ function apiErrorMessage(error: unknown, fallback: string): string {
 export function useCampaignDraftSave() {
   const navigate = useNavigate();
   const { getToken } = useAuth();
+  const { brandProfileId } = useSelectedBrand();
   const { draft, update, reset } = useCampaignWizard();
   const [saving, setSaving] = useState(false);
 
@@ -35,7 +37,7 @@ export function useCampaignDraftSave() {
 
     setSaving(true);
     try {
-      const body = buildCampaignBody(draft, "draft");
+      const body = buildCampaignBody(draft, "draft", brandProfileId);
       if (draft.campaignId) {
         await brandApi.campaigns.update(token, draft.campaignId, body);
       } else {
@@ -46,7 +48,7 @@ export function useCampaignDraftSave() {
     } finally {
       setSaving(false);
     }
-  }, [draft, getToken, update]);
+  }, [brandProfileId, draft, getToken, update]);
 
   const publish = useCallback(async (): Promise<{ id: string }> => {
     if (hasInvalidReferenceAssets(draft.referenceAssets)) {
@@ -70,7 +72,7 @@ export function useCampaignDraftSave() {
 
     setSaving(true);
     try {
-      const body = buildCampaignBody(draft, "live");
+      const body = buildCampaignBody(draft, "live", brandProfileId);
       if (draft.campaignId) {
         const updated = await brandApi.campaigns.update(token, draft.campaignId, body);
         return { id: updated.id };
@@ -80,7 +82,7 @@ export function useCampaignDraftSave() {
     } finally {
       setSaving(false);
     }
-  }, [draft, getToken]);
+  }, [brandProfileId, draft, getToken]);
 
   const saveDraftWithFeedback = useCallback(
     async (toast: (message: string, type?: "success" | "error") => void) => {

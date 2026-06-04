@@ -2,6 +2,7 @@ import { Bell, Menu } from "lucide-react";
 
 import { AccountMenu } from "@/components/shell/account-menu";
 import { PortalSearch } from "@/components/shell/portal-search";
+import { WorkspaceSwitcher } from "@/components/shell/workspace-switcher";
 import { Button } from "@/components/ui/button";
 
 export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
@@ -18,8 +19,11 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
         <Menu className="size-5" />
       </Button>
 
-      <div className="hidden min-w-0 flex-1 md:block md:max-w-xl lg:max-w-2xl">
-        <PortalSearch />
+      <div className="hidden min-w-0 flex-1 items-center gap-4 md:flex">
+        <div className="md:max-w-xl lg:max-w-2xl flex-1">
+          <PortalSearch />
+        </div>
+        <WorkspaceSwitcher />
       </div>
 
       <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">

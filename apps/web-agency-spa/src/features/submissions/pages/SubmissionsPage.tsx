@@ -1,17 +1,24 @@
 import { Link } from "react-router-dom";
 
+import { SelectBrandPrompt } from "@/components/shell/select-brand-prompt";
 import { Card } from "@/components/ui/card";
 import { TableSkeleton } from "@/components/ui/page-skeletons";
 import { StatusPill } from "@/components/ui/status-pill";
 import { useSubmissions } from "@/features/submissions/hooks/use-submissions";
 import { formatInr } from "@/lib/format";
+import { useSelectedBrand } from "@/providers/selected-brand-provider";
 
 export function SubmissionsPage() {
+  const { brandProfileId } = useSelectedBrand();
   const { data: submissions, isPending } = useSubmissions();
 
   const pending = submissions?.filter((s) =>
     ["draft_submitted", "under_review"].includes(s.status),
   );
+
+  if (!brandProfileId) {
+    return <SelectBrandPrompt title="Select a brand to review submissions" />;
+  }
 
   if (isPending) {
     return <TableSkeleton />;

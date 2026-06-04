@@ -14,11 +14,16 @@ import {
   getStoredAuth,
   setStoredAuth,
 } from "@/lib/auth-storage";
+import { safeRedirectPath } from "@/lib/safe-redirect";
 
 type AuthContextValue = {
   auth: AuthResponse | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (
+    email: string,
+    password: string,
+    redirectTo?: string,
+  ) => Promise<void>;
   register: (data: {
     email: string;
     password: string;
@@ -26,7 +31,8 @@ type AuthContextValue = {
     displayName?: string;
     acceptTerms: true;
   }) => Promise<void>;
-  logout: () => void;
+  logout: (redirectTo?: string) => void;
+  setSession: (session: AuthResponse) => void;
   getToken: () => string | null;
 };
 
@@ -48,10 +54,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const login = useCallback(
-    async (email: string, password: string) => {
+    async (email: string, password: string, redirectTo?: string) => {
       const res = await authApi.loginBrand({ email, password });
       persist(res);
-      navigate("/dashboard", { replace: true });
+      navigate(safeRedirectPath(redirectTo), { replace: true });
     },
     [persist, navigate],
   );
@@ -71,22 +77,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [persist, navigate],
   );
 
-  const logout = useCallback(() => {
-    const refresh = auth?.tokens.refreshToken;
-    if (refresh) {
-      void fetch(
-        `${import.meta.env.VITE_API_URL ?? "http://localhost:3001"}/auth/logout`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ refreshToken: refresh }),
-        },
-      ).catch(() => undefined);
-    }
-    clearStoredAuth();
-    setAuth(null);
-    navigate("/login", { replace: true });
-  }, [auth, navigate]);
+  const logout = useCallback(
+    (redirectTo?: string) => {
+      const refresh = auth?.tokens.refreshToken;
+      if (refresh) {
+        void fetch(
+          `${import.meta.env.VITE_API_URL ?? "http://localhost:3001"}/auth/logout`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ refreshToken: refresh }),
+          },
+        ).catch(() => undefined);
+      }
+      clearStoredAuth();
+      localStorage.removeItem("viralcut.brand.selectedBrandProfileId");
+      setAuth(null);
+      navigate(safeRedirectPath(redirectTo ?? "/login"), { replace: true });
+    },
+    [auth, navigate],
+  );
 
   const value = useMemo(
     () => ({
@@ -95,9 +105,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       login,
       register,
       logout,
+      setSession: persist,
       getToken: () => auth?.tokens.accessToken ?? null,
     }),
-    [auth, isLoading, login, register, logout],
+    [auth, isLoading, login, register, logout, persist],
   );
 
   return (

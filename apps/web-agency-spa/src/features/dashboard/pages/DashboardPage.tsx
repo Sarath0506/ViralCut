@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom";
 
+import { SelectBrandPrompt } from "@/components/shell/select-brand-prompt";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { useBrandStats } from "@/features/dashboard/hooks/use-brand-stats";
 import { formatInr, formatViews } from "@/lib/format";
+import { useSelectedBrand } from "@/providers/selected-brand-provider";
 
 export function DashboardPage() {
-  const { data: stats } = useBrandStats();
+  const { brandProfileId } = useSelectedBrand();
+  const { data: stats, isPending } = useBrandStats();
 
   return (
     <>
@@ -19,22 +22,29 @@ export function DashboardPage() {
         </p>
       </header>
 
+      <SelectBrandPrompt />
+
+      {brandProfileId ? (
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard label="Live campaigns" value={String(stats?.liveCampaigns ?? 0)} />
+        <KpiCard
+          label="Live campaigns"
+          value={isPending ? "…" : String(stats?.liveCampaigns ?? 0)}
+        />
         <KpiCard
           label="Pending reviews"
-          value={String(stats?.pendingReviews ?? 0)}
+          value={isPending ? "…" : String(stats?.pendingReviews ?? 0)}
           href="/submissions"
         />
         <KpiCard
           label="Budget used"
-          value={formatInr(stats?.budgetUsedPaise ?? 0)}
+          value={isPending ? "…" : formatInr(stats?.budgetUsedPaise ?? 0)}
         />
         <KpiCard
           label="Total views"
-          value={formatViews(stats?.totalViews ?? 0)}
+          value={isPending ? "…" : formatViews(stats?.totalViews ?? 0)}
         />
       </div>
+      ) : null}
 
       <Card className="mt-6">
         <CardTitle>Quick actions</CardTitle>
