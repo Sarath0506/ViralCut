@@ -1,0 +1,24 @@
+# Railway config for @viralcut/web-agency-spa (monorepo).
+# In the service settings set:
+#   Root Directory: /  (repo root — required for pnpm workspaces)
+#   Config file path: /apps/web-agency-spa/railway.toml
+
+[build]
+builder = "NIXPACKS"
+buildCommand = "pnpm install --frozen-lockfile && pnpm build:agency"
+watchPatterns = [
+  "apps/web-agency-spa/**",
+  "packages/ui-tokens/**",
+  "packages/shared-types/**",
+  "packages/config/**",
+  "package.json",
+  "pnpm-lock.yaml",
+  "pnpm-workspace.yaml",
+  "turbo.json",
+]
+
+[deploy]
+startCommand = "pnpm --filter @viralcut/web-agency-spa start"
+healthcheckPath = "/"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3

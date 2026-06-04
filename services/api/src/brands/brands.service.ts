@@ -52,15 +52,15 @@ export class BrandsService {
     role: UserRole,
     brandProfileId?: string,
   ) {
-    const resolved = await this.brandAccess.resolveBrandProfileIdForMutation(
-      userId,
-      role,
-      brandProfileId,
-    );
-    const brandProfileId = resolved;
+    const resolvedBrandProfileId =
+      await this.brandAccess.resolveBrandProfileIdForMutation(
+        userId,
+        role,
+        brandProfileId,
+      );
     const link = await this.prisma.agencyBrand.findFirst({
       where: {
-        brandProfileId,
+        brandProfileId: resolvedBrandProfileId,
         status: AgencyBrandStatus.active,
       },
     });
@@ -79,7 +79,7 @@ export class BrandsService {
       }),
       this.prisma.brandInvite.updateMany({
         where: {
-          brandProfileId,
+          brandProfileId: resolvedBrandProfileId,
           agencyId: link.agencyId,
           status: BrandInviteStatus.pending,
         },
