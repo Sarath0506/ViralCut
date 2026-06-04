@@ -62,9 +62,6 @@ export function useCampaignDraftSave() {
     if (!meetsMinimumRuleText(draft.briefHook)) {
       throw new Error("Add at least one hook point (10+ characters total).");
     }
-    if (!meetsMinimumRuleText(draft.productFocus)) {
-      throw new Error("Add at least one product focus point (10+ characters total).");
-    }
 
     const token = getToken();
     if (!token) {

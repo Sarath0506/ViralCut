@@ -2,7 +2,6 @@
 --   00_enums.sql
 --   01_users.sql
 --   02_brand_profiles.sql
---   03_creator_profiles.sql
 --   04_refresh_tokens.sql
 --   05_password_reset_tokens.sql
 --   06_otp_sessions.sql

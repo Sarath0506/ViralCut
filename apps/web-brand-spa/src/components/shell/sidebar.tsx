@@ -73,18 +73,6 @@ export function Sidebar({
             ))}
           </div>
         </nav>
-
-        <div className="sticky bottom-0 shrink-0 bg-surface px-3 py-3">
-          <Link
-            to="/campaigns/new"
-            onClick={onClose}
-            className={cn(
-              "flex h-9 w-full items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground shadow-sm transition-opacity hover:opacity-90",
-            )}
-          >
-            New Campaign
-          </Link>
-        </div>
       </aside>
     </>
   );

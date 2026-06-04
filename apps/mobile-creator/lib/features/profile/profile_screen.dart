@@ -108,8 +108,6 @@ class ProfileScreen extends ConsumerWidget {
                   final phone = user['phone'] as String? ?? '';
                   final kycStatus =
                       user['kycStatus'] as String? ?? 'pending';
-                  final tier = user['tier'] as String?;
-
                   return RefreshIndicator(
                     onRefresh: () async {
                       ref.invalidate(profileMeProvider);
@@ -200,31 +198,6 @@ class ProfileScreen extends ConsumerWidget {
                             ],
                           ),
                         ),
-                        if (tier != null && tier.isNotEmpty) ...[
-                          const SizedBox(height: 12),
-                          ListTile(
-                            tileColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14),
-                              side: const BorderSide(
-                                color: ViralCutTokenColors.borderLight,
-                              ),
-                            ),
-                            leading: CircleAvatar(
-                              backgroundColor:
-                                  primary.withValues(alpha: 0.12),
-                              child: Icon(Icons.star, color: primary),
-                            ),
-                            title: Text(
-                              _formatTier(tier),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            trailing: const Icon(Icons.chevron_right),
-                            onTap: () {},
-                          ),
-                        ],
                         const SizedBox(height: 16),
                         _SettingsTile(
                           icon: Icons.link,
@@ -273,13 +246,6 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  static String _formatTier(String tier) {
-    return tier
-        .split('_')
-        .map((w) =>
-            w.isEmpty ? w : '${w[0].toUpperCase()}${w.substring(1)}')
-        .join(' ');
-  }
 }
 
 class _ProfileError extends StatelessWidget {

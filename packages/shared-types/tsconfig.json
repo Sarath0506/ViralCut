@@ -1,5 +1,5 @@
 {
-  "extends": "@viralcut/config/typescript",
+  "extends": "../config/typescript.json",
   "compilerOptions": {
     "noEmit": true,
     "module": "ESNext",

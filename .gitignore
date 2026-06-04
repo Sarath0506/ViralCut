@@ -5,6 +5,10 @@
 *.pem
 credentials.json
 
+# Vite SPAs — local API URL (commit .env.example only)
+apps/web-brand-spa/.env
+apps/web-agency-spa/.env
+
 # Node / monorepo build artifacts
 node_modules/
 dist/
@@ -14,7 +18,8 @@ packages/ui-tokens/dist/
 
 # Next.js
 .next/
-apps/web-brand/.env.local
+apps/web-brand-spa/.env.local
+apps/web-agency-spa/.env.local
 
 # Prisma client is generated; migrations ARE committed for production deploy
 # (do not ignore services/api/prisma/migrations/)

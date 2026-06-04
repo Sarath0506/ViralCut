@@ -35,6 +35,27 @@ export class ApiError extends Error {
   }
 }
 
+export async function apiFetchPublic<T>(
+  path: string,
+  init?: RequestInit,
+): Promise<T> {
+  const res = await fetch(`${API_BASE}${path}`, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...(init?.headers ?? {}),
+    },
+  });
+  const body = (await res.json()) as ApiEnvelope<T>;
+  if (!res.ok || !body.success || body.data === null) {
+    throw new ApiError(
+      body.error?.code ?? "INTERNAL_ERROR",
+      body.error?.message ?? "Request failed",
+    );
+  }
+  return body.data;
+}
+
 export async function apiFetch<T>(
   path: string,
   options: RequestInit & { accessToken?: string } = {},
@@ -122,6 +143,25 @@ export const authApi = {
       method: "POST",
       body: JSON.stringify({ refreshToken }),
     }),
+
+  previewBrandInvite: (token: string) =>
+    apiFetchPublic<{
+      valid: boolean;
+      expired: boolean;
+      agencyName: string | null;
+      brandName: string | null;
+      email: string | null;
+    }>(`/auth/brand-invite/preview?token=${encodeURIComponent(token)}`),
+
+  acceptBrandInvite: (payload: {
+    token: string;
+    password?: string;
+    displayName?: string;
+  }) =>
+    apiFetchPublic<{ accepted: boolean; brandProfileId: string }>(
+      "/auth/brand-invite/accept",
+      { method: "POST", body: JSON.stringify(payload) },
+    ),
 };
 
 export type Campaign = {
@@ -133,11 +173,10 @@ export type Campaign = {
   status: string;
   brief: string;
   briefHook: string | null;
-  productFocus: string | null;
-  toneOfVoice: string[];
   doRules: string | null;
   avoidRules: string | null;
-  referenceAssets: Array<{ type: "image" | "video" | "link"; url: string; label?: string }> | null;
+  sourceAssets: Array<{ type: "drive" | "youtube"; url: string; label?: string }> | null;
+  referenceAssets: Array<{ type: "image" | "video"; url: string; label?: string }> | null;
   coverImageUrl: string | null;
   productUrl: string | null;
   ratePer1kPaise: number;
@@ -148,7 +187,6 @@ export type Campaign = {
   poolPercent: number;
   poolRemainingPercent: number;
   startDate: string | null;
-  endsAt: string | null;
   createdAt: string;
   submissionCount?: number;
 };
@@ -189,6 +227,8 @@ export const brandApi = {
       email: string | null;
       displayName: string | null;
       companyName: string | null;
+      brandProfile?: { id: string; companyName: string } | null;
+      linkedAgency?: { id: string; companyName: string } | null;
     }>("/users/me", { accessToken: token }),
 
   stats: (token: string) =>
@@ -272,6 +312,19 @@ export const brandApi = {
         method: "PATCH",
         accessToken: token,
         body: JSON.stringify(body),
+      }),
+  },
+
+  agency: {
+    get: (token: string) =>
+      apiFetch<{ agency: { id: string; companyName: string; linkedAt: string } | null }>(
+        "/brand/agency",
+        { accessToken: token },
+      ),
+    revoke: (token: string) =>
+      apiFetch<{ revoked: boolean }>("/brand/agency", {
+        method: "DELETE",
+        accessToken: token,
       }),
   },
 };

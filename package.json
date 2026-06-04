@@ -6,6 +6,8 @@
     "build": "turbo run build",
     "dev:api": "pnpm --filter @viralcut/api dev",
     "dev:web": "pnpm --filter @viralcut/web-brand-spa dev",
+    "dev:agency": "pnpm --filter @viralcut/web-agency-spa dev",
+    "build:agency": "pnpm tokens:build && pnpm --filter @viralcut/web-agency-spa build",
     "tokens:build": "pnpm --filter @viralcut/ui-tokens build",
     "build:web": "pnpm tokens:build && pnpm --filter @viralcut/web-brand-spa build",
     "db:up": "docker compose up -d postgres",

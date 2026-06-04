@@ -97,6 +97,11 @@ const BrandSettingsPage = lazy(() =>
     default: m.BrandSettingsPage,
   })),
 );
+const AcceptInvitePage = lazy(() =>
+  import("@/features/invite/pages/AcceptInvitePage").then((m) => ({
+    default: m.AcceptInvitePage,
+  })),
+);
 
 function withSuspense(fallback: React.ReactNode, element: React.ReactNode) {
   return <Suspense fallback={fallback}>{element}</Suspense>;
@@ -128,6 +133,10 @@ export const router = createBrowserRouter([
               {
                 path: "reset-password",
                 element: withSuspense(null, <ResetPasswordPage />),
+              },
+              {
+                path: "invite/accept",
+                element: withSuspense(null, <AcceptInvitePage />),
               },
             ],
           },
